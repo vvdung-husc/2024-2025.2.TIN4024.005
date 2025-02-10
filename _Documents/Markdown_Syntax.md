@@ -10,7 +10,7 @@ Có thể bạn chưa biết: `Markdown` có thể được sử dụng tại [G
 
 > If you can, feel free to translate this repo into other languages, thanks!
 
-> Tài liệu được viết tay bởi [Lục Thiên Phong](https://github.com/lucthienphong1120), để giúp bạn có thêm hiểu biết và làm chủ về Markdown.
+> Tài liệu được viết để giúp bạn có thêm hiểu biết và làm chủ về Markdown.
 
 # Mục lục
 
@@ -294,15 +294,15 @@ ___
 
 Cú pháp:
 ```
-Trực tiếp: https://github.com/lucthienphong1120
+Trực tiếp: https://github.com/vvdung-husc
 
-Gián tiếp: [Github](https://github.com/lucthienphong1120)
+Gián tiếp: [Github](https://github.com/vvdung-husc)
 ```
 Kết quả:
 
-Trực tiếp: https://github.com/lucthienphong1120
+Trực tiếp: https://github.com/vvdung-husc
 
-Gián tiếp: [Github](https://github.com/lucthienphong1120)
+Gián tiếp: [Github](https://github.com/vvdung-husc)
 
 ### 3. Hình ảnh - Image
 
@@ -338,7 +338,7 @@ Kết quả:
 
 👁️
 
-> More information: https://github.com/lucthienphong1120/Github-Emojis
+> More information: https://github.com/vvdung-husc/2024-2025.2.TIN4024.005/blob/main/_Documents/Github_Emojis.md
 
 ### 5. Checkbox
 
@@ -376,8 +376,4 @@ Kết quả:
 
 Hy vọng qua bài viết này, bạn sẽ không còn thấy Markdown khó nữa và sẽ nắm được cách dùng Markdown trong nhiều việc của mình hơn nhé.
 
-Nếu thấy hay hãy đừng ngần ngại mà thả 1 sao cho tôi, chúc bạn 1 ngày làm việc thật tốt!
-
-> Bạn có thể thoải mái đóng góp (contribute) hoặc liên kết (fork) dự án này.
-
-> You are free to contribute or fork this repo.
+_(Sưu tầm)_
