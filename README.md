@@ -11,6 +11,8 @@ Cài đặt [Visual Studio Code](https://code.visualstudio.com/)
 Cài đặt [PlatformIO Extension](https://platformio.org/) cho VSCode
 
 ![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
+
+![](https://https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_two.png)
 -------------------------------
 Ngôn ngữ đánh dấu : [Markdown](https://github.com/vvdung-husc/2024-2025.2.TIN4024.005/blob/main/_Documents/Markdown_Syntax.md)
 
