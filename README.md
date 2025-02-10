@@ -4,11 +4,17 @@
 - #### WOKWI - World's most advanced ESP32 simulator
 Đăng ký tài khoản tại [wokwi.com](https://wokwi.com/)
 
+Dùng để thiết kế mạch IoT cho việc mô phỏng
+
 - #### Your code editor
 Cài đặt [Visual Studio Code](https://code.visualstudio.com/)
 
+Lập trình cho mạch đã thiết kế, chạy mô phỏng và nạp vào vi mạch thực hành
+
 - #### Your Gateway to Embedded Software Development Excellence
 Cài đặt [PlatformIO Extension](https://platformio.org/) cho VSCode
+
+Biên dịch mã nguồn c/c++ cho thiết bị vi mạch
 
 - #### Reference videos - Wokwi, PlatformIO, VS Code
 
