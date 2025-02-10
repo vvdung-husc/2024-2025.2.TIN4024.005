@@ -10,6 +10,16 @@ Cài đặt [Visual Studio Code](https://code.visualstudio.com/)
 - #### Your Gateway to Embedded Software Development Excellence
 Cài đặt [PlatformIO Extension](https://platformio.org/) cho VSCode
 
+- #### Reference videos
+*** Wokwi, PlatformIO, VS Code ***
+
+[Simulating IoT projects in VS Code | Wokwi, PlatformIO, VS Code]
+(https://www.youtube.com/watch?v=9pTZL934k2s)
+
+[Bắt đầu lập trình Arduino, ESP với PlatformIO trên VSCode]
+(https://www.youtube.com/watch?v=20eakkralUs)
+
+
 -------------------------------
 ![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
 -------------------------------
