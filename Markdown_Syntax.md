@@ -376,8 +376,4 @@ Kết quả:
 
 Hy vọng qua bài viết này, bạn sẽ không còn thấy Markdown khó nữa và sẽ nắm được cách dùng Markdown trong nhiều việc của mình hơn nhé.
 
-Nếu thấy hay hãy đừng ngần ngại mà thả 1 sao cho tôi, chúc bạn 1 ngày làm việc thật tốt!
-
-> Bạn có thể thoải mái đóng góp (contribute) hoặc liên kết (fork) dự án này.
-
-> You are free to contribute or fork this repo.
+_(Sưu tầm)_
