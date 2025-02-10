@@ -10,6 +10,7 @@ Cài đặt [Visual Studio Code](https://code.visualstudio.com/)
 #### Your Gateway to Embedded Software Development Excellence
 Cài đặt [PlatformIO Extension](https://platformio.org/) cho VSCode
 
+![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
 -------------------------------
 Ngôn ngữ đánh dấu : [Markdown](https://github.com/vvdung-husc/2024-2025.2.TIN4024.005/blob/main/_Documents/Markdown_Syntax.md)
 
