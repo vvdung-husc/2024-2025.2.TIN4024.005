@@ -1,13 +1,13 @@
 # 2024-2025.2.TIN4024.005
 ## Phát triển ứng dụng IoT
 
-#### WOKWI - World's most advanced ESP32 simulator
+- #### WOKWI - World's most advanced ESP32 simulator
 Đăng ký tài khoản tại [wokwi.com](https://wokwi.com/)
 
-#### Your code editor
+- #### Your code editor
 Cài đặt [Visual Studio Code](https://code.visualstudio.com/)
 
-#### Your Gateway to Embedded Software Development Excellence
+- #### Your Gateway to Embedded Software Development Excellence
 Cài đặt [PlatformIO Extension](https://platformio.org/) cho VSCode
 -------------------------------
 ![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
