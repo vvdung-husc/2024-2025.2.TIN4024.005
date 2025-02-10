@@ -338,7 +338,7 @@ Kết quả:
 
 👁️
 
-> More information: https://github.com/vvdung-husc/2024-2025.2.TIN4024.005/Github_Emojis.md
+> More information: https://github.com/vvdung-husc/2024-2025.2.TIN4024.005/blob/main/Github_Emojis.md
 
 ### 5. Checkbox
 
