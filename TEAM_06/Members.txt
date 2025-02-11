@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 1. Lê Thị Thanh Nhàn
 2. Nguyễn Thị Diệu Anh
 3. Phan Duy An
 4. Lại Văn Minh
-=======
-1. Võ Việt Dũng
->>>>>>> ada1ee50cd763b7759b2323956b22ea78ae01651
