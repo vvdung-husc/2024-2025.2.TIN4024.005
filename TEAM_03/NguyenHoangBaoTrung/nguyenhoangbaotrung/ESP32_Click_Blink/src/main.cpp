@@ -15,4 +15,5 @@ void loop() {
   digitalWrite(ledPin, LOW); // Tắt LED
   delay(500); // Chờ 500ms
   // a  sâs
+  // âs
 }
