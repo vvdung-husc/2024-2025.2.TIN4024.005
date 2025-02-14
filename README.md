@@ -24,6 +24,9 @@ Biên dịch mã nguồn c/c++ cho thiết bị vi mạch
 [Bắt đầu lập trình Arduino, ESP32 với PlatformIO trên VSCode](https://www.youtube.com/watch?v=20eakkralUs)
 
 
+- ### Tham khảo
+[khuenguyencreator.com](https://khuenguyencreator.com/lap-trinh-esp32-tu-a-toi-z/)
+
 -------------------------------
 ![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
 -------------------------------
