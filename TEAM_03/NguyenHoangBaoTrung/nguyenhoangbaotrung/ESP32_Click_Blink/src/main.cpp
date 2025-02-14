@@ -14,4 +14,5 @@ void loop() {
   Serial.println("LED OFF");
   digitalWrite(ledPin, LOW); // Tắt LED
   delay(500); // Chờ 500ms
+  // a 
 }
