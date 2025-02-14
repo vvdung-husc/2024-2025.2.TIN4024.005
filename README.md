@@ -26,8 +26,11 @@ Biên dịch mã nguồn c/c++ cho thiết bị vi mạch
 
 - ### Tham khảo
 [1. Lập trình ESP32 từ A tới Z](https://khuenguyencreator.com/lap-trinh-esp32-tu-a-toi-z/)
+
 [2. Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
+
 [3. Tạo một dự án lập trình ESP32 với PlatformIO](https://khuenguyencreator.com/huong-dan-cai-dat-platform-io-lap-trinh-esp32/#Huong_dan_su_dung_Platform_IO_lap_trinh_ESP32)
+
 
 -------------------------------
 ![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.005/refs/heads/main/_Documents/diagram_one.png)
