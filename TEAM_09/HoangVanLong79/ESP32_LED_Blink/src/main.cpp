@@ -1,16 +1,18 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int ledPin=5;
+const int LED_PIN = 4; // Chân điều khiển LED
 
 void setup() {
-pinMode(ledPin,OUTPUT);
+  Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT); // Cấu hình chân LED là OUTPUT
 }
 
 void loop() {
- 
-  digitalWrite(ledPin,HIGH);//bật led
-  
+  digitalWrite(LED_PIN, HIGH); // Bật LED
+  Serial.println("LED ON");
+  delay(1000); // Chờ 1 giây
 
+  digitalWrite(LED_PIN, LOW); // Tắt LED
+  Serial.println("LED OFF");
+  delay(1000); // Chờ 1 giây
 }
-
