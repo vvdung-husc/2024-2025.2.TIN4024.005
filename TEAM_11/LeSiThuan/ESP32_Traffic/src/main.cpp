@@ -23,15 +23,15 @@ void loop() {
         currentState = 1;
         previousMillis = currentMillis;
     } 
+    
     else if (currentState == 1 && currentMillis - previousMillis >= 30000) {
-        // Chuyển từ đèn xanh sang đèn vàng
         digitalWrite(GREEN_LED, LOW);
         digitalWrite(YELLOW_LED, HIGH);
         currentState = 2;
         previousMillis = currentMillis;
     } 
+    
     else if (currentState == 2 && currentMillis - previousMillis >= 5000) {
-        // Chuyển từ đèn vàng sang đèn đỏ
         digitalWrite(YELLOW_LED, LOW);
         digitalWrite(RED_LED, HIGH);
         currentState = 0;
