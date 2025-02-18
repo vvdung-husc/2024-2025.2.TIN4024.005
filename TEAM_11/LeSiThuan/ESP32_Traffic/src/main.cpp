@@ -23,14 +23,14 @@ void loop() {
         currentState = 1;
         previousMillis = currentMillis;
     } 
-    //
+    
     else if (currentState == 1 && currentMillis - previousMillis >= 30000) {
         digitalWrite(GREEN_LED, LOW);
         digitalWrite(YELLOW_LED, HIGH);
         currentState = 2;
         previousMillis = currentMillis;
     } 
-    //
+    
     else if (currentState == 2 && currentMillis - previousMillis >= 5000) {
         digitalWrite(YELLOW_LED, LOW);
         digitalWrite(RED_LED, HIGH);
