@@ -6,7 +6,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(ledPin, OUTPUT); // Thiết lập chân LED là OUTPUT
 }
-
+// a
 void loop() {
   Serial.println("LED ON");
   digitalWrite(ledPin, HIGH); // Bật LED
