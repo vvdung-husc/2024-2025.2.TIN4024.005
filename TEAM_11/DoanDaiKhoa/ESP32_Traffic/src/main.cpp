@@ -17,7 +17,7 @@ void setup() {
 void loop() {
     unsigned long currentMillis = millis();
     
-    if (currentState == 0 && currentMillis - previousMillis >= 30000) {
+    if (currentState == 0 && currentMillis - previousMillis >= 30001) {
         digitalWrite(RED_LED, LOW);
         digitalWrite(GREEN_LED, HIGH);
         currentState = 1;
