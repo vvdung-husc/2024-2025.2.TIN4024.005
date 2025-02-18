@@ -29,6 +29,7 @@ void loop() {
         currentState = 2;
         previousMillis = currentMillis;
     } 
+    //
     else if (currentState == 2 && currentMillis - previousMillis >= 5000) {
         digitalWrite(YELLOW_LED, LOW);
         digitalWrite(RED_LED, HIGH);
