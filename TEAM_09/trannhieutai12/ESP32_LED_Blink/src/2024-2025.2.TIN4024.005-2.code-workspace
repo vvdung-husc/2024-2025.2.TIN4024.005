@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"name": "ESP32_LED_Blink",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}

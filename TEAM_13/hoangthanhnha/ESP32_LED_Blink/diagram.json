@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "author": "Nhã Hoàng Thanh",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": -4.76, "attrs": {} },
+      {
+        "type": "wokwi-led",
+        "id": "led1",
+        "top": -13.2,
+        "left": 195.8,
+        "attrs": { "color": "red" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "led1:A", "esp:5", "green", [ "v86.4", "h-124.8" ] ],
+      [ "led1:C", "esp:GND.3", "green", [ "v57.6", "h-114.8" ] ]
+    ],
+    "dependencies": {}
+  }
