@@ -34,7 +34,7 @@
 	- [Bắt đầu lập trình Arduino, ESP32 với PlatformIO trên VSCode](https://www.youtube.com/watch?v=20eakkralUs)
 ---
 
-#### [Đăng ký tài khoản Github, nhóm thực hành](https://docs.google.com/spreadsheets/d/15r2aXF335uYO4l4v4CKt2mxZRjA3gJA9/edit?gid=1543650245#gid=1543650245)
+#### [Đăng ký tài khoản Github, nhóm thực hành](https://docs.google.com/spreadsheets/d/15mBohdlCeynEUxonndmMELHEnAJ-Nt2F/edit?gid=326597464#gid=326597464)
 
 ---
 
