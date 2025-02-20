@@ -24,48 +24,48 @@
 
 3.  **PushButton - Nút nhấn**
 
-> Bật tắt thiển thị thời gian đếm ngược của đèn
+	> Bật tắt thiển thị thời gian đếm ngược của đèn
 
-![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/PushButton.png)
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/PushButton.png)
 
-[Tham khảo - https://docs.wokwi.com/parts/wokwi-pushbutton](https://docs.wokwi.com/parts/wokwi-pushbutton)
+	[Tham khảo - https://docs.wokwi.com/parts/wokwi-pushbutton](https://docs.wokwi.com/parts/wokwi-pushbutton)
 
 4.  **TM1637 - Bảng hiển thị đèn LED**
 
-> Bảng hiển thị thời gian
+	> Bảng hiển thị thời gian
 
-![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/TM1637.png)
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/TM1637.png)
 
-[Tham khảo - https://docs.wokwi.com/parts/wokwi-tm1637-7segment](https://docs.wokwi.com/parts/wokwi-tm1637-7segment)
+	[Tham khảo - https://docs.wokwi.com/parts/wokwi-tm1637-7segment](https://docs.wokwi.com/parts/wokwi-tm1637-7segment)
 
-***Thư viện sử dụng***
+	***Thư viện sử dụng***
 
-> **TM1637** by Avishay - Arduino library for TM1637
+	> **TM1637** by Avishay - Arduino library for TM1637
 
-```cpp
+	```cpp
 
-#include <TM1637Display.h>
+	#include <TM1637Display.h>
 
-  
+	  
 
-#define CLK 2
+	#define CLK 2
 
-#define DIO 3
+	#define DIO 3
 
-  
+	  
 
-TM1637Display display(CLK, DIO);
+	TM1637Display display(CLK, DIO);
 
-```
+	```
 
 5.  **LDR - Cảm biến quang điện trở**
 
-> Dùng để bật/tắt đèn đường, đèn trong nhà dựa trên cường độ ánh sáng môi trường.
+	> Dùng để bật/tắt đèn đường, đèn trong nhà dựa trên cường độ ánh sáng môi trường.
 
-![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/LDR.png)
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/LDR.png)
 
-[Tham khảo - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor](https://docs.wokwi.com/parts/wokwi-photoresistor-sensor)
+	[Tham khảo - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor](https://docs.wokwi.com/parts/wokwi-photoresistor-sensor)
 
 6.  **ESP32 Board**
 
-![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
