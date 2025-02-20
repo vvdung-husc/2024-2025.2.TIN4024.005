@@ -12,6 +12,9 @@
 #define CLK 25
 #define DIO 26
 
+bool isOn = false;
+ulong timeStart = 0;
+
 TM1637Display display(CLK, DIO);
 
 /* keep the signal light on during a period of time displayed on seven-segment display
@@ -27,6 +30,18 @@ void countdown(int s) {
   }
   Serial.print("\n");
 }
+
+/* check the period of time
+return `true` when `iTimer` is great than `milisecond`
+*/
+bool isReady(ulong& iTimer, uint32_t milisecond) {
+  ulong t = millis();
+  if (t - iTimer < (ulong)milisecond) 
+    return false;
+  iTimer = t;
+  return true;
+}
+
 
 /*
   Turn on the signal light
@@ -80,8 +95,19 @@ void TrafficLight_ver2() {
 
 // Traffic light with code that dosen't use `delay()` function
 void TrafficLight_ver3() {
+  char signal[3] = {'G', 'Y', 'R'};
+  int period[3] = {5000,2000,7000};
 
+  for (int i = 0; i < 3; i++) {
+    turnOn(signal[i]);
+    while (!isReady(timeStart, period[i])) {
+      ulong second = (int)millis()/1000;
+      ulong cd = (period[i]/1000) - (second % (period[i]/1000+1));
+      display.showNumberDec(cd, true, 2,2);
+    }
+  }
 }
+
 
 void setup() {
   Serial.begin(115200);
@@ -93,6 +119,7 @@ void setup() {
 
 void loop() {
   //TrafficLight();
-  TrafficLight_ver2();
+  //TrafficLight_ver2();
+  TrafficLight_ver3();
 }
 
