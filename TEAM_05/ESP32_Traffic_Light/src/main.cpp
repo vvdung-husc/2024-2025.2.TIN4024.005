@@ -43,7 +43,11 @@ void setupPins() {
     Serial.begin(115200);
 }
 
-
+void readLDR() {
+    ldrValue = analogRead(LDR_PIN);
+    Serial.print("LUX Value: ");
+    Serial.println(ldrValue);
+}
 
 void setup() {
     setupPins();
