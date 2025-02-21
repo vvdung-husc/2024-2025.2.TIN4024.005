@@ -1,41 +1,49 @@
 #include <Arduino.h>
 
-// // put function declarations here:
-// int myFunction(int, int);
-
-// void setup() {
-//   // put your setup code here, to run once:
-//   int result = myFunction(2, 3);
-//   Serial.print("Ket qua");
-//   Serial.println(result);
-// }
-
-// void loop() {
-//   // put your main code here, to run repeatedly:
-//   delay(1000);
-//   unsigned long m = millis();
-//   Serial.print("TimerL: ");
-//   Serial.print(m);
-// }
-
-// // put function definitions here:
-// int myFunction(int x, int y) {
-//   return x + y;
-// }
-
-const int ledPin = 5; 
-
+int ledPin = 5;
+bool isON = false;    //su dung cho NonBlocking
+ulong timeStart = 0;  //su dung cho NonBlocking
 
 void setup() {
-    
-    pinMode(ledPin, OUTPUT);
+  Serial.begin(115200);
+  pinMode(ledPin, OUTPUT);
 }
 
+void Use_Blocking(){
+  digitalWrite(ledPin, HIGH); // Bật LED
+  Serial.println("LED ON");
+  delay(1000); // Đợi 1 giây
+  digitalWrite(ledPin, LOW);  // Tắt LED
+  Serial.println("LED OFF");
+  delay(1000); // Đợi 1 giây
+}
+
+//true: biến iTimer vượt quá thời gian milisecond
+bool IsReady(ulong& iTimer, uint32_t milisecond){
+  ulong t = millis();
+  if ( t - iTimer < (ulong)milisecond) return false;
+  iTimer = t;
+  return true;
+}
+
+void Use_Non_Blocking(){
+  if (IsReady(timeStart,1000)){
+    if (!isON){ 
+      digitalWrite(ledPin, HIGH); // Bật LED
+      Serial.println("Non-Blocking LED ON");
+    }
+    else{
+       digitalWrite(ledPin, LOW);  // Tắt LED
+       Serial.println("Non-Blocking LED OFF");
+    }
+    isON = !isON;
+  }
+}
 void loop() {
-  digitalWrite(ledPin, HIGH);
-  Serial.print("LED ON");
-  delay(1000);
-  digitalWrite(ledPin, LOW);
-  Serial.print("LED OFF");
-  delay(1000);
+  //Use_Blocking();
+  Use_Non_Blocking();  
+  ulong t = millis();
+  Serial.print("\nTimer: ");
+  Serial.print(t);
+  Serial.print("\n");
 }
