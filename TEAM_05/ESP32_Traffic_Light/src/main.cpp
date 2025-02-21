@@ -48,6 +48,20 @@ void readLDR() {
     Serial.print("LUX Value: ");
     Serial.println(ldrValue);
 }
+void updateCountdown() {
+    if (millis() - previousMillis >= interval) {
+        previousMillis = millis();
+        countdown--;
+        if (countdown < 0) {
+            switch (lightState) {
+                case GREEN: lightState = YELLOW; countdown = 3; break;
+                case YELLOW: lightState = RED; countdown = 10; break;
+                case RED: lightState = GREEN; countdown = 10; break;
+            }
+        }
+        if (displayOn) display.showNumberDec(countdown);
+    }
+}
 
 void setup() {
     setupPins();
