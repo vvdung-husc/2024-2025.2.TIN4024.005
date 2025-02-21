@@ -1,18 +1,22 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
+#define CLK 25
+#define DIO 26
+
 #define rPin 19
 #define yPin 18
 #define gPin 17
 
-#define buttonPin 13  // the number of the pushbutton pin
+#define buttonPin 14
 
-#define  rTime 7
-#define  yTime 2
-#define  gTime 5
+uint rTime = 7;
+uint yTime = 2;
+uint gTime = 5;
 
-#define CLK 25
-#define DIO 26
+bool isOn = false;
+ulong timeStart = 0;
+bool lastButtonState = HIGH;
 
 TM1637Display display(CLK, DIO);
 
@@ -73,6 +77,28 @@ void countdown(int s) {
   Serial.print("\n");
 }
 
+/* check the period of time
+return `true` when `iTimer` is great than `milisecond`
+*/
+bool isReady(ulong& iTimer, uint32_t milisecond) {
+  ulong t = millis();
+  if (t - iTimer < (ulong)milisecond) 
+    return false;
+  iTimer = t;
+  return true;
+}
+
+ulong baseTime = 0;
+
+void resetMillis() {
+  baseTime = millis();
+}
+
+uint getAdjustedmillis() {
+  return millis() - baseTime;
+}
+
+
 /*
   Turn on the signal light
   `(char) signal`:
@@ -128,40 +154,8 @@ void TrafficLight_ver2() {
 }
 
 // Traffic light with code that dosen't use `delay()` function
+void TrafficLight_ver3() {
 
-
-//int ledIndex = 2;
-
-void TrafficLight_ver3() {    
-  
-  if (currentPin == rPin && isReady(ledStart, rTime * 1000)) {    
-    digitalWrite(yPin, LOW);
-    digitalWrite(rPin, HIGH);
-    currentPin = gPin;    
-    Serial.println("RED");
-    timeWaiting = rTime - 1;
-  }
-  else if (currentPin == gPin && isReady(ledStart, gTime * 1000)){    
-    digitalWrite(rPin, LOW);
-    digitalWrite(gPin, HIGH);
-    currentPin = yPin;
-    Serial.println("GREE");
-    timeWaiting = gTime - 1;
-  }
-  else if (currentPin == yPin && isReady(ledStart, yTime * 1000)){
-    digitalWrite(gPin, LOW);
-    digitalWrite(yPin, HIGH);
-    currentPin = rPin;
-    Serial.println("YELL");
-    timeWaiting = yTime - 1;    
-  }
-  ShowCountdown();
-
-  //turnOn(signal[ledIndex]);
-  // if (signal[ledIndex] == 'G') countdown(gTime);
-  // else if (signal[ledIndex] == 'Y') countdown(yTime);
-  // else countdown(rTime);
-  //if (++ledIndex > 2) ledIndex = 0;
 }
 
 void setup() {
@@ -169,27 +163,12 @@ void setup() {
   pinMode(rPin, OUTPUT);
   pinMode(yPin, OUTPUT);
   pinMode(gPin, OUTPUT);
-
-  pinMode(buttonPin, INPUT);
-
-  digitalWrite(rPin, LOW);
-  digitalWrite(yPin, LOW);
-  digitalWrite(gPin, LOW);
-
   display.setBrightness(7);
 }
 
 int prevButton = 0;
 void loop() {
-  //TrafficLight();  
-  //TrafficLight_ver2();
-
-  int w = digitalRead(buttonPin);
-  if (w == HIGH){
-    buttonState = !buttonState;
-  }
-
-  TrafficLight_ver3();
-  //Serial.println(buttonState);
+  //TrafficLight();
+  TrafficLight_ver2();
 }
 

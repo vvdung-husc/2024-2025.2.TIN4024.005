@@ -22,25 +22,25 @@ void setup() {
 void loop() {
   unsigned long now = millis();
 
-  if (state == 0 && now - timeStart >= 5000) { // Đỏ -> Vàng
+  if (state == 0 && now - timeStart >= 5000) { // Đỏ -> Xanh
     digitalWrite(redPin, LOW);
-    digitalWrite(yellowPin, HIGH);
+    digitalWrite(greenPin, HIGH);
     state = 1;
     timeStart = now;
-    Serial.println("RED OFF, YELLOW ON");
+    Serial.println("RED OFF, GREEN ON");
   } 
-  else if (state == 1 && now - timeStart >= 2000) { // Vàng -> Xanh
-    digitalWrite(yellowPin, LOW);
-    digitalWrite(greenPin, HIGH);
+  else if (state == 1 && now - timeStart >= 5000) { // Xanh -> Vàng
+    digitalWrite(greenPin, LOW);
+    digitalWrite(yellowPin, HIGH);
     state = 2;
     timeStart = now;
-    Serial.println("YELLOW OFF, GREEN ON");
+    Serial.println("GREEN OFF, YELLOW ON");
   } 
-  else if (state == 2 && now - timeStart >= 5000) { // Xanh -> Đỏ
-    digitalWrite(greenPin, LOW);
+  else if (state == 2 && now - timeStart >= 2000) { // Vàng -> Đỏ
+    digitalWrite(yellowPin, LOW);
     digitalWrite(redPin, HIGH);
     state = 0;
     timeStart = now;
-    Serial.println("GREEN OFF, RED ON");
+    Serial.println("YELLOW OFF, RED ON");
   }
 }
