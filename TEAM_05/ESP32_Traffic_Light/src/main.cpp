@@ -71,7 +71,22 @@ void updateCountdown() {
         if (displayOn) display.showNumberDec(countdown);
     }
 }
-
+void handleTrafficLights() {
+    if (ldrValue < 1000) {
+        digitalWrite(LED_GREEN, LOW);
+        digitalWrite(LED_RED, LOW);
+        if (millis() - blinkMillis >= blinkInterval) {
+            blinkMillis = millis();
+            yellowBlinkState = !yellowBlinkState;
+            digitalWrite(LED_YELLOW, yellowBlinkState);
+        }
+        if (displayOn) display.clear();
+    } else {
+        digitalWrite(LED_GREEN, lightState == GREEN);
+        digitalWrite(LED_YELLOW, lightState == YELLOW);
+        digitalWrite(LED_RED, lightState == RED);
+    }
+}
 void setup() {
     setupPins();
 }
