@@ -48,6 +48,15 @@ void readLDR() {
     Serial.print("LUX Value: ");
     Serial.println(ldrValue);
 }
+void checkButtonPress() {
+    buttonState = digitalRead(BUTTON_PIN);
+    if (buttonState == LOW && lastButtonState == HIGH && (millis() - lastDebounceTime) > debounceDelay) {
+        displayOn = !displayOn;
+        if (!displayOn) display.clear();
+        lastDebounceTime = millis();
+    }
+    lastButtonState = buttonState;
+}
 void updateCountdown() {
     if (millis() - previousMillis >= interval) {
         previousMillis = millis();
