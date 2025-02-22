@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "author": "Tưởng văn Đồng",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 91.24,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -202.4,
+      "left": 20.6,
+      "rotate": 270,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": -144.8,
+      "left": 20.6,
+      "rotate": 270,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": -87.2,
+      "left": 20.6,
+      "rotate": 270,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "sevseg1",
+      "top": -9.64,
+      "left": -184.97,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 121.4,
+      "left": -172.8,
+      "attrs": { "color": "green", "xray": "1" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 157.55,
+      "left": -67.2,
+      "attrs": { "value": "10000" }
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["led3:C", "esp:GND.2", "green", ["h0"]],
+    ["led2:C", "esp:GND.2", "green", ["h0"]],
+    ["led1:C", "esp:GND.2", "green", ["h0"]],
+    ["led3:A", "esp:17", "red", ["h163.2", "v9.6"]],
+    ["led2:A", "esp:4", "red", ["h192", "v48"]],
+    ["led1:A", "esp:2", "red", ["h220.8", "v38.4"]],
+    ["sevseg1:CLK", "esp:25", "green", ["h57.6", "v86.4"]],
+    ["sevseg1:DIO", "esp:26", "green", ["h48", "v86.4"]],
+    ["sevseg1:VCC", "esp:5V", "red", ["h38.4", "v163.2"]],
+    ["sevseg1:GND", "esp:GND.1", "black", ["h28.8", "v105.6"]],
+    ["r1:2", "esp:5V", "red", ["v38.4", "h46.8"]],
+    ["r1:1", "btn1:2.r", "red", ["v0", "h-38.4"]],
+    ["btn1:2.r", "esp:13", "red", ["h192.2", "v9.8"]],
+    ["btn1:1.r", "esp:GND.1", "green", ["v0"]]
+  ],
+  "dependencies": {}
+}
