@@ -1,4 +1,4 @@
 [wokwi]
 version = 1
-firmware = 'path-to-your-firmware.hex'
-elf = 'path-to-your-firmware.elf'
+firmware = "build/your_firmware.bin"
+elf = "build/your_firmware.elf"
