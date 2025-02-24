@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "author": "Lê Minh Hiếu",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": -4.76, "attrs": {} },
+      {
+        "type": "wokwi-led",
+        "id": "led_green",
+        "top": -22.8,
+        "left": 157.4,
+        "attrs": { "color": "green" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led_yellow",
+        "top": -22.8,
+        "left": 205.4,
+        "attrs": { "color": "yellow" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led_red",
+        "top": -22.8,
+        "left": 243.8,
+        "attrs": { "color": "red" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "led_green:C", "esp:GND.3", "black", [ "v0" ] ],
+      [ "led_yellow:C", "esp:GND.3", "black", [ "v0" ] ],
+      [ "led_red:C", "esp:GND.3", "black", [ "v0" ] ],
+      [ "led_green:A", "esp:15", "green", [ "v153.6", "h-76.8" ] ],
+      [ "led_red:A", "esp:2", "green", [ "v0" ] ],
+      [ "led_yellow:A", "esp:0", "green", [ "v134.4", "h-134.4" ] ]
+    ],
+    "dependencies": {}
+  }

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "author": "Your Name",
+  "parts": [
+    { "type": "esp32-devkit-v1", "id": "esp32" },
+    { "type": "led", "id": "led1", "pin": 2 }
+  ],
+  "connections": []
+}
