@@ -1,19 +1,20 @@
 #include <Arduino.h>
-
 #include <TM1637Display.h>
-//
-#define CLK 18
-#define DIO 19
-#define LED_RED 27
-#define LED_YELLOW 26
-#define LED_GREEN 25
-#define BUTTON 23
+
+#define CLK 18       // Chân CLK của TM1637
+#define DIO 19       // Chân DIO của TM1637
+#define LED_RED 27   // Đèn đỏ
+#define LED_YELLOW 26 // Đèn vàng
+#define LED_GREEN 25  // Đèn xanh
+#define BUTTON 23     // Nút nhấn
 
 TM1637Display display(CLK, DIO);
-int state = 0;
+
 unsigned long previousMillis = 0;
 int countdownTime = 5;
 bool emergency = false;
+int phase = 0;
+int seconds = countdownTime;
 
 void emergencyMode() {
     emergency = true;
@@ -22,9 +23,8 @@ void emergencyMode() {
     digitalWrite(LED_YELLOW, HIGH);
     digitalWrite(LED_GREEN, HIGH);
     
-    // Chờ trong chế độ khẩn cấp cho đến khi nút được nhả ra
     while (digitalRead(BUTTON) == LOW);
-    delay(500); // Tránh trigger lại ngay lập tức
+    delay(500);
     
     digitalWrite(LED_RED, LOW);
     digitalWrite(LED_YELLOW, LOW);
@@ -33,24 +33,28 @@ void emergencyMode() {
 }
 
 void setup() {
+    Serial.begin(115200);
+
     pinMode(LED_RED, OUTPUT);
     pinMode(LED_YELLOW, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
-    pinMode(BUTTON, INPUT_PULLUP);
+    pinMode(BUTTON, INPUT_PULLUP);  // Kéo lên nội bộ để tránh nhiễu
+
     display.setBrightness(7);
+
+    digitalWrite(LED_RED, HIGH);
+    digitalWrite(LED_YELLOW, LOW);
+    digitalWrite(LED_GREEN, LOW);
+    display.showNumberDec(countdownTime);
 }
 
 void loop() {
     if (digitalRead(BUTTON) == LOW) {
         emergencyMode();
     }
-
-    if (emergency) return; // Không chạy logic bình thường nếu đang ở chế độ khẩn cấp
+    if (emergency) return;
 
     unsigned long currentMillis = millis();
-    static int phase = 0;
-    static int seconds = countdownTime;
-
     if (currentMillis - previousMillis >= 1000) {
         previousMillis = currentMillis;
         display.showNumberDec(seconds);
@@ -59,18 +63,18 @@ void loop() {
         if (seconds < 0) {
             phase = (phase + 1) % 3;
             switch (phase) {
-                case 0: // Đèn Xanh
+                case 0: // Đèn xanh
                     digitalWrite(LED_RED, LOW);
                     digitalWrite(LED_YELLOW, LOW);
                     digitalWrite(LED_GREEN, HIGH);
                     countdownTime = 5;
                     break;
-                case 1: // Đèn Vàng
+                case 1: // Đèn vàng
                     digitalWrite(LED_GREEN, LOW);
                     digitalWrite(LED_YELLOW, HIGH);
                     countdownTime = 2;
                     break;
-                case 2: // Đèn Đỏ
+                case 2: // Đèn đỏ
                     digitalWrite(LED_YELLOW, LOW);
                     digitalWrite(LED_RED, HIGH);
                     countdownTime = 5;
