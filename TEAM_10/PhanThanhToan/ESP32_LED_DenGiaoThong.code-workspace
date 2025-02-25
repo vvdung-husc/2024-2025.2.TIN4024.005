@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "ESP32_LED_DenGiaoThong"
+		},
+		{
+			"name": "ESP32_LED_DenGiaoThong",
+			"path": "ESP32_LED_DenGiaoThong/ESP32_LED_DenGiaoThong"
+		},
+		{
+			"name": "DenGiaoThong",
+			"path": "DenGiaoThong"
+		}
+	],
+	"settings": {}
+}
