@@ -1,0 +1,7 @@
+[project]
+name = "Bai1"
+version = "1.0.0"
+description = "Bài 1 - Blink LED trên ESP32"
+
+[simulation]
+firmware = "firmware.elf"
