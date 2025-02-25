@@ -98,7 +98,7 @@ void uptimeBlynk(){
   static ulong lastTime = 0;
   if (!IsReady(lastTime, 1000)) return; //Kiểm tra và cập nhật lastTime sau mỗi 1 giây
   ulong value = lastTime / 1000;
-  Blynk.virtualWrite(V0, value);  //Gửi giá trị lên chân ảo V0 trên ứng dụng Blynk.
+  Blynk.virtualWrite(V0, value);  //Gửi giá trị lên chân ảo V0 trên ứng dụng Blynk..
   if (blueButtonON){
     display.showNumberDec(value);
   }
