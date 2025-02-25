@@ -19,7 +19,7 @@
 ulong currentMiliseconds = 0;
 ulong ledTimeStart = 0;
 ulong nextTimeTotal = 0;
-int currentLED = rLED;
+int currentLED = 0;
 int tmCounter = rTIME / 1000;
 ulong counterTime = 0;
 
@@ -48,20 +48,22 @@ void setup() {
   digitalWrite(yLED, LOW);
   digitalWrite(gLED, LOW);
   digitalWrite(rLED, HIGH);
+  display.showNumberDec(tmCounter--, true, 2, 2);
+  
   currentLED = rLED;
-  nextTimeTotal += rTIME;
-  display.showNumberDec(tmCounter--, true, 2, 2);  
-  Serial.println("== START ==>");
-  Serial.print("1. RED    => GREEN  "); Serial.print((nextTimeTotal/1000)%60);Serial.println(" (ms)");
+  nextTimeTotal += rTIME;    
+  Serial.println("== START ==>");  
+  Serial.print("1. RED    => GREEN  "); Serial.print((nextTimeTotal/1000)%60);Serial.println(" (ms)");       
+
 }
 
-void loop() {
+void loop() {  
   // put your main code here, to run repeatedly:
   currentMiliseconds = millis();
   //NonBlocking_Traffic_Light();
 
-  if (!isDark()) NonBlocking_Traffic_Light_TM1637();
-  else YellowLED_Blink();
+  if (isDark()) YellowLED_Blink(); 
+  else NonBlocking_Traffic_Light_TM1637();
   
 }
 
@@ -104,8 +106,7 @@ void NonBlocking_Traffic_Light(){
       break;
   }  
 }
-
-void NonBlocking_Traffic_Light_TM1637(){
+void NonBlocking_Traffic_Light_TM1637(){  
   bool bShowCounter = false;
   switch (currentLED) {
     case rLED: // Đèn đỏ: 5 giây
@@ -118,9 +119,8 @@ void NonBlocking_Traffic_Light_TM1637(){
         bShowCounter = true;  
         counterTime = currentMiliseconds;        
         Serial.print("2. GREEN  => YELLOW "); Serial.print((nextTimeTotal/1000)%60);Serial.println(" (ms)");       
-      } 
+      }
       break;
-
     case gLED: // Đèn xanh: 7 giây
       if (IsReady(ledTimeStart,gTIME)) {        
         digitalWrite(gLED, LOW);
