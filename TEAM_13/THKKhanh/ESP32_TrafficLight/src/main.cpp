@@ -1,65 +1,132 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
+// Định nghĩa chân kết nối
+#define BUTTON_PIN 23
+#define LED_BLUE 21
+#define LED_GREEN 25
+#define LED_YELLOW 26
+#define LED_RED 27
 #define LDR_PIN 13
-#define RED_LED 27
-#define YELLOW_LED 26
-#define GREEN_LED 25
-#define NIGHT_LED 21
 #define CLK 18
 #define DIO 19
 
+// Khởi tạo đối tượng hiển thị TM1637
 TM1637Display display(CLK, DIO);
 
+// Biến toàn cục
+int buttonState = 0;
+int lastButtonState = HIGH;
+bool displayOn = true;
+int ldrValue = 0;
+int countdown = 10; // Bắt đầu từ đèn xanh
+unsigned long previousMillis = 0;
+const long interval = 1000; // Thời gian đếm lùi (1 giây)
+unsigned long blinkMillis = 0;
+const long blinkInterval = 500; // Tốc độ nhấp nháy đèn vàng
+const long debounceDelay = 50; // Thời gian chống rung nút
+unsigned long lastDebounceTime = 0;
+bool yellowBlinkState = false; // Trạng thái nhấp nháy của đèn vàng
+
+enum TrafficLightState { GREEN, YELLOW, RED }; // Trạng thái đèn giao thông
+TrafficLightState lightState = GREEN;         // Đèn bắt đầu từ xanh
+
 void setup() {
-    pinMode(RED_LED, OUTPUT);
-    pinMode(YELLOW_LED, OUTPUT);
-    pinMode(GREEN_LED, OUTPUT);
-    pinMode(NIGHT_LED, OUTPUT);
+    // Cài đặt chế độ cho các chân
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
+    pinMode(LED_BLUE, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
+    pinMode(LED_RED, OUTPUT);
     pinMode(LDR_PIN, INPUT);
-    
-    display.setBrightness(7);
+
+    // Cấu hình hiển thị
+    display.setBrightness(0x0F); // Độ sáng tối đa
+    display.showNumberDec(countdown);
+
+    // Khởi động Serial để debug
     Serial.begin(115200);
 }
 
 void loop() {
-    int lightLevel = analogRead(LDR_PIN);
-    Serial.print("Light Level: ");
-    Serial.println(lightLevel);
+    unsigned long currentMillis = millis();
 
-    if (lightLevel < 500) { // Giả sử <500 là ban đêm
-        digitalWrite(RED_LED, LOW);
-        digitalWrite(YELLOW_LED, LOW);
-        digitalWrite(GREEN_LED, LOW);
-        for (int i = 5; i > 0; i--) {
-            digitalWrite(NIGHT_LED, HIGH);
-            display.showNumberDec(i);
-            delay(1000);
-            digitalWrite(NIGHT_LED, LOW);
-            delay(500);
+    // Đọc giá trị cảm biến ánh sáng (LDR)
+    ldrValue = analogRead(LDR_PIN);
+    Serial.print("LDR Value: ");
+    Serial.println(ldrValue);
+
+    // Kiểm tra nút nhấn để bật/tắt hiển thị
+    buttonState = digitalRead(BUTTON_PIN);
+    if (buttonState == LOW && lastButtonState == HIGH && (currentMillis - lastDebounceTime) > debounceDelay) {
+        displayOn = !displayOn; // Bật hoặc tắt hiển thị
+        if (!displayOn) {
+            display.clear();
         }
-    } else {
-        digitalWrite(NIGHT_LED, LOW);
-        digitalWrite(RED_LED, HIGH);
-        for (int i = 10; i > 0; i--) {
-            display.showNumberDec(i);
-            delay(1000);
+        lastDebounceTime = currentMillis; // Cập nhật thời gian nút nhấn
+    }
+    lastButtonState = buttonState;
+
+    // Xử lý đèn giao thông
+    if (ldrValue > 1000) {  // Trời tối, chỉ đèn vàng nhấp nháy
+        digitalWrite(LED_GREEN, LOW);
+        digitalWrite(LED_RED, LOW);
+
+        if (currentMillis - blinkMillis >= blinkInterval) {
+            blinkMillis = currentMillis;
+            yellowBlinkState = !yellowBlinkState;
+            digitalWrite(LED_YELLOW, yellowBlinkState);
         }
-        
-        digitalWrite(RED_LED, LOW);
-        digitalWrite(GREEN_LED, HIGH);
-        for (int i = 7; i > 0; i--) {
-            display.showNumberDec(i);
-            delay(1000);
+
+        if (displayOn) display.clear(); // Không hiển thị số khi trời tối
+    } else {  // Ban ngày, đèn hoạt động bình thường
+        digitalWrite(LED_YELLOW, LOW); // Tắt đèn vàng khi trời sáng
+
+        if (currentMillis - previousMillis >= interval) {
+            previousMillis = currentMillis;
+            countdown--;
+
+            if (countdown < 0) {
+                // Chuyển trạng thái khi hết thời gian đếm
+                switch (lightState) {
+                    case GREEN:
+                        lightState = YELLOW;  
+                        countdown = 3;  // Đếm 3 giây cho đèn vàng
+                        break;
+                    case YELLOW:
+                        lightState = RED;    
+                        countdown = 10; // Đếm 10 giây cho đèn đỏ
+                        break;
+                    case RED:
+                        lightState = GREEN;  
+                        countdown = 10; // Đếm 10 giây cho đèn xanh
+                        break;
+                }
+            }
+
+            // Cập nhật hiển thị nếu đang bật
+            if (displayOn) {
+                display.showNumberDec(countdown);
+            }
         }
-        
-        digitalWrite(GREEN_LED, LOW);
-        digitalWrite(YELLOW_LED, HIGH);
-        for (int i = 3; i > 0; i--) {
-            display.showNumberDec(i);
-            delay(1000);
+
+        // Điều khiển đèn theo trạng thái giao thông
+        switch (lightState) {
+            case GREEN:
+                digitalWrite(LED_GREEN, HIGH);
+                digitalWrite(LED_YELLOW, LOW);
+                digitalWrite(LED_RED, LOW);
+                break;
+            case YELLOW:
+                digitalWrite(LED_GREEN, LOW);
+                digitalWrite(LED_YELLOW, HIGH);
+                digitalWrite(LED_RED, LOW);
+                break;
+            case RED:
+                digitalWrite(LED_GREEN, LOW);
+                digitalWrite(LED_YELLOW, LOW);
+                digitalWrite(LED_RED, HIGH);
+                break;
         }
-        
-        digitalWrite(YELLOW_LED, LOW);
     }
 }
