@@ -8,21 +8,21 @@
 #define CLK 18
 #define DIO 19
 #define BUTTON_PIN 23
-#define RIGHT_LED 21 // Đèn bên phải
+#define RIGHT_LED 21 
 
 TM1637Display display(CLK, DIO);
-bool isScreenOn = true; // Trạng thái màn hình
+bool isScreenOn = true; 
 
 void checkButton() {
-    if (digitalRead(BUTTON_PIN) == LOW) { // Nút được nhấn
-        isScreenOn = false;  // Tắt màn hình
+    if (digitalRead(BUTTON_PIN) == LOW) { 
+        isScreenOn = false;  
         display.setBrightness(0);
-        display.clear(); // Xoá màn hình
-        digitalWrite(RIGHT_LED, HIGH); // Bật đèn bên phải
+        display.clear(); 
+        digitalWrite(RIGHT_LED, HIGH); 
     } else {
-        isScreenOn = true;  // Bật lại màn hình
+        isScreenOn = true; 
         display.setBrightness(7);
-        digitalWrite(RIGHT_LED, LOW); // Tắt đèn bên phải
+        digitalWrite(RIGHT_LED, LOW); 
     }
 }
 
@@ -33,17 +33,17 @@ void setLight(int red, int yellow, int green, int time) {
 
     unsigned long startTime = millis();
     while (millis() - startTime < time * 1000) {
-        checkButton(); // Kiểm tra nút nhấn liên tục
+        checkButton(); 
         int lightLevel = analogRead(LDR_PIN);
 
-        // Nếu trời tối thì chuyển sang chế độ nhấp nháy
+        
         if (lightLevel < 1000) return;
 
         if (isScreenOn) {
             int remainingTime = time - (millis() - startTime) / 1000;
             display.showNumberDec(remainingTime, true);
         } else {
-            display.clear(); // Xoá màn hình khi tắt
+            display.clear(); 
         }
         delay(200);
     }
@@ -53,23 +53,23 @@ void nightMode() {
     digitalWrite(RED_LED, LOW);
     digitalWrite(GREEN_LED, LOW);
 
-    while (analogRead(LDR_PIN) < 1000) { // Lặp khi trời tối
-        checkButton(); // Đảm bảo nút vẫn hoạt động
+    while (analogRead(LDR_PIN) < 1000) { 
+        checkButton(); 
 
-        // Hiển thị số 0 khi đèn vàng nhấp nháy
+       
         if (isScreenOn) {
             display.showNumberDec(0, true);
         } else {
             display.clear();
         }
 
-        digitalWrite(YELLOW_LED, HIGH); // Bật đèn vàng
+        digitalWrite(YELLOW_LED, HIGH); 
         delay(500);
-        digitalWrite(YELLOW_LED, LOW); // Tắt đèn vàng
+        digitalWrite(YELLOW_LED, LOW); 
         delay(500);
     }
 
-    display.clear(); // Xóa màn hình khi thoát chế độ đêm
+    display.clear(); 
 }
 
 void setup() {
@@ -80,20 +80,20 @@ void setup() {
     pinMode(BUTTON_PIN, INPUT_PULLUP);
     pinMode(RIGHT_LED, OUTPUT);
     display.setBrightness(7);
-    Serial.begin(115200); // Debug giá trị LDR
+    Serial.begin(115200); 
 }
 
 void loop() {
-    checkButton(); // Kiểm tra nút mỗi vòng lặp
+    checkButton();
 
     int lightLevel = analogRead(LDR_PIN);
-    Serial.println(lightLevel); // In giá trị LDR để kiểm tra
+    Serial.println(lightLevel); 
 
     if (lightLevel < 1000) {
-        nightMode(); // Chế độ đèn vàng nhấp nháy
+        nightMode(); 
     } else {
-        setLight(1, 0, 0, 10); // Đèn đỏ 10s
-        setLight(0, 1, 0, 3);  // Đèn vàng 3s
-        setLight(0, 0, 1, 8);  // Đèn xanh 8s
+        setLight(1, 0, 0, 10); 
+        setLight(0, 1, 0, 3);  
+        setLight(0, 0, 1, 8);  
     }
 }
