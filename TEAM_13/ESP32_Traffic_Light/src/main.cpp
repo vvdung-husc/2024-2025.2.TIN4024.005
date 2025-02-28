@@ -111,17 +111,21 @@ void loop() {
     }
 
     // Điều khiển đèn giao thông
-    if (lightState == GREEN) {
-    digitalWrite(LED_GREEN, HIGH);
-    digitalWrite(LED_YELLOW, LOW);
-    digitalWrite(LED_RED, LOW);
-    } else if (lightState == YELLOW) {
-        digitalWrite(LED_GREEN, LOW);
-        digitalWrite(LED_YELLOW, HIGH);
-        digitalWrite(LED_RED, LOW);
-    } else if (lightState == RED) {
-        digitalWrite(LED_GREEN, LOW);
-        digitalWrite(LED_YELLOW, LOW);
-        digitalWrite(LED_RED, HIGH);
+    switch (lightState) {
+        case GREEN:
+            digitalWrite(LED_GREEN, HIGH);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_RED, LOW);
+            break;
+        case YELLOW:
+            digitalWrite(LED_GREEN, LOW);
+            digitalWrite(LED_YELLOW, HIGH);
+            digitalWrite(LED_RED, LOW);
+            break;
+        case RED:
+            digitalWrite(LED_GREEN, LOW);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_RED, HIGH);
+            break;
     }
 }
