@@ -1,18 +1,18 @@
 #include <Arduino.h>
 
-const int LED_PIN = 4; // Chân điều khiển LED
+#define LED_PIN 5  // Chân kết nối đèn LED
 
 void setup() {
   Serial.begin(115200);
-  pinMode(LED_PIN, OUTPUT); // Cấu hình chân LED là OUTPUT
+  pinMode(LED_PIN, OUTPUT);  // Thiết lập chân LED là đầu ra
+ 
 }
 
 void loop() {
-  digitalWrite(LED_PIN, HIGH); // Bật LED
+  digitalWrite(LED_PIN, HIGH); // Bật đèn LED
   Serial.println("LED ON");
-  delay(1000); // Chờ 1 giây
-
-  digitalWrite(LED_PIN, LOW); // Tắt LED
+  delay(1000);                 // Đợi 1 giây
+  digitalWrite(LED_PIN, LOW);  // Tắt đèn LED
   Serial.println("LED OFF");
-  delay(1000); // Chờ 1 giây
+  delay(1000);                 // Đợi 1 giây
 }
