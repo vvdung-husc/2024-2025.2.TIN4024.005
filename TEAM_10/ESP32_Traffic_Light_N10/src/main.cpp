@@ -13,7 +13,7 @@
 //1000 ms = 1 seconds
 #define rTIME  5000   //5 seconds
 #define yTIME  3000
-#define gTIME  10000
+#define gTIME  5000
 
 // Chân analog kết nối với LDR
 #define LDR_PIN 13
