@@ -11,9 +11,9 @@
 #define DIO   21
 
 //1000 ms = 1 seconds
-#define rTIME  5000   //5 seconds
-#define yTIME  3000
-#define gTIME  5000
+#define rTIME  10000   //5 seconds
+#define yTIME  5000
+#define gTIME  10000
 
 // Chân analog kết nối với LDR
 #define LDR_PIN 13
