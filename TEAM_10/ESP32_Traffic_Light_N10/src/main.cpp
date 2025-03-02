@@ -100,21 +100,30 @@ void checkButtonAndToggleSystem() {
   }
 }
 void checkLDRAndSwitchToYellow() {
+  static ulong ldrStableStart = 0; // Thời điểm bắt đầu đo giá trị LDR thấp
   int ldrValue = analogRead(LDR_PIN); // Đọc giá trị từ LDR
   Serial.print("LDR Value: "); Serial.println(ldrValue);
 
-  if (ldrValue < 500) { // Nếu ánh sáng yếu (giá trị LDR thấp)
-    // Chuyển ngay sang đèn vàng
-    digitalWrite(currentLED, LOW); // Tắt đèn hiện tại
-    digitalWrite(yLED, HIGH); // Bật đèn vàng
-    currentLED = yLED;
-    tmCounter = (yTIME / 1000) - 1; // Đặt lại bộ đếm ngược cho đèn vàng
-    nextTimeTotal = currentMiliseconds + yTIME;
-    counterTime = currentMiliseconds;
-    display.showNumberDec(tmCounter--, true, 2, 2);
-    Serial.println("Trời tối, chuyển sang đèn vàng.");
+  if (ldrValue < 500) { // Nếu ánh sáng yếu
+    if (ldrStableStart == 0) {
+      ldrStableStart = millis(); // Bắt đầu đếm thời gian ánh sáng yếu
+    } else if (millis() - ldrStableStart > 5000) { // Nếu đã kéo dài hơn 5 giây
+      if (currentLED != yLED) { // Tránh việc liên tục đặt lại đèn vàng
+        Serial.println("Trời tối liên tục, chuyển sang đèn vàng.");
+        digitalWrite(currentLED, LOW); // Tắt đèn hiện tại
+        digitalWrite(yLED, HIGH); // Bật đèn vàng
+        currentLED = yLED;
+        tmCounter = (yTIME / 1000) - 1; // Đặt lại bộ đếm ngược cho đèn vàng
+        nextTimeTotal = millis() + yTIME;
+        counterTime = millis();
+        display.showNumberDec(tmCounter--, true, 2, 2);
+      }
+    }
+  } else {
+    ldrStableStart = 0; // Đặt lại thời gian nếu ánh sáng bình thường
   }
 }
+
 bool IsReady(ulong &ulTimer, uint32_t milisecond)
 {
   if (currentMiliseconds - ulTimer < milisecond) return false;
