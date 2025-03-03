@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-/* Fill in information from Blynk Device Info here */
+
 #define BLYNK_TEMPLATE_ID "TMPL6pvHANIK4"
 #define BLYNK_TEMPLATE_NAME "ESMART"
 #define BLYNK_AUTH_TOKEN "qHV8pC6xkooEVM0Qv4KkNHsCT21wzIfD"
-// Phải để trước khai báo sử dụng thư viện Blynk
+
 
 #include <WiFi.h>
 #include <WiFiClient.h>
