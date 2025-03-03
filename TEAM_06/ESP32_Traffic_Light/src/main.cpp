@@ -6,6 +6,7 @@
 #define LED_RED 27
 #define LED_YELLOW 26
 #define LED_GREEN 25
+#define LED_PINK 21
 
 #define LDR_PIN 13
 
@@ -128,9 +129,11 @@ void setup()
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
+  pinMode(LED_PINK, OUTPUT);
   pinMode(LDR_PIN, INPUT);
 
   display.setBrightness(7);
+
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
   digitalWrite(LED_GREEN, HIGH);
@@ -153,6 +156,8 @@ void loop()
   if (digitalRead(BUTTON_PIN) == LOW && IsRead(previousButtonMillis, 50))
   {
     buttonState = !buttonState;
+    Serial.print("Button State: ");
+    Serial.println(buttonState);
   }
 
   if (IsRead(previousDarkStart, 50))
@@ -165,10 +170,12 @@ void loop()
     {
       if (buttonState)
       {
+        digitalWrite(LED_PINK, HIGH);
         BlinkingLights();
       }
       else
       {
+        digitalWrite(LED_PINK, LOW);
         NormalTrafficLight();
       }
     }
