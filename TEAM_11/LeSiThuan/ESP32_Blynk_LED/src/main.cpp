@@ -1,10 +1,9 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-
-#define BLYNK_TEMPLATE_ID "TMPL6pvHANIK4"
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "qHV8pC6xkooEVM0Qv4KkNHsCT21wzIfD"
+#define BLYNK_TEMPLATE_ID "TMPL6VejyMrRo"
+#define BLYNK_TEMPLATE_NAME "Thuan"
+#define BLYNK_AUTH_TOKEN "RX2ZIIVLelAhyABIFtlXBgZN07mPZdDY"
 
 
 #include <WiFi.h>
