@@ -145,7 +145,6 @@ void loop()
   currentMillis = millis();
   float ldr = analogRead(LDR_PIN);
   float ldrLux = map(ldr, 0, 4095, 1000, 0);
-  static unsigned long previousDarkStart = 0;
   static unsigned long previousButtonMillis = 0;
 
   Serial.print("LDR Raw Value: ");
@@ -153,6 +152,7 @@ void loop()
   Serial.print(" | LDR Lux: ");
   Serial.println(ldrLux);
 
+  // Kiểm tra trạng thái nút nhấn
   if (digitalRead(BUTTON_PIN) == LOW && IsRead(previousButtonMillis, 50))
   {
     buttonState = !buttonState;
@@ -160,24 +160,24 @@ void loop()
     Serial.println(buttonState);
   }
 
-  if (IsRead(previousDarkStart, 50))
+  // Đèn vàng nhấp nháy khi tối
+  if (ldrLux < 300)
   {
-    if (ldrLux < 300)
+    BlinkingYellowLight();
+  }
+  else
+  {
+    if (buttonState)
     {
-      BlinkingYellowLight();
+      digitalWrite(LED_PINK, HIGH);
+      // BlinkingLights();
+      NormalTrafficLight();
+      display.clear();
     }
     else
     {
-      if (buttonState)
-      {
-        digitalWrite(LED_PINK, HIGH);
-        BlinkingLights();
-      }
-      else
-      {
-        digitalWrite(LED_PINK, LOW);
-        NormalTrafficLight();
-      }
+      digitalWrite(LED_PINK, LOW);
+      NormalTrafficLight(); // Chạy chế độ đèn giao thông bình thường
     }
   }
 }
