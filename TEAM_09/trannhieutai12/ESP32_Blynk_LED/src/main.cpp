@@ -4,7 +4,7 @@
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL622rJ4N6F"
 #define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "RlWDvKPDoEPeSMqQBE0F8gdOrgXuupA9"
+#define BLYNK_AUTH_TOKEN "0uauq3b2sKNtEFkk8IeEY3jb7X6WKqzq"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
