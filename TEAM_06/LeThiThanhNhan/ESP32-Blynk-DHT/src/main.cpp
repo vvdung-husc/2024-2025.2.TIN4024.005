@@ -132,8 +132,8 @@ void updateTemperatureHumidity()
 
   if (!isnan(temp) && !isnan(hum))
   {
-    Blynk.virtualWrite(V5, temp); // Gửi nhiệt độ lên Blynk
-    Blynk.virtualWrite(V6, hum);  // Gửi độ ẩm lên Blynk
+    Blynk.virtualWrite(V2, temp); // Gửi nhiệt độ lên Blynk
+    Blynk.virtualWrite(V3, hum);  // Gửi độ ẩm lên Blynk
 
     Serial.print("🌡 Nhiệt độ: ");
     Serial.print(temp);
