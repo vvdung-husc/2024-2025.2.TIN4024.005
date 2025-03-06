@@ -51,25 +51,56 @@ void setup() {
 void loop() {
     unsigned long currentMillis = millis();
 
-    // Đọc giá trị cảm biến ánh sáng (LDR) và chuyển đổi sang lux
-    int ldrRaw = analogRead(LDR_PIN);
-    float ldrLux = map(ldrRaw, 0, 4095, 0, 1000); // Giả định 0-4095 tương ứng 0-1000 lux
-    Serial.print("LDR Lux: ");
-    Serial.println(ldrLux);
+    // Đọc giá trị cảm biến ánh sáng (LDR)
+    ldrValue = analogRead(LDR_PIN);
+    Serial.print("LDR Value: ");
+    Serial.println(ldrValue);
 
     // Kiểm tra nút nhấn để bật/tắt hiển thị
     buttonState = digitalRead(BUTTON_PIN);
     if (buttonState == LOW && lastButtonState == HIGH && (currentMillis - lastDebounceTime) > debounceDelay) {
-        displayOn = !displayOn;
+        displayOn = !displayOn; // Bật hoặc tắt hiển thị
         if (!displayOn) {
             display.clear();
+            digitalWrite(LED_BLUE, HIGH); // Bật đèn xanh dương khi tắt bảng đếm số
+        } else {
+            digitalWrite(LED_BLUE, LOW);  // Tắt đèn xanh dương khi mở bảng đếm số
         }
-        lastDebounceTime = currentMillis;
+        lastDebounceTime = currentMillis; // Cập nhật thời gian nút nhấn
     }
     lastButtonState = buttonState;
 
-    // Nếu trời tối (lux < 50), chỉ bật đèn vàng nhấp nháy
-    if (ldrLux < 50) {
+    // Countdown luôn chạy
+    if (currentMillis - previousMillis >= interval) {
+        previousMillis = currentMillis;
+        countdown--;
+
+        if (countdown < 0) {
+            // Chuyển trạng thái khi hết thời gian đếm
+            switch (lightState) {
+                case GREEN:
+                    lightState = YELLOW;  // Chuyển sang đèn vàng
+                    countdown = 3;       // Đếm 3 giây cho đèn vàng
+                    break;
+                case YELLOW:
+                    lightState = RED;    // Chuyển sang đèn đỏ
+                    countdown = 10;      // Đếm 10 giây cho đèn đỏ
+                    break;
+                case RED:
+                    lightState = GREEN;  // Quay lại đèn xanh
+                    countdown = 10;      // Đếm 10 giây cho đèn xanh
+                    break;
+            }
+        }
+
+        // Cập nhật hiển thị nếu đang bật
+        if (displayOn) {
+            display.showNumberDec(countdown);
+        }
+    }
+
+    // Xử lý đèn giao thông
+    if (ldrValue > 1000) {  // Trời tối, đèn vàng nhấp nháy
         digitalWrite(LED_GREEN, LOW);
         digitalWrite(LED_RED, LOW);
 
@@ -78,54 +109,24 @@ void loop() {
             yellowBlinkState = !yellowBlinkState;
             digitalWrite(LED_YELLOW, yellowBlinkState);
         }
-
         if (displayOn) display.clear(); // Không hiển thị khi trời tối
-        return; // Dừng loop để không chạy logic đèn giao thông
-    }
-
-    // Nếu trời sáng (lux >= 50), chạy đèn giao thông bình thường
-    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
-        countdown--;
-
-        if (countdown < 0) {
-            switch (lightState) {
-                case GREEN:
-                    lightState = YELLOW;
-                    countdown = 3;
-                    break;
-                case YELLOW:
-                    lightState = RED;
-                    countdown = 10;
-                    break;
-                case RED:
-                    lightState = GREEN;
-                    countdown = 10;
-                    break;
-            }
+    } else {  // Ban ngày, đèn hoạt động bình thường
+        switch (lightState) {
+            case GREEN:
+                digitalWrite(LED_GREEN, HIGH);
+                digitalWrite(LED_YELLOW, LOW);
+                digitalWrite(LED_RED, LOW);
+                break;
+            case YELLOW:
+                digitalWrite(LED_GREEN, LOW);
+                digitalWrite(LED_YELLOW, HIGH);
+                digitalWrite(LED_RED, LOW);
+                break;
+            case RED:
+                digitalWrite(LED_GREEN, LOW);
+                digitalWrite(LED_YELLOW, LOW);
+                digitalWrite(LED_RED, HIGH);
+                break;
         }
-
-        if (displayOn) {
-            display.showNumberDec(countdown);
-        }
-    }
-
-    // Điều khiển đèn giao thông
-    switch (lightState) {
-        case GREEN:
-            digitalWrite(LED_GREEN, HIGH);
-            digitalWrite(LED_YELLOW, LOW);
-            digitalWrite(LED_RED, LOW);
-            break;
-        case YELLOW:
-            digitalWrite(LED_GREEN, LOW);
-            digitalWrite(LED_YELLOW, HIGH);
-            digitalWrite(LED_RED, LOW);
-            break;
-        case RED:
-            digitalWrite(LED_GREEN, LOW);
-            digitalWrite(LED_YELLOW, LOW);
-            digitalWrite(LED_RED, HIGH);
-            break;
     }
 }
