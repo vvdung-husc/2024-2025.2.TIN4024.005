@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-// Định nghĩa chân
+// Định nghĩa chân,
 #define rLED 5
 #define yLED 17
 #define gLED 16
