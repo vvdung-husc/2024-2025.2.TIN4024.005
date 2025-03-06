@@ -100,12 +100,13 @@ void updateUptime() {
 
   ulong seconds = currentMillis / 1000;  
   Blynk.virtualWrite(V0, seconds);
+  
   if (ledState) {
     display.showNumberDec(seconds);
   }
 }
 
-// Đọc & gửi dữ liệu DHT22 (Nhiệt độ & Độ ẩm)
+
 void updateTemperatureHumidity() {
   static ulong lastUpdate = 0;
   if (!isReady(lastUpdate, 2000)) return;
@@ -122,15 +123,6 @@ void updateTemperatureHumidity() {
     Serial.print(" °C | 💧 Độ ẩm: ");
     Serial.print(hum);
     Serial.println(" %");
-
-    // Hiển thị nhiệt độ & độ ẩm luân phiên trên LED 7 đoạn
-    static bool showTemp = true;
-    if (showTemp) {
-      display.showNumberDec((int)temp);
-    } else {
-      display.showNumberDec((int)hum);
-    }
-    showTemp = !showTemp;
   } else {
     Serial.println("⚠️ Lỗi đọc cảm biến DHT22! Thử lại...");
   }
