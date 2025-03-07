@@ -90,20 +90,52 @@ void NormalTrafficLight()
   }
 }
 
-void BlinkingLights()
+void ClearTM()
 {
-  static bool blinkState = false;
-  static unsigned long previousBlinkMillis = 0;
-
-  if (IsRead(previousBlinkMillis, 500))
+  static unsigned long previousMillis = 0;
+  if (IsRead(previousMillis, 1000))
   {
-    blinkState = !blinkState;
-    digitalWrite(LED_RED, blinkState);
-    digitalWrite(LED_YELLOW, blinkState);
-    digitalWrite(LED_GREEN, blinkState);
-  }
+    countDown--;
 
-  display.clear();
+    if (countDown < 0)
+    {
+      switch (lightState)
+      {
+      case GREEN:
+        lightState = YELLOW;
+        countDown = YELLOW_TIME / 1000;
+        break;
+      case YELLOW:
+        lightState = RED;
+        countDown = RED_TIME / 1000;
+        break;
+      case RED:
+        lightState = GREEN;
+        countDown = GREEN_TIME / 1000;
+        break;
+      }
+    }
+
+    display.clear();
+  }
+  switch (lightState)
+  {
+  case GREEN:
+    digitalWrite(LED_GREEN, HIGH);
+    digitalWrite(LED_RED, LOW);
+    digitalWrite(LED_YELLOW, LOW);
+    break;
+  case RED:
+    digitalWrite(LED_GREEN, LOW);
+    digitalWrite(LED_RED, HIGH);
+    digitalWrite(LED_YELLOW, LOW);
+    break;
+  case YELLOW:
+    digitalWrite(LED_GREEN, LOW);
+    digitalWrite(LED_RED, LOW);
+    digitalWrite(LED_YELLOW, HIGH);
+    break;
+  }
 }
 
 void BlinkingYellowLight()
@@ -170,9 +202,7 @@ void loop()
     if (buttonState)
     {
       digitalWrite(LED_PINK, HIGH);
-      // BlinkingLights();
-      NormalTrafficLight();
-      display.clear();
+      ClearTM();
     }
     else
     {
