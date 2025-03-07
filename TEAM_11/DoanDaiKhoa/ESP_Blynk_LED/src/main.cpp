@@ -2,9 +2,9 @@
 #include <TM1637Display.h>
 
 /* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6hdsRf0lJ"
-#define BLYNK_TEMPLATE_NAME "ESP Blynk LED"
-#define BLYNK_AUTH_TOKEN "TpWTs2Q59JeQIVWBY0pW4u4xGY0QTMy1"
+#define BLYNK_TEMPLATE_ID "TMPL6cV60LsJk"
+#define BLYNK_TEMPLATE_NAME "Khoa"
+#define BLYNK_AUTH_TOKEN "nrSZJ542ByE5uGFqfWpms_Al7y_es4Sb"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
