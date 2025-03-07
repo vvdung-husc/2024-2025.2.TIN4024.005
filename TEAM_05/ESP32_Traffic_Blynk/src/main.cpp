@@ -1,20 +1,16 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
+
 // Lê Nguyễn Thiện Bình
-// #define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
-// #define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
-
-#define BLYNK_TEMPLATE_ID "TMPL6Thd77apQ"
-#define BLYNK_TEMPLATE_NAME "ESP32 TRAFFIC BLYNK"
-#define BLYNK_AUTH_TOKEN  "9PW9tGbbmOVG3WJY7FcFoF302LeuGsWH"
-
+#define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
+#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+#define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
+//
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <DHT.h>
-
 // WiFi Credentials
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
@@ -64,21 +60,37 @@ void readLDR() {
     Serial.println(ldrValue);
 }
 
-void checkButtonPress() {
-    buttonState = digitalRead(BUTTON_PIN);
-    if (buttonState == LOW && lastButtonState == HIGH && (millis() - lastDebounceTime) > debounceDelay) {
-        displayOn = !displayOn;
-        if (!displayOn) {
-            display.clear();
-        } else {
-            display.showNumberDec(countdown);
-        }
-        lastDebounceTime = millis();
-        // Đồng bộ trạng thái displayOn về Blynk qua V4
-        Blynk.virtualWrite(V4, displayOn);
-    }
-    lastButtonState = buttonState;
+
+bool IsReady(unsigned long &ulTimer, uint32_t millisecond) {
+    if (millis() - ulTimer < millisecond) return false;
+    ulTimer = millis();
+    return true;
 }
+void handleButtonPress() {
+    static unsigned long lastDebounceTime = 0;
+    static int lastButtonState = HIGH;
+    
+    if (!IsReady(lastDebounceTime, 50)) return;  // Chống dội phím (50ms)
+
+    int buttonState = digitalRead(BUTTON_PIN);
+    if (buttonState == lastButtonState) return;  // Nếu không thay đổi thì thoát
+
+    lastButtonState = buttonState;
+    if (buttonState == LOW) return;  // Chỉ xử lý khi NHẢ NÚT (HIGH)
+
+    // Khi nút được NHẢ ra -> Đảo trạng thái cả màn hình và LED xanh
+    blueButtonON = !blueButtonON;
+    displayOn = !displayOn;
+
+    Serial.println(blueButtonON ? "Blue Light ON" : "Blue Light OFF");
+    Serial.println(displayOn ? "Display ON" : "Display OFF");
+
+    digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
+    Blynk.virtualWrite(V1, blueButtonON);
+
+    if (!displayOn) display.clear();  // Tắt màn hình khi cần
+}
+
 
 void updateCountdown() {
     if (millis() - previousMillis >= interval) {
@@ -91,9 +103,15 @@ void updateCountdown() {
                 case RED: lightState = GREEN; countdown = 10; break;
             }
         }
-        if (displayOn) display.showNumberDec(countdown);
+        if (displayOn) {  // Chỉ hiển thị khi displayOn == true
+            display.showNumberDec(countdown);
+        } else {
+            display.clear();
+        }
     }
 }
+
+
 
 void handleTrafficLights() {
     if (ldrValue < 1000) {
@@ -112,47 +130,15 @@ void handleTrafficLights() {
     }
 }
 
-bool IsReady(unsigned long &ulTimer, uint32_t millisecond) {
-    if (millis() - ulTimer < millisecond) return false;
-    ulTimer = millis();
-    return true;
-}
 
-void updateBlueButton() {
-    static unsigned long lastTime = 0;
-    static int lastValue = HIGH;
-    if (!IsReady(lastTime, 50)) return;
-    int v = digitalRead(BUTTON_PIN);
-    if (v == lastValue) return;
-    lastValue = v;
-    if (v == LOW) return;
-    
-    blueButtonON = !blueButtonON;
-    Serial.println(blueButtonON ? "Blue Light ON" : "Blue Light OFF");
-    digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
-    Blynk.virtualWrite(V1, blueButtonON);
-    if (!blueButtonON) display.clear();
-}
+
 
 void uptimeBlynk() {
     static unsigned long lastTime = 0;
     if (!IsReady(lastTime, 1000)) return;
-    
-    if (!displayOn) {
-        Blynk.virtualWrite(V0, "");  // Khi tắt hiển thị, gửi giá trị rỗng lên Blynk
-        // display.clear() đã được gọi ở checkButtonPress() hoặc từ BLYNK_WRITE(V4)
-    } else {
-        Blynk.virtualWrite(V0, countdown);  // Đồng bộ countdown với Blynk
-    }
-}
-
-BLYNK_WRITE(V4) { // Dùng V4 để điều khiển trạng thái hiển thị từ Blynk
-    displayOn = param.asInt();
-    if (!displayOn) {
-        display.clear();
-    } else {
-        display.showNumberDec(countdown);
-    }
+    unsigned long value = lastTime / 1000;
+    Blynk.virtualWrite(V0, value);
+   
 }
 
 void readDHTSensor() {
@@ -172,7 +158,11 @@ void readDHTSensor() {
     
     Blynk.virtualWrite(V2, temp);
     Blynk.virtualWrite(V3, humidity);
+    
+    
 }
+
+
 
 BLYNK_WRITE(V1) {
     blueButtonON = param.asInt();
@@ -195,10 +185,9 @@ void setup() {
 void loop() {
     Blynk.run();
     readLDR();
-    checkButtonPress();
+    handleButtonPress();  // Gọi hàm gộp mới
     updateCountdown();
     handleTrafficLights();
-    updateBlueButton();
     uptimeBlynk();
     readDHTSensor();
 }
