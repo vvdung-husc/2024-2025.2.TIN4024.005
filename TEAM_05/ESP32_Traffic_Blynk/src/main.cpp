@@ -1,16 +1,20 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-
 // Lê Nguyễn Thiện Bình
-#define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
-#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
-#define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
-//
+// #define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+// #define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
+
+#define BLYNK_TEMPLATE_ID "TMPL6Thd77apQ"
+#define BLYNK_TEMPLATE_NAME "ESP32 TRAFFIC BLYNK"
+#define BLYNK_AUTH_TOKEN  "9PW9tGbbmOVG3WJY7FcFoF302LeuGsWH"
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <DHT.h>
+
 // WiFi Credentials
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
@@ -64,8 +68,14 @@ void checkButtonPress() {
     buttonState = digitalRead(BUTTON_PIN);
     if (buttonState == LOW && lastButtonState == HIGH && (millis() - lastDebounceTime) > debounceDelay) {
         displayOn = !displayOn;
-        if (!displayOn) display.clear();
+        if (!displayOn) {
+            display.clear();
+        } else {
+            display.showNumberDec(countdown);
+        }
         lastDebounceTime = millis();
+        // Đồng bộ trạng thái displayOn về Blynk qua V4
+        Blynk.virtualWrite(V4, displayOn);
     }
     lastButtonState = buttonState;
 }
@@ -127,9 +137,22 @@ void updateBlueButton() {
 void uptimeBlynk() {
     static unsigned long lastTime = 0;
     if (!IsReady(lastTime, 1000)) return;
-    unsigned long value = lastTime / 1000;
-    Blynk.virtualWrite(V0, value);
-    // if (blueButtonON) display.showNumberDec(value);
+    
+    if (!displayOn) {
+        Blynk.virtualWrite(V0, "");  // Khi tắt hiển thị, gửi giá trị rỗng lên Blynk
+        // display.clear() đã được gọi ở checkButtonPress() hoặc từ BLYNK_WRITE(V4)
+    } else {
+        Blynk.virtualWrite(V0, countdown);  // Đồng bộ countdown với Blynk
+    }
+}
+
+BLYNK_WRITE(V4) { // Dùng V4 để điều khiển trạng thái hiển thị từ Blynk
+    displayOn = param.asInt();
+    if (!displayOn) {
+        display.clear();
+    } else {
+        display.showNumberDec(countdown);
+    }
 }
 
 void readDHTSensor() {
@@ -149,8 +172,6 @@ void readDHTSensor() {
     
     Blynk.virtualWrite(V2, temp);
     Blynk.virtualWrite(V3, humidity);
-    
-    // if (blueButtonON) display.showNumberDec(temp * 10, false);
 }
 
 BLYNK_WRITE(V1) {
