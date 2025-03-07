@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "ESP32_Traffic_Light",
+			"path": "TEAM_06/ESP32_Traffic_Light"
+		}
+	],
+	"settings": {}
+}

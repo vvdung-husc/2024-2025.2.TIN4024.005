@@ -3,8 +3,8 @@
 
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL6XqfWNaO0"
-#define BLYNK_TEMPLATE_NAME "ESP32Blynk"
-#define BLYNK_AUTH_TOKEN "PxcSdc94lnwyOyvor7wkBamnpYn4g4H1"
+#define BLYNK_TEMPLATE_NAME "DieuAnh"
+#define BLYNK_AUTH_TOKEN "S14VSt8CLLYn0t8tFxCUjvEGdlEWY91l"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
