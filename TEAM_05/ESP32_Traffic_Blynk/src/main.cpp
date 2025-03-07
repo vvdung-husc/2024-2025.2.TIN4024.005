@@ -2,10 +2,14 @@
 #include <TM1637Display.h>
 
 
-// Lê Nguyễn Thiện Bình
-#define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
-#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
-#define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
+// // Lê Nguyễn Thiện Bình
+// #define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+// #define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
+  // Lê Phước Quang
+  #define BLYNK_TEMPLATE_ID "TMPL6FmNRjyo2"
+  #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+  #define BLYNK_AUTH_TOKEN "uztsql_P-9s17msAlM8Ln5FyvSIVK06c" 
 //
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -166,9 +170,14 @@ void readDHTSensor() {
 
 BLYNK_WRITE(V1) {
     blueButtonON = param.asInt();
+    displayOn = blueButtonON;  // Đồng bộ trạng thái màn hình với LED
+
     Serial.println(blueButtonON ? "Blynk -> Blue Light ON" : "Blynk -> Blue Light OFF");
+    Serial.println(displayOn ? "Blynk -> Display ON" : "Blynk -> Display OFF");
+
     digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
-    if (!blueButtonON) display.clear();
+
+    if (!displayOn) display.clear();  // Nếu tắt LED xanh, tắt luôn màn hình
 }
 
 void setup() {
