@@ -63,7 +63,7 @@
 #### http://www.google.com/maps/place/16.4591267,107.5901477
 >Google Maps tại Latitude, Longitude
 
-## => Hãy lập trình trong ESP32 sử dụng API HTTP GET để lấy được IPv4 và Latitude, Longitude và đưa ra Link Google Maps (Hiển thị tại Terminal)
+## => Hãy lập trình trong ESP32 sử dụng API HTTP GET để lấy được IPv4, Latitude, Longitude và đưa ra Link Google Maps (Hiển thị tại Terminal)
 
 ---
 ### - [Blynk | Traffic & DHT Sensor](https://wokwi.com/projects/424198235739151361)
