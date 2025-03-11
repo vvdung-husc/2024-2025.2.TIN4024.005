@@ -53,6 +53,7 @@ bool IsRead(unsigned long &previousMillis, unsigned long milliseconds);
 void updateTemperatureHumidity();
 
 void setup()
+
 {
     Serial.begin(115200);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
