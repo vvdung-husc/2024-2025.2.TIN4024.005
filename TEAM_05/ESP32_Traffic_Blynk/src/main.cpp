@@ -3,9 +3,9 @@
 
 
 // // Lê Nguyễn Thiện Bình
-// #define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
-// #define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
+#define BLYNK_TEMPLATE_ID "TMPL6Z0bWWlkg"
+#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+#define BLYNK_AUTH_TOKEN "G6JDL9oJjra3YjGtbqN5JC_gwDQ1FIFN"
 
 // // Mai Đức Đạt
 // #define BLYNK_TEMPLATE_ID "TMPL6Thd77apQ"
@@ -23,9 +23,9 @@
 // #define BLYNK_AUTH_TOKEN "QOKEkCt0KbhBmTKDR8AA3VtEVojKBZCV"
 
 //Ngô Văn Hiếu
-#define BLYNK_TEMPLATE_ID "TMPL6WVVOIqYK"
-#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
-#define BLYNK_AUTH_TOKEN "wMTA0d_EqtC1hPVdyMoA3Pjjt8kvMlEL"
+// #define BLYNK_TEMPLATE_ID "TMPL6WVVOIqYK"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+// #define BLYNK_AUTH_TOKEN "wMTA0d_EqtC1hPVdyMoA3Pjjt8kvMlEL"
 
 //
 #include <WiFi.h>
@@ -133,9 +133,9 @@ void updateCountdown() {
 }
 
 
-
+int ldrThreshold = 1000;  // Giá trị mặc định, có thể thay đổi từ Blynk
 void handleTrafficLights() {
-    if (ldrValue < 1000) {
+    if (ldrValue < ldrThreshold) {  // Thay số 1000 bằng biến ldrThreshold
         digitalWrite(LED_GREEN, LOW);
         digitalWrite(LED_RED, LOW);
         if (millis() - blinkMillis >= blinkInterval) {
@@ -150,6 +150,23 @@ void handleTrafficLights() {
         digitalWrite(LED_RED, lightState == RED);
     }
 }
+
+// void handleTrafficLights() {
+//     if (ldrValue < 1000) {
+//         digitalWrite(LED_GREEN, LOW);
+//         digitalWrite(LED_RED, LOW);
+//         if (millis() - blinkMillis >= blinkInterval) {
+//             blinkMillis = millis();
+//             yellowBlinkState = !yellowBlinkState;
+//             digitalWrite(LED_YELLOW, yellowBlinkState);
+//         }
+//         if (displayOn) display.clear();
+//     } else {
+//         digitalWrite(LED_GREEN, lightState == GREEN);
+//         digitalWrite(LED_YELLOW, lightState == YELLOW);
+//         digitalWrite(LED_RED, lightState == RED);
+//     }
+// }
 
 
 
@@ -197,6 +214,13 @@ BLYNK_WRITE(V1) {
     if (!displayOn) display.clear();  // Nếu tắt LED xanh, tắt luôn màn hình
 }
 
+BLYNK_WRITE(V4) {
+    ldrThreshold = param.asInt();  // Cập nhật giá trị ngưỡng từ Blynk
+    Serial.print("Updated LDR Threshold: ");
+    Serial.println(ldrThreshold);
+}
+
+
 void setup() {
     setupPins();
     dht.begin();
@@ -205,6 +229,7 @@ void setup() {
     Serial.println("WiFi connected");
     digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
     Blynk.virtualWrite(V1, blueButtonON);
+    Blynk.virtualWrite(V4, ldrThreshold);  // Đồng bộ giá trị mặc định
     Serial.println("== START ==>");
 }
 
