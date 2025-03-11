@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-#define BLYNK_TEMPLATE_ID "TMPL6tk269ztx"
-#define BLYNK_TEMPLATE_NAME "Traffic"
-#define BLYNK_AUTH_TOKEN "oto_ciedagfkHnII3IXkMNpah9RgEgnn"
+#define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
+#define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
+#define BLYNK_AUTH_TOKEN "v2WiKiGIRkz2GMj1mqsF8ocsLFHcTq4x"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -39,6 +39,7 @@ void updateTemperatureHumidity();
 void checkLightLevel();
 
 void setup()
+
 {
     Serial.begin(115200);
     pinMode(LED_PIN, OUTPUT);
@@ -125,7 +126,6 @@ void updateUptime()
         display.showNumberDec(seconds);
     }
 }
-
 // Cập nhật nhiệt độ và độ ẩm
 void updateTemperatureHumidity()
 {
@@ -149,7 +149,7 @@ void updateTemperatureHumidity()
     }
     else
     {
-        Serial.println("⚠️ Lỗi đọc cảm biến DHT22! Thử lại...");
+        Serial.println("⚠️ Lỗi đọc cảm biến DHT22! Thử lại....");
     }
 }
 
