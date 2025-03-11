@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "../../.."
+			"path": "../.."
 		},
 		{
-			"name": "ESP32_LED_Blink",
+			"name": "Project_Traffic_Blynk",
 			"path": "."
 		}
 	],
