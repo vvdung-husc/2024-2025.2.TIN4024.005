@@ -12,8 +12,8 @@
 #include <BlynkSimpleEsp32.h>
 
 // Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
-char ssid[] = "DUONG THE TRAN";  //Tên mạng WiFi
-char pass[] = "123ABC321";             //Mật khẩu mạng WiFi
+char ssid[] = "Wokwi-GUEST";  //Tên mạng WiFi
+char pass[] = "";             //Mật khẩu mạng WiFi
 
 
 #define btnBLED  23 //Chân kết nối nút bấm
