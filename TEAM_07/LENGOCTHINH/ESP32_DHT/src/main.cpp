@@ -1,121 +1,116 @@
 #include <Arduino.h>
-#include <TM1637Display.h>
-
-/* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6vxlILTOb"
-#define BLYNK_TEMPLATE_NAME "DHT"
-#define BLYNK_AUTH_TOKEN "SRM6c9xJ8Q8N0edDR7uCJcqoIcRffNxv"
-// Phải để trước khai báo sử dụng thư viện Blynk
-
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <Adafruit_Sensor.h>
 #include <DHT.h>
-// Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
-char ssid[] = "Wokwi-GUEST";
-char pass[] = "";            
 
-// GPIO Pin Definitions
-#define BTN_BLED  23
-#define PIN_BLED  21
-#define CLK 18
-#define DIO 19
-#define DHT_PIN 16
-#define DHT_TYPE DHT22
+#define SCREEN_WIDTH 128 // OLED width,  in pixels
+#define SCREEN_HEIGHT 64 // OLED height, in pixels
 
-// Global Variables
-ulong currentMilliseconds = 0;
-bool blueButtonON = true;
+#define OLED_SDA    13
+#define OLED_SCL    12
 
-// Initialize Components
-TM1637Display display(CLK, DIO);
-DHT dht(DHT_PIN, DHT_TYPE);
+#define DHTPIN      16     // Digital pin connected to the DHT sensor
+#define DHTTYPE    DHT22   // DHT 22 (AM2302)
 
-// Function Declarations
-bool IsReady(ulong &ulTimer, uint32_t millisecond);
-void updateBlueButton();
-void uptimeBlynk();
-void readDHTSensor();
+#define LED_BLUE    15
+#define LED_YELLOW  2
+#define LED_RED     4
+
+
+// create an OLED display object connected to I2C
+
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+DHT dht(DHTPIN, DHTTYPE);
+
+String strTemp;
+bool ledState = false;
+int8_t ledNumber = LED_BLUE;
 
 void setup() {
-    Serial.begin(115200);
-    pinMode(PIN_BLED, OUTPUT);
-    pinMode(BTN_BLED, INPUT_PULLUP);
-    display.setBrightness(0x0f);
-    dht.begin();
-    
-    // Connect to WiFi & Blynk
-    Serial.print("Connecting to "); Serial.println(ssid);
-    Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
-    Serial.println("WiFi connected");
-    
-    digitalWrite(PIN_BLED, blueButtonON ? HIGH : LOW);
-    Blynk.virtualWrite(V1, blueButtonON);
-    Serial.println("== START ==>");
+  // put your setup code here, to run once:
+  Serial.begin(9600);//115200
+  
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_YELLOW, OUTPUT);
+  pinMode(LED_RED, OUTPUT);
+
+  digitalWrite(LED_BLUE, LOW);//OFF
+  digitalWrite(LED_YELLOW, LOW);//OFF
+  digitalWrite(LED_RED, LOW);//OFF
+
+  dht.begin();
+
+  TwoWire* _Wire = &Wire;
+  _Wire->setPins(OLED_SDA, OLED_SCL);
+  // initialize OLED display with I2C address 0x3C
+  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("failed to start SSD1306 OLED"));
+    while (1);
+  }
+  
+
+  delay(2000);         // wait two seconds for initializing
+  oled.clearDisplay(); // clear display
+
+  oled.setTextSize(2);         // set text size
+  oled.setTextColor(WHITE);    // set text color
+  oled.setCursor(0, 2);       // set position to display (x,y)
+  oled.println("   IOT\n Welcome!"); // set text
+  oled.display();              // display on OLED  
 }
 
 void loop() {
-    Blynk.run();
-    currentMilliseconds = millis();
-    uptimeBlynk();
-    updateBlueButton();
-    readDHTSensor();
-}
+  // put your main code here, to run repeatedly:
+  delay(1000);
+  float t = dht.readTemperature();
+  float h = dht.readHumidity();
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from DHT sensor!");
+  }
+  oled.clearDisplay();
+  
+  strTemp = String("Temperature: ");
 
-bool IsReady(ulong &ulTimer, uint32_t millisecond) {
-    if (currentMilliseconds - ulTimer < millisecond) return false;
-    ulTimer = currentMilliseconds;
-    return true;
-}
+  if (t < 0.0){    
+    strTemp += "Too COOL";
+    ledNumber = LED_YELLOW;
+  }
+  else if (t < 40.0){
+    strTemp += "Normal";
+    ledNumber = LED_BLUE;
+  }
+  else {    
+    strTemp += "Too HOT";
+    ledNumber = LED_RED;
+  }      
 
-void updateBlueButton() {
-    static ulong lastTime = 0;
-    static int lastValue = HIGH;
-    if (!IsReady(lastTime, 50)) return;
-    int v = digitalRead(BTN_BLED);
-    if (v == lastValue) return;
-    lastValue = v;
-    if (v == LOW) return;
-    
-    blueButtonON = !blueButtonON;
-    Serial.println(blueButtonON ? "Blue Light ON" : "Blue Light OFF");
-    digitalWrite(PIN_BLED, blueButtonON ? HIGH : LOW);
-    Blynk.virtualWrite(V1, blueButtonON);
-    if (!blueButtonON) display.clear();
-}
-
-void uptimeBlynk() {
-    static ulong lastTime = 0;
-    if (!IsReady(lastTime, 1000)) return;
-    ulong value = lastTime / 1000;
-    Blynk.virtualWrite(V0, value);
-    if (blueButtonON) display.showNumberDec(value);
-}
-
-void readDHTSensor() {
-    static ulong lastTime = 0;
-    if (!IsReady(lastTime, 2000)) return;
-    
-    float temp = dht.readTemperature();
-    float humidity = dht.readHumidity();
-    if (isnan(temp) || isnan(humidity)) {
-        Serial.println("Failed to read from DHT sensor!");
-        return;
-    }
-    
-    Serial.print("Temperature: "); Serial.print(temp);
-    Serial.print("°C, Humidity: "); Serial.print(humidity);
-    Serial.println("%");
-    
-    Blynk.virtualWrite(V2, temp);
-    Blynk.virtualWrite(V3, humidity);
-    
-    if (blueButtonON) display.showNumberDec(temp * 10, false);
-}
-
-BLYNK_WRITE(V1) {
-    blueButtonON = param.asInt();
-    Serial.println(blueButtonON ? "Blynk -> Blue Light ON" : "Blynk -> Blue Light OFF");
-    digitalWrite(PIN_BLED, blueButtonON ? HIGH : LOW);
-    if (!blueButtonON) display.clear();
+  oled.setTextSize(1);
+  oled.setCursor(0,0);
+  oled.print(strTemp.c_str());
+  oled.setTextSize(2);
+  oled.setCursor(0,10);
+  oled.print(t);
+  oled.print(" ");
+  oled.setTextSize(1);
+  oled.cp437(true);
+  oled.write(167);//*C
+  oled.setTextSize(2);
+  oled.print("C");
+  
+  oled.setTextSize(1);
+  oled.setCursor(0, 35);
+  oled.print("Humidity: ");
+  oled.setTextSize(2);
+  oled.setCursor(0, 45);
+  oled.print(h);
+  oled.print(" %"); 
+  
+  oled.display();   
+  
+  digitalWrite(ledNumber, HIGH);
+  delay(500);
+  digitalWrite(ledNumber, LOW);  
 }
