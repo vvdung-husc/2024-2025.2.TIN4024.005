@@ -7,9 +7,9 @@
 // #define BLYNK_AUTH_TOKEN "S9-UuqRP6ItPoUGPZYbtSWknol03FF-0"
 
 
-#define BLYNK_TEMPLATE_ID "TMPL69O7ZZXq4"
+#define BLYNK_TEMPLATE_ID "TMPL698YLuf1B"
 #define BLYNK_TEMPLATE_NAME "BlynkLed"
-#define BLYNK_AUTH_TOKEN "eBSV0pG5NvvR9ll92Vsvi7NveujF7JzF"
+#define BLYNK_AUTH_TOKEN "GiKNGCWWepazwoJJQIQK8ufjK_h_bbVa"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>

@@ -6,10 +6,9 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "HY9Ws1btOsgiJwyMzkzmCs2p2-jFjC4H"
-
-#define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
+#define BLYNK_TEMPLATE_ID "TMPL6quxMgbIa"
 #define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
+#define BLYNK_AUTH_TOKEN "Acyka70x2zwZsluL2-x_TQ_WKMIjWjZK"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
