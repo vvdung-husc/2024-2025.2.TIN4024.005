@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <TM1637Display.h>
 #include <DHT.h>
@@ -6,6 +5,7 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "HY9Ws1btOsgiJwyMzkzmCs2p2-jFjC4H"
+
 #define BLYNK_TEMPLATE_ID "TMPL6quxMgbIa"
 #define BLYNK_TEMPLATE_NAME "ESMART"
 #define BLYNK_AUTH_TOKEN "Acyka70x2zwZsluL2-x_TQ_WKMIjWjZK"
