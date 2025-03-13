@@ -7,6 +7,7 @@
 #define BLYNK_AUTH_TOKEN "nsfORzTSnzRlopiK0847IFmG-49WZXvG"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
@@ -23,7 +24,7 @@ char pass[] = "";             //Mật khẩu mạng WiFi
 #define DIO 19  //Chân kết nối DIO của TM1637
 
 //Biến toàn cục
-ulong currentMiliseconds = 0; //Thời gian hiện tại - miliseconds 
+ulong currentMiliseconds = 0; //Thời gian hiện tại - miliseconds
 bool blueButtonON = true;     //Trạng thái của nút bấm ON -> đèn Xanh sáng và hiển thị LED TM1637
 
 //Khởi tạo mà hình TM1637
@@ -38,20 +39,21 @@ void setup() {
   Serial.begin(115200);
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
-    
+   
   display.setBrightness(0x0f);
-  
+ 
   // Start the WiFi connection
   Serial.print("Connecting to ");Serial.println(ssid);
-  Blynk.begin(BLYNK_AUTH_TOKEN,ssid, pass); //Kết nối đến mạng WiFi
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass, "blynk.cloud", 80);
+; //Kết nối đến mạng WiFi
 
   Serial.println();
   Serial.println("WiFi connected");
 
-  
+ 
   digitalWrite(pinBLED, blueButtonON? HIGH : LOW);  
-  Blynk.virtualWrite(V1, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
-  
+  Blynk.virtualWrite(V0, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
+ 
   Serial.println("== START ==>");
 }
 
@@ -98,7 +100,7 @@ void uptimeBlynk(){
   static ulong lastTime = 0;
   if (!IsReady(lastTime, 1000)) return; //Kiểm tra và cập nhật lastTime sau mỗi 1 giây
   ulong value = lastTime / 1000;
-  Blynk.virtualWrite(V1, value);  //Gửi giá trị lên chân ảo V1 trên ứng dụng Blynk.
+  Blynk.virtualWrite(V0, value);  //Gửi giá trị lên chân ảo V0 trên ứng dụng Blynk.
   if (blueButtonON){
     display.showNumberDec(value);
   }
@@ -111,11 +113,11 @@ BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk
   if (blueButtonON){
     Serial.println("Blynk -> Blue Light ON");
     digitalWrite(pinBLED, HIGH);
-    
+   
   }
   else {
     Serial.println("Blynk -> Blue Light OFF");
-    digitalWrite(pinBLED, LOW);   
-    display.clear(); 
+    digitalWrite(pinBLED, LOW);  
+    display.clear();
   }
 }

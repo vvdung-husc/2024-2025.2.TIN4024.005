@@ -93,7 +93,7 @@ void updateTemperatureHumidity() {
   if (!isnan(temp) && !isnan(hum)) {
     Blynk.virtualWrite(V2, temp);
     Blynk.virtualWrite(V3, hum);
-    Serial.printf("📡 Temp: %.2f°C | Hum: %.2f%%\n", temp, hum);
+    Serial.printf("📡 Temp: %.2f°C | Hum: %.2f%%\r", temp, hum);
   } else {
     Serial.println("⚠️ Lỗi đọc cảm biến DHT22!");
   }
@@ -109,7 +109,7 @@ void updateLightThreshold() {
 
   int lightValue = analogRead(LDR_PIN);
   Blynk.virtualWrite(V4, lightValue);
-  Serial.printf("💡 Độ sáng hiện tại: %d\n", lightValue);
+  Serial.printf("💡 Độ sáng hiện tại: %d\r", lightValue);
 
   if (lightValue < ldrThreshold) {
     // TỐI
@@ -153,7 +153,7 @@ void checkButton() {
     delay(50);
     if (digitalRead(BUTTON_PIN) == LOW) {
       isDisplayOn = !isDisplayOn;
-      Serial.printf("🎛 Màn hình: %s\n", isDisplayOn ? "BẬT" : "TẮT");
+      Serial.printf("🎛 Màn hình: %s\r", isDisplayOn ? "BẬT" : "TẮT");
 
       if (!isDisplayOn) {
         display.clear();
@@ -173,7 +173,7 @@ BLYNK_WRITE(V1) {
   bool newState = param.asInt();
   if (newState != isDisplayOn) {
     isDisplayOn = newState;
-    Serial.printf("🎛 Điều khiển từ Blynk - Màn hình: %s\n", isDisplayOn ? "BẬT" : "TẮT");
+    Serial.printf("🎛 Điều khiển từ Blynk - Màn hình: %s\r", isDisplayOn ? "BẬT" : "TẮT");
 
     if (!isDisplayOn) {
       display.clear();
@@ -209,7 +209,7 @@ void setup() {
 
   startTime = millis();
 
-  Serial.printf("🔗 Đang kết nối WiFi: %s\n", ssid);
+  Serial.printf("🔗 Đang kết nối WiFi: %s\r", ssid);
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("✅ WiFi đã kết nối!");
