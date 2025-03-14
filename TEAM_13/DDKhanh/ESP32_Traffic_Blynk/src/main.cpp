@@ -1,13 +1,10 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
-// Dương Duy Khanh
-//#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
-//#define BLYNK_TEMPLATE_NAME "khanh"
-//#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
-// Hoàng Thanh Nhã
-#define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
-#define BLYNK_TEMPLATE_NAME "TrafficBlynk"
-#define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
+
+// Blynk
+#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
+#define BLYNK_TEMPLATE_NAME "khanh"
+#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
