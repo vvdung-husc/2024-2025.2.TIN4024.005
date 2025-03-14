@@ -67,7 +67,6 @@ void parseGeoInfo(String payload, IP4_Info& ipInfo) {
       values[index++] = payload.substring(0, delimiterIndex);
       payload = payload.substring(delimiterIndex + 1);
   }
-
   ipInfo.ip4 = values[0];
   ipInfo.latitude = values[6].c_str();
   ipInfo.longtitude = values[5].c_str();
