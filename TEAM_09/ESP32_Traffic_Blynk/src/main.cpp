@@ -10,6 +10,10 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6quxMgbIa"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "Acyka70x2zwZsluL2-x_TQ_WKMIjWjZK"
+//Phan Văn Nhật Duy
+//#define BLYNK_TEMPLATE_ID "TMPL61N9RxiUa"
+//#define BLYNK_TEMPLATE_NAME "ESP2TrafficBlynk"
+//#define BLYNK_AUTH_TOKEN "bOrtqnRWEYh74xb-ZXqVs4mVfhFkB4w9"
 #include <Arduino.h>
 #include <TM1637Display.h>
 #include <DHT.h>
