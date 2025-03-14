@@ -19,6 +19,11 @@
 #define BLYNK_TEMPLATE_NAME "Lab3"
 #define BLYNK_AUTH_TOKEN "wz1Vwsafs3YS58taQXBeaCc8Y-v2LowA"
 
+// Nguyễn Viết HÙNg
+// #define BLYNK_TEMPLATE_ID "TMPL6AtsdJeLp"
+// #define BLYNK_TEMPLATE_NAME "cambien"
+// #define BLYNK_AUTH_TOKEN "zKgdoJrEHwPj7UvdbVTOmn-bJQJyOFkQ"
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
