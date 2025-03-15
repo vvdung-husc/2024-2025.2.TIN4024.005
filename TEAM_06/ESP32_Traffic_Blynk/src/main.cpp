@@ -6,10 +6,10 @@
 //#define BLYNK_TEMPLATE_NAME "TRAFFICBLYNK"
 //#define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
 
-//Nguyễn Thị Diệu Anh
-#define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
+// Nguyễn Thị Diệu Anh
+  #define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
+  #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+  #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -49,13 +49,14 @@ enum TrafficLightState
 TrafficLightState lightState = GREEN;
 int countDown = GREEN_TIME / 1000;
 unsigned long currentMillis = 0;
-bool buttonState = false;
+bool buttonState = true;
 
 void BlinkingYellowLight();
 void NormalTrafficLight();
 void ClearTM();
 bool IsRead(unsigned long &previousMillis, unsigned long milliseconds);
 void updateTemperatureHumidity();
+void uptimeBlynk();
 
 void setup()
 
@@ -133,7 +134,7 @@ void loop()
     }
 
     updateTemperatureHumidity();
-    Blynk.virtualWrite(V0, countDown);
+    uptimeBlynk();
     Blynk.virtualWrite(V4, darkThreshold);
 }
 
@@ -281,6 +282,15 @@ void updateTemperatureHumidity()
     {
         Serial.println("⚠️ Error reading DHT22 sensor!");
     }
+}
+
+void uptimeBlynk()
+{
+    static ulong lastTime = 0;
+    if (!IsRead(lastTime, 1000))
+        return; // Kiểm tra và cập nhật lastTime sau mỗi 1 giây
+    ulong value = lastTime / 1000;
+    Blynk.virtualWrite(V0, value);
 }
 
 BLYNK_WRITE(V1)

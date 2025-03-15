@@ -1,7 +1,10 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
-
-// Blynk
+// Dương Duy Khanh
+//#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
+//#define BLYNK_TEMPLATE_NAME "khanh"
+//#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
+// Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
 #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
 #define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
@@ -145,26 +148,26 @@ void updateLightThreshold() {
 /* --------------------------------------------------
    checkButton
    -------------------------------------------------- */
-void checkButton() {
+  void checkButton() {
   static bool lastButtonState = HIGH;
   bool buttonState = digitalRead(BUTTON_PIN);
-
-  if (buttonState == LOW && lastButtonState == HIGH) {
-    delay(50);
-    if (digitalRead(BUTTON_PIN) == LOW) {
-      isDisplayOn = !isDisplayOn;
-      Serial.printf("🎛 Màn hình: %s\r", isDisplayOn ? "BẬT" : "TẮT");
-
-      if (!isDisplayOn) {
-        display.clear();
+    if (buttonState == LOW && lastButtonState == HIGH) {
+      delay(50); // Chống dội nút
+      if (digitalRead(BUTTON_PIN) == LOW) {
+        isDisplayOn = !isDisplayOn;
+        Serial.print("🎛 Màn hình: ");
+        Serial.println(isDisplayOn ? "BẬT" : "TẮT");
+        if (!isDisplayOn) {
+          display.clear();
+        }
+        Blynk.virtualWrite(V1, isDisplayOn);
+        digitalWrite(BLUE_LED, isDisplayOn ? HIGH : LOW);
       }
-      Blynk.virtualWrite(V1, isDisplayOn);
-      digitalWrite(BLUE_LED, isDisplayOn ? HIGH : LOW);
     }
+    lastButtonState = buttonState;
   }
   
-  lastButtonState = buttonState;
-}
+  
 
 /* --------------------------------------------------
    BLYNK_WRITE(V1)
@@ -197,8 +200,8 @@ void setup() {
   Serial.begin(115200);
   
   pinMode(RED_LED, OUTPUT);
-  pinMode(YELLOW_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
+  pinMode(YELLOW_LED, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   pinMode(BLUE_LED, OUTPUT);
 
@@ -218,8 +221,8 @@ void setup() {
   }
 
   digitalWrite(RED_LED, LOW);
-  digitalWrite(YELLOW_LED, LOW);
   digitalWrite(GREEN_LED, LOW);
+  digitalWrite(YELLOW_LED, LOW);
   digitalWrite(BLUE_LED, isDisplayOn ? HIGH : LOW);
 }
 
