@@ -11,10 +11,15 @@
 //   #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
 //   #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
 
-// Phạm Ngọc Cảm
-//  #define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
-//  #define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
-//  #define BLYNK_AUTH_TOKEN "v2WiKiGIRkz2GMj1mqsF8ocsLFHcTq4x"
+// //Phạm Ngọc Cảm
+// #define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
+// #define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
+// #define BLYNK_AUTH_TOKEN "v2WiKiGIRkz2GMj1mqsF8ocsLFHcTq4x"
+
+// Phan Duy An
+// #define BLYNK_TEMPLATE_ID "TMPL6CLo5AjgL"
+// #define BLYNK_TEMPLATE_NAME "ESP32BlynkTraffic"
+// #define BLYNK_AUTH_TOKEN "ThmnzY_DHB6YJ8kzwvyUtp6Kd3iSd5r-"
 
 // Lê Thị Thanh Nhàn
 #define BLYNK_TEMPLATE_ID "TMPL6tk269ztx"
