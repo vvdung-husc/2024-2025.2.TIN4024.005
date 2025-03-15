@@ -10,6 +10,7 @@
 //   #define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
 //   #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
 //   #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
+
 //Phạm Ngọc Cảm
 #define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
 #define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
