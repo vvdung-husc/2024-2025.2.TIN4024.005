@@ -46,7 +46,7 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
-### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049))
+### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
 
 #### Tham khảo
 
