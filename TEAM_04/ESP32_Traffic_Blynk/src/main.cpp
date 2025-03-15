@@ -2,10 +2,16 @@
 #include <TM1637Display.h>
 #include <DHT.h>
 
-// LÊ BÁ NHẬT MINH
-#define BLYNK_TEMPLATE_ID "TMPL6yean1Ms4"
+// Nguyễn Việt Nam
+#define BLYNK_TEMPLATE_ID "TMPL6YeCq4kLS"
 #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
-#define BLYNK_AUTH_TOKEN "LlapeQu1wAa9Xq5m6Mt1BiYAi_EUzieI"
+#define BLYNK_AUTH_TOKEN "yHBEJfZ9T7gfaPf_iNwT6ccPgvYH_WGT"
+
+
+// LÊ BÁ NHẬT MINH
+// #define BLYNK_TEMPLATE_ID "TMPL6yean1Ms4"
+// #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+// #define BLYNK_AUTH_TOKEN "LlapeQu1wAa9Xq5m6Mt1BiYAi_EUzieI"
 
 // Hồ Xuân Lãm
 // #define BLYNK_TEMPLATE_ID "TMPL60pMYcGkL"
