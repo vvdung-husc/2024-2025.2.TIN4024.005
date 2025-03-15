@@ -7,7 +7,6 @@
 // #define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
 
 // Nguyễn Thị Diệu Anh
-<<<<<<< HEAD
 //   #define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
 //   #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
 //   #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
@@ -16,11 +15,7 @@
 #define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
 #define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
 #define BLYNK_AUTH_TOKEN "v2WiKiGIRkz2GMj1mqsF8ocsLFHcTq4x"
-=======
-#define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
->>>>>>> 10eb65d5ea7578fb6dcbac7b9180525d962bbdf0
+
 
 #include <WiFi.h>
 #include <WiFiClient.h>
