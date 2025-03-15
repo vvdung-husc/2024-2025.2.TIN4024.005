@@ -2,14 +2,14 @@
 #include <TM1637Display.h>
 
 // Lại Văn Minh
-//#define BLYNK_TEMPLATE_ID "TMPL6zydB78I4"
-//#define BLYNK_TEMPLATE_NAME "TRAFFICBLYNK"
-//#define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
+// #define BLYNK_TEMPLATE_ID "TMPL6zydB78I4"
+// #define BLYNK_TEMPLATE_NAME "TRAFFICBLYNK"
+// #define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
 
 // Nguyễn Thị Diệu Anh
-  #define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
-  #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-  #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
+#define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
+#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+#define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -103,7 +103,7 @@ void loop()
     static unsigned long previousButtonMillis = 0;
 
     Serial.print("LDR Raw Value: ");
-    Serial.print(ldr);
+    Serial.println(ldr);
 
     // Check button state
     if (digitalRead(BUTTON_PIN) == LOW && IsRead(previousButtonMillis, 50))
@@ -121,14 +121,14 @@ void loop()
     {
         if (buttonState)
         {
-            digitalWrite(LED_PINK, HIGH);
-            ClearTM();
+            digitalWrite(LED_PINK, buttonState);
+            NormalTrafficLight();
             Blynk.virtualWrite(V1, buttonState);
         }
         else
         {
-            digitalWrite(LED_PINK, LOW);
-            NormalTrafficLight();
+            digitalWrite(LED_PINK, buttonState);
+            ClearTM();
             Blynk.virtualWrite(V1, buttonState);
         }
     }
