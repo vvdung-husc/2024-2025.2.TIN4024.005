@@ -17,6 +17,10 @@
 #define BLYNK_TEMPLATE_NAME "dung"
 #define BLYNK_AUTH_TOKEN "-nzGXYs5QPYagulsHvYV-Q5hz8QYl2hk"
 
+// Đoàn đại khoa
+#define BLYNK_TEMPLATE_ID "TMPL6xOraUZuS"
+#define BLYNK_TEMPLATE_NAME "Khoa2"
+#define BLYNK_AUTH_TOKEN "nrSZJ542ByE5uGFqfWpms_Al7y_es4Sb"
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 
