@@ -1,28 +1,28 @@
 {
   "version": 1,
-  "author": "Võ Việt Dũng",
+  "author": "Khanh Dương Duy",
   "editor": "wokwi",
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -9.6, "left": -225.56, "attrs": {} },
     {
       "type": "wokwi-pushbutton",
       "id": "btn1",
-      "top": -3.4,
+      "top": -32.2,
       "left": -76.8,
       "attrs": { "color": "blue", "xray": "1" }
     },
     {
       "type": "wokwi-tm1637-7segment",
       "id": "sevseg1",
-      "top": -105.64,
-      "left": -175.37,
+      "top": -153.64,
+      "left": -156.17,
       "attrs": { "color": "red" }
     },
     {
       "type": "wokwi-led",
       "id": "led1",
       "top": 25.2,
-      "left": -101.8,
+      "left": -53.4,
       "attrs": { "color": "blue", "flip": "1" }
     },
     {
@@ -68,11 +68,11 @@
     {
       "type": "wokwi-photoresistor-sensor",
       "id": "ldr1",
-      "top": 147.2,
-      "left": -431.2,
+      "top": 185.6,
+      "left": -421.6,
       "attrs": {}
     },
-    { "type": "wokwi-dht22", "id": "dht1", "top": 105.9, "left": -24.6, "attrs": {} }
+    { "type": "wokwi-dht22", "id": "dht1", "top": 105.9, "left": -5.4, "attrs": {} }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -98,7 +98,7 @@
     [ "dht1:GND", "esp:GND.3", "black", [ "v28.8", "h-124.8", "v-172.8" ] ],
     [ "dht1:SDA", "esp:16", "green", [ "v19.2", "h-95.9", "v-115.2", "h9.6" ] ],
     [ "dht1:VCC", "esp:3V3", "red", [ "v9.6", "h-220.8", "v-211.2" ] ],
-    [ "ldr1:AO", "esp:34", "green", [ "h19.2", "v-135.1" ] ]
+    [ "ldr1:AO", "esp:34", "green", [ "h19.2", "v-58.3" ] ]
   ],
   "dependencies": {}
 }
