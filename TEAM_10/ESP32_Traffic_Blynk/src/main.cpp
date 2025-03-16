@@ -2,10 +2,10 @@
 #include <TM1637Display.h>
 #include <DHT.h>
 
-// LE VAN MINH TOAN
-#define BLYNK_TEMPLATE_ID "TMPL6eDvyBqz2"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "RP-9PNRNu-xTRTCNClk-LGQNvj6r77_a"
+// NGUYEN VAN HOANG NAM
+#define BLYNK_TEMPLATE_ID "TMPL6PR14jYu4"
+#define BLYNK_TEMPLATE_NAME "Blynk Traffic DHT Sensor"
+#define BLYNK_AUTH_TOKEN "HSryV8aWhysNSYDLOcUNrjPsUcTFXRvr"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
