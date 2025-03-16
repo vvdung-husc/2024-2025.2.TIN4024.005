@@ -1,6 +1,6 @@
-#define BLYNK_TEMPLATE_ID "TMPL6736AkFiQ"
+#define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
 #define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
-#define BLYNK_AUTH_TOKEN "LHhqFG8yUvq9tYWoAGYLTYTbpQaisajA"
+#define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
 
 #include <Arduino.h>
 #include <TM1637Display.h>
