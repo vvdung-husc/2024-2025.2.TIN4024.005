@@ -6,15 +6,23 @@
 #define BLYNK_TEMPLATE_ID "TMPL6PR14jYu4"
 #define BLYNK_TEMPLATE_NAME "Blynk Traffic DHT Sensor"
 #define BLYNK_AUTH_TOKEN "HSryV8aWhysNSYDLOcUNrjPsUcTFXRvr"
+//PHAN THANH TOAN
+// #define BLYNK_TEMPLATE_ID "TMPL6NL5ny714"
+// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "uENQDUAhyfsOW5K5pqkw1vxl2WiVek7R"
+// LE VAN MINH TOAN
+// #define BLYNK_TEMPLATE_ID "TMPL6eDvyBqz2"
+// #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "RP-9PNRNu-xTRTCNClk-LGQNvj6r77_a"
 
 #include <WiFi.h>
-#include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
+#include <WiFiClient.h>
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 
-// Pin definitions
+// Pin Definitions
 #define btnBLED 23
 #define pinBLED 21
 #define CLK 18
@@ -36,7 +44,7 @@ int lightLevel = 0;
 bool isDark = false;
 
 // Traffic light variables
-int currentState = 0; // 0 = green, 1 = yellow, 2 = red
+int currentState = 0;
 int lastState = -1;
 unsigned long previousMillis = 0;
 unsigned long greenTime = 5000;
@@ -52,8 +60,13 @@ void monitorLightLevel();
 void runTrafficLights();
 void blinkYellowLED();
 
-void setup()
-{
+bool IsReady(unsigned long &ulTimer, uint32_t milisecond) {
+  if (currentMillis - ulTimer < milisecond) return false;
+  ulTimer = currentMillis;
+  return true;
+}
+
+void setup() {
   Serial.begin(115200);
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
@@ -64,208 +77,140 @@ void setup()
 
   dht.begin();
   display.setBrightness(0x0f);
+  lastState = -1; // Khởi tạo lastState
 
+  // Kiểm tra kết nối WiFi/Blynk
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  if (!Blynk.connected()) {
+    Serial.println("Failed to connect to Blynk!");
+  }
+
   digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
-  Blynk.virtualWrite(V1, blueButtonON);
+  Blynk.virtualWrite(V0, blueButtonON);
+
+  // In giá trị ánh sáng ban đầu để điều chỉnh threshold
+  lightLevel = analogRead(LDR_PIN);
+  Serial.print("Initial light level: ");
+  Serial.println(lightLevel);
 
   Serial.println("=== SYSTEM INITIALIZED ===");
 }
 
-void loop()
-{
-  Blynk.run();
+void loop() {
+  if (Blynk.connected()) {
+    Blynk.run();
+  }
   currentMillis = millis();
   updateBlueButton();
-  monitorLightLevel(); // Di chuyển lên trước để cập nhật lightLevel
+  monitorLightLevel();
   sendSensorData();
 
-  if (isDark)
+  if (isDark) {
     blinkYellowLED();
-  else
+  } else {
     runTrafficLights();
+  }
 }
 
-bool IsReady(unsigned long &ulTimer, uint32_t milisecond)
-{
-  if (currentMillis - ulTimer < milisecond)
-    return false;
-  ulTimer = currentMillis;
-  return true;
-}
-
-void updateBlueButton()
-{
+void updateBlueButton() {
   static unsigned long lastTime = 0;
-  static int lastValue = HIGH;
-  if (!IsReady(lastTime, 50))
-    return;
+  if (!IsReady(lastTime, 50)) return;
 
-  int v = digitalRead(btnBLED);
-  if (v == lastValue)
-    return;
-  lastValue = v;
-  if (v == LOW)
-    return;
+  int state = digitalRead(btnBLED);
+  if (state == LOW) {
+    blueButtonON = !blueButtonON;
+    digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
+    Blynk.virtualWrite(V0, blueButtonON);
+    if (!blueButtonON) display.clear();
+  }
+}
 
-  blueButtonON = !blueButtonON;
+BLYNK_WRITE(V0) {
+  blueButtonON = param.asInt();
   digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
-  Blynk.virtualWrite(V1, blueButtonON);
-
-  Serial.print("[LED] Blue: ");
-  Serial.println(blueButtonON ? "ON" : "OFF");
-  if (!blueButtonON)
-    display.clear();
+  if (!blueButtonON) display.clear();
 }
 
-void sendSensorData()
-{
+//DHT
+void sendSensorData() {
   static unsigned long lastTime = 0;
-  if (!IsReady(lastTime, 2000))
-    return;
+  if (!IsReady(lastTime, 2000)) return;
 
   float temp = dht.readTemperature();
   float hum = dht.readHumidity();
-
-  if (isnan(temp) || isnan(hum))
-  {
-    Serial.println("[ERROR] Failed to read DHT sensor");
-    return;
+  if (!isnan(temp) && !isnan(hum)) {
+    Blynk.virtualWrite(V5, temp); 
+    Blynk.virtualWrite(V6, hum);  
+  } else {
+    Serial.println("Failed to read from DHT sensor!");
+    Blynk.virtualWrite(V5, 0);
+    Blynk.virtualWrite(V6, 0);
   }
-
-  Blynk.virtualWrite(V2, temp);
-  Blynk.virtualWrite(V3, hum);
-  Blynk.virtualWrite(V5, lightLevel);
-
-  Serial.print("[SENSOR] Temp: ");
-  Serial.print(temp, 1);
-  Serial.print("°C | Humidity: ");
-  Serial.print(hum, 1);
-  Serial.print("% | Light: ");
-  Serial.print(isDark ? "Dark" : "Light");
-  Serial.print(" (Level: ");
-  Serial.print(lightLevel);
-  Serial.print(" | Threshold: ");
-  Serial.print(lightThreshold);
-  Serial.println(")");
 }
 
-void monitorLightLevel()
-{
+void monitorLightLevel() {
   static unsigned long lastTime = 0;
-  if (!IsReady(lastTime, 500))
-    return;
+  if (!IsReady(lastTime, 500)) return;
 
   lightLevel = analogRead(LDR_PIN);
-  bool wasDark = isDark;
   isDark = lightLevel < lightThreshold;
-
-  if (wasDark != isDark)
-  {
-    Blynk.virtualWrite(V6, isDark ? "Dark" : "Light");
-  }
 }
 
-void blinkYellowLED()
-{
+// Điều chỉnh ngưỡng ánh sáng
+BLYNK_WRITE(V4) {
+  int adjustment = param.asInt();
+  lightThreshold += adjustment;
+  Blynk.virtualWrite(V11, lightThreshold);
+}
+
+BLYNK_WRITE(V1) {
+  greenTime = param.asInt() * 1000;
+}
+
+BLYNK_WRITE(V2) {
+  yellowTime = param.asInt() * 1000;
+}
+
+BLYNK_WRITE(V3) {
+  redTime = param.asInt() * 1000;
+}
+
+void blinkYellowLED() {
   static unsigned long lastBlink = 0;
   static bool state = false;
-  static bool logged = false;
-
-  if (currentMillis - lastBlink >= 500)
-  {
+  if (currentMillis - lastBlink >= 500) {
     state = !state;
     digitalWrite(YELLOW_PIN, state);
     digitalWrite(RED_PIN, LOW);
     digitalWrite(GREEN_PIN, LOW);
     lastBlink = currentMillis;
-
-    if (!logged)
-    {
-      Serial.println("[TRAFFIC] Yellow: Blinking");
-      logged = true;
-    }
   }
-  if (!isDark)
-    logged = false;
 }
 
-void runTrafficLights()
-{
+void runTrafficLights() {
   unsigned long interval;
-  switch (currentState)
-  {
-  case 0:
-    interval = greenTime;
-    break;
-  case 1:
-    interval = yellowTime;
-    break;
-  case 2:
-    interval = redTime;
-    break;
-  default:
-    interval = greenTime;
+  switch (currentState) {
+    case 0: interval = greenTime; break;
+    case 1: interval = yellowTime; break;
+    case 2: interval = redTime; break;
+    default: interval = greenTime;
   }
 
-  if (currentState != lastState)
-  {
+  if (currentState != lastState) {
     previousMillis = currentMillis;
     lastState = currentState;
-
     digitalWrite(RED_PIN, currentState == 2);
     digitalWrite(YELLOW_PIN, currentState == 1);
     digitalWrite(GREEN_PIN, currentState == 0);
-
-    Serial.print("[TRAFFIC] ");
-    Serial.println(currentState == 0 ? "Green" : currentState == 1 ? "Yellow"
-                                                                   : "Red");
   }
 
   remainingTime = interval - (currentMillis - previousMillis);
-  if (blueButtonON && remainingTime <= interval)
-  {
+  if (blueButtonON && !isDark && remainingTime <= interval) {
     int secondsLeft = remainingTime / 1000;
     display.showNumberDec(secondsLeft);
   }
 
-  if (currentMillis - previousMillis >= interval)
-  {
+  if (currentMillis - previousMillis >= interval) {
     currentState = (currentState + 1) % 3;
   }
-}
-
-// Blynk handlers
-BLYNK_WRITE(V1)
-{
-  blueButtonON = param.asInt();
-  digitalWrite(pinBLED, blueButtonON);
-  if (!blueButtonON)
-    display.clear();
-  Serial.print("[BLYNK] Blue: ");
-  Serial.println(blueButtonON ? "ON" : "OFF");
-}
-
-BLYNK_WRITE(V7)
-{
-  greenTime = param.asInt() * 1000;
-  Serial.print("[BLYNK] Green time: ");
-  Serial.print(greenTime / 1000);
-  Serial.println(" s");
-}
-
-BLYNK_WRITE(V8)
-{
-  yellowTime = param.asInt() * 1000;
-  Serial.print("[BLYNK] Yellow time: ");
-  Serial.print(yellowTime / 1000);
-  Serial.println(" s");
-}
-
-BLYNK_WRITE(V9)
-{
-  redTime = param.asInt() * 1000;
-  Serial.print("[BLYNK] Red time: ");
-  Serial.print(redTime / 1000);
-  Serial.println(" s");
 }

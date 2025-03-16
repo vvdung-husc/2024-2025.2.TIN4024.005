@@ -2,22 +2,26 @@
 #include <TM1637Display.h>
 #include <DHT.h>
 
-// Định nghĩa các chân
-#define RED_PIN 27      // Đèn đỏ
-#define YELLOW_PIN 26   // Đèn vàng
-#define GREEN_PIN 25    // Đèn xanh lá
-#define BLUE_PIN 21     // Đèn xanh dương
-#define BUTTON_PIN 23   // Nút nhấn
-#define LDR_PIN 32      // Cảm biến ánh sáng
-#define CLK_PIN 18      // TM1637 CLK
-#define DIO_PIN 19      // TM1637 DIO
-#define DHT_PIN 16      // DHT22
+// Nguyễn Việt Nam
+#define BLYNK_TEMPLATE_ID "TMPL6YeCq4kLS"
+#define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+#define BLYNK_AUTH_TOKEN "yHBEJfZ9T7gfaPf_iNwT6ccPgvYH_WGT"
 
+
+// LÊ BÁ NHẬT MINH
+// #define BLYNK_TEMPLATE_ID "TMPL6yean1Ms4"
+// #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+// #define BLYNK_AUTH_TOKEN "LlapeQu1wAa9Xq5m6Mt1BiYAi_EUzieI"
 
 // Hồ Xuân Lãm
-#define BLYNK_TEMPLATE_ID "TMPL60pMYcGkL"
-#define BLYNK_TEMPLATE_NAME "Lab3"
-#define BLYNK_AUTH_TOKEN "wz1Vwsafs3YS58taQXBeaCc8Y-v2LowA"
+// #define BLYNK_TEMPLATE_ID "TMPL60pMYcGkL"
+// #define BLYNK_TEMPLATE_NAME "Lab3"
+// #define BLYNK_AUTH_TOKEN "wz1Vwsafs3YS58taQXBeaCc8Y-v2LowA"
+
+// Nguyễn Viết HÙNg
+// #define BLYNK_TEMPLATE_ID "TMPL6AtsdJeLp"
+// #define BLYNK_TEMPLATE_NAME "cambien"
+// #define BLYNK_AUTH_TOKEN "zKgdoJrEHwPj7UvdbVTOmn-bJQJyOFkQ"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -26,36 +30,47 @@
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 
+
+// Định nghĩa các chân theo sơ đồ kết nối
+#define RED_PIN 27      // Đèn đỏ (với điện trở 220 ohm)
+#define YELLOW_PIN 26   // Đèn vàng (với điện trở 330 ohm)
+#define GREEN_PIN 25    // Đèn xanh lá
+#define BLUE_PIN 21     // Đèn xanh dương
+#define BUTTON_PIN 23   // Nút nhấn
+#define LDR_PIN 32      // Cảm biến ánh sáng
+#define CLK_PIN 18      // Chân CLK của TM1637
+#define DIO_PIN 19      // Chân DIO của TM1637
+#define DHT_PIN 16      // Chân DHT22
+
 // Cấu hình DHT
 #define DHTTYPE DHT22
 DHT dht(DHT_PIN, DHTTYPE);
 
-// Các hằng số
+// Các hằng số khác
 #define GAMMA 0.7
 #define RL10 50
 #define DEBOUNCE_TIME 200
 #define NIGHT_LUX_THRESHOLD 50
+#define HYSTERESIS 50  // Vùng đệm 50 Lux
+#define LUX_CHECK_INTERVAL 1000  // Kiểm tra Lux mỗi 1 giây
 
 // Biến toàn cục
-bool isSystemPaused = false;    
+bool isPaused = false;    
 unsigned long lastButtonPress = 0;
 TM1637Display display(CLK_PIN, DIO_PIN);
 unsigned long previousMillis = 0;
 unsigned long dhtPreviousMillis = 0;
-unsigned long uptimePreviousMillis = 0; // Thời gian cập nhật Uptime
-unsigned long startMillis = 0;
+unsigned long luxPreviousMillis = 0; // Thời gian kiểm tra Lux cuối cùng
+unsigned long startMillis = 0; // Thời gian bắt đầu hệ thống
 long interval = 1000;
-long dhtInterval = 2000;
-long uptimeInterval = 1000; // Cập nhật uptime mỗi 1 giây
+long dhtInterval = 2000;  // Đọc DHT mỗi 2 giây
 int countdown = 0;
-int displayCountdown = 0;
-int trafficState = 0;
+int state = 0;
 bool nightMode = false;
 float temperature = 0;
 float humidity = 0;
-float currentLux = 0;
-bool systemEnabled = true;
-int nightLuxLimit = NIGHT_LUX_THRESHOLD;
+bool systemEnabled = true; // Trạng thái hệ thống (bật/tắt từ Blynk)
+int luxThreshold = NIGHT_LUX_THRESHOLD;
 
 void setup() {
     pinMode(RED_PIN, OUTPUT);
@@ -71,60 +86,55 @@ void setup() {
 
     Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
     startMillis = millis();
-    Blynk.virtualWrite(V3, 1); // Khởi tạo hệ thống bật
-    Blynk.virtualWrite(V0, 0); // Khởi tạo thời gian hoạt động ban đầu
+    Blynk.virtualWrite(V3, 1); // Khởi tạo trạng thái bật trên Blynk
 
     digitalWrite(GREEN_PIN, HIGH);
     digitalWrite(BLUE_PIN, HIGH);
     Serial.println("Đèn xanh (5 giây)");
     countdown = 5;
-    displayCountdown = countdown;
-    trafficState = 0;
+    state = 0;
 }
 
 void changeLight() {
-    if (nightMode || !systemEnabled) return;
+    if (nightMode) return; // Không đổi đèn nếu ở chế độ ban đêm
 
     digitalWrite(RED_PIN, LOW);
     digitalWrite(YELLOW_PIN, LOW);
     digitalWrite(GREEN_PIN, LOW);
 
-    if (trafficState == 0) { // Đèn vàng
+    if (state == 0) {
         digitalWrite(YELLOW_PIN, HIGH);
         Serial.println("Đèn vàng (2 giây)");
         countdown = 2;
-        trafficState = 1;
-    } else if (trafficState == 1) { // Đèn đỏ
+        state = 1;
+    } else if (state == 1) {
         digitalWrite(RED_PIN, HIGH);
         Serial.println("Đèn đỏ (5 giây)");
         countdown = 5;
-        trafficState = 2;
-    } else { // Đèn xanh
+        state = 2;
+    } else {
         digitalWrite(GREEN_PIN, HIGH);
         Serial.println("Đèn xanh (5 giây)");
         countdown = 5;
-        trafficState = 0;
+        state = 0;
     }
-    displayCountdown = countdown;
 }
 
 void checkButtonPress() {
     if (digitalRead(BUTTON_PIN) == LOW) {
         unsigned long currentMillis = millis();
         if (currentMillis - lastButtonPress > DEBOUNCE_TIME) {
-            isSystemPaused = !isSystemPaused;
+            isPaused = !isPaused;
             lastButtonPress = currentMillis;
 
-            if (!isSystemPaused) {
-                digitalWrite(BLUE_PIN, HIGH);
-                display.showNumberDec(displayCountdown, true);
-                Blynk.virtualWrite(V3, 1);
-                Serial.println("Hệ thống BẬT - V3 = 1");
+            if (!isPaused) {
+                Serial.println("BẬT - V3 = 1");
+                Blynk.virtualWrite(V3, 1); // Đồng bộ trạng thái với Blynk
+                systemEnabled = true;      // Đồng bộ systemEnabled
             } else {
-                digitalWrite(BLUE_PIN, LOW);
-                display.clear();
-                Blynk.virtualWrite(V3, 0);
-                Serial.println("Hệ thống TẮT - V3 = 0");
+                Serial.println("TẮT - V3 = 0");
+                Blynk.virtualWrite(V3, 0); // Đồng bộ trạng thái với Blynk
+                systemEnabled = false;     // Đồng bộ systemEnabled
             }
         }
     }
@@ -133,24 +143,19 @@ void checkButtonPress() {
 BLYNK_WRITE(V3) {
     int pinValue = param.asInt();
     systemEnabled = pinValue;
+    isPaused = !pinValue; // Đồng bộ isPaused với systemEnabled (1 = bật, 0 = tắt)
 
-    if (pinValue == 1) {
-        isSystemPaused = false;
-        digitalWrite(BLUE_PIN, HIGH);
-        display.showNumberDec(displayCountdown, true);
-        Serial.println("Blynk BẬT - V3 = 1");
+    if (systemEnabled) {
+        Serial.println("Bật từ Blynk - V3 = 1");
     } else {
-        isSystemPaused = true;
-        digitalWrite(BLUE_PIN, LOW);
-        display.clear();
-        Serial.println("Blynk TẮT - V3 = 0");
+        Serial.println("Tắt từ Blynk - V3 = 0");
     }
 }
 
 BLYNK_WRITE(V4) {
-    nightLuxLimit = param.asInt();
-    Serial.print("Ngưỡng Lux mới: ");
-    Serial.println(nightLuxLimit);
+    luxThreshold = param.asInt();
+    Serial.print("Ngưỡng Lux cập nhật: ");
+    Serial.println(luxThreshold);
 }
 
 void readDHT() {
@@ -170,95 +175,80 @@ void readDHT() {
             Blynk.virtualWrite(V1, temperature);
             Blynk.virtualWrite(V2, humidity);
         } else {
-            Serial.println("Lỗi đọc DHT22!");
+            Serial.println("Lỗi đọc dữ liệu từ DHT22!");
         }
     }
 }
 
 float calculateLux(int adcValue) {
     if (adcValue == 0) return 0;
-    float voltage = adcValue / 4095.0 * 5.0;
+
+    float voltage = adcValue / 4095.0 * 5.0; // Giả định nguồn 5V
     float resistance = 2000 * voltage / (1 - voltage / 5);
-    return pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
+    float lux = pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
+    return lux;
 }
 
 void updateUptime() {
     unsigned long currentMillis = millis();
-    if (currentMillis - uptimePreviousMillis >= uptimeInterval) {
-        uptimePreviousMillis = currentMillis;
-        unsigned long uptimeSeconds = (currentMillis - startMillis) / 1000;
-        Blynk.virtualWrite(V0, uptimeSeconds);
-        Serial.print("Thời gian hoạt động: ");
-        Serial.print(uptimeSeconds);
-        Serial.println(" giây");
-    }
-}
-
-void checkNightMode() {
-    int ldrValue = analogRead(LDR_PIN);
-    currentLux = calculateLux(ldrValue);
-
-    if (currentLux < nightLuxLimit) {
-        digitalWrite(RED_PIN, LOW);
-        digitalWrite(GREEN_PIN, LOW);
-        digitalWrite(YELLOW_PIN, HIGH);
-        digitalWrite(BLUE_PIN, LOW);
-        display.clear();
-        
-        if (!nightMode) {
-            Serial.print("Chế độ ban đêm - Lux: ");
-            Serial.println(currentLux);
-            nightMode = true;
-        }
-    } else {
-        if (nightMode) {
-            digitalWrite(YELLOW_PIN, LOW);
-            if (systemEnabled) {
-                digitalWrite(GREEN_PIN, HIGH);
-                digitalWrite(BLUE_PIN, HIGH);
-                Serial.print("Chế độ ban ngày - Lux: ");
-                Serial.println(currentLux);
-                countdown = 5;
-                displayCountdown = countdown;
-                trafficState = 0;
-            }
-            nightMode = false;
-        }
-    }
+    unsigned long uptimeSeconds = (currentMillis - startMillis) / 1000;
+    Blynk.virtualWrite(V0, uptimeSeconds);
 }
 
 void loop() {
     Blynk.run();
 
-    // Cập nhật thời gian hoạt động độc lập với trạng thái hệ thống
-    updateUptime();
-
-    // Nếu hệ thống bị tắt, chỉ chạy uptime
-    if (!systemEnabled) {
-        return;
-    }
-
     checkButtonPress();
     readDHT();
-    checkNightMode();
+    updateUptime();
 
     unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
+    if (currentMillis - luxPreviousMillis >= LUX_CHECK_INTERVAL) {
+        luxPreviousMillis = currentMillis;
 
-        if (!nightMode && countdown < 0 && systemEnabled) {
-            changeLight();
+        float currentLux = calculateLux(analogRead(LDR_PIN));
+
+        // Kiểm tra chế độ với hysteresis
+        if (!nightMode && currentLux < (luxThreshold - HYSTERESIS)) {
+            digitalWrite(RED_PIN, LOW);
+            digitalWrite(GREEN_PIN, LOW);
+            digitalWrite(YELLOW_PIN, HIGH);
+            digitalWrite(BLUE_PIN, LOW);
+            display.clear();
+            Serial.println("Chuyển sang chế độ ban đêm - Chỉ đèn vàng sáng");
+            nightMode = true;
+        } else if (nightMode && currentLux > (luxThreshold + HYSTERESIS)) {
+            digitalWrite(YELLOW_PIN, LOW);
+            digitalWrite(GREEN_PIN, HIGH);
+            digitalWrite(BLUE_PIN, HIGH);
+            Serial.println("Chuyển sang chế độ ban ngày - Đèn xanh sáng (5 giây)");
+            countdown = 5;
+            state = 0;
+            nightMode = false;
         }
+    }
 
-        Serial.print("Thời gian còn: ");
-        Serial.print(countdown);
-        Serial.println(" giây");
+    // Luôn cập nhật đèn và đếm ngược khi ở chế độ ban ngày
+    if (!nightMode) {
+        if (currentMillis - previousMillis >= interval) {
+            previousMillis = currentMillis;
 
-        if (!isSystemPaused && !nightMode && systemEnabled) {
-            display.showNumberDec(displayCountdown, true);
+            if (countdown < 0) {
+                changeLight();
+            }
+
+            Serial.print("Còn ");
+            Serial.print(countdown);
+            Serial.println(" giây");
+
+            // Chỉ hiển thị countdown trên TM1637 khi không pause
+            if (!isPaused) {
+                display.showNumberDec(countdown, true);
+            } else {
+                display.clear();
+            }
+
+            countdown--;
         }
-
-        countdown--;
-        displayCountdown = countdown >= 0 ? countdown : 0;
     }
 }
