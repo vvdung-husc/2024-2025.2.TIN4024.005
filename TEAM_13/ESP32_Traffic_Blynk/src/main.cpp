@@ -12,14 +12,20 @@
 // #define BLYNK_AUTH_TOKEN "qopeQMkYOtVPeV_K-5OgDAM3SelRdgO3"
 
 // Hoàng Thanh Nhã
-#define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
-#define BLYNK_TEMPLATE_NAME "TrafficBlynk"
-#define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
+// #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
+// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
 
 // Nguyễn Khánh Linh
 // #define BLYNK_TEMPLATE_ID "TMPL6CbYUwJFN"
 // #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK LED"
 // #define BLYNK_AUTH_TOKEN "C6_0VoXx3puIy5vz3fCEsGo1dBWE7oXF"
+
+//Trần Thị Quỳnh Anh
+#define BLYNK_TEMPLATE_ID "TMPL69Wf7a53k"
+#define BLYNK_TEMPLATE_NAME "Traffic Bynk"
+#define BLYNK_AUTH_TOKEN "Et6D7IURjemqWdyKJxYQmnZQU7Zoa4X5"
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
