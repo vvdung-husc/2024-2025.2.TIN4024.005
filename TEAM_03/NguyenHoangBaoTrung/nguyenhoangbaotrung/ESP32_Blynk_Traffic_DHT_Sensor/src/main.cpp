@@ -1,119 +1,160 @@
+#include <Arduino.h>
+#include <TM1637Display.h>
+
+// Blynk credentials
 #define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
 #define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
 #define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
 
-#include <Arduino.h>
-#include <TM1637Display.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <DHT.h>
 
-// WiFi Credentials
+/* Thông tin kết nối WiFi */
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 
-// Pin Definitions
-#define BUTTON_PIN 23
-#define LED_PIN 21
-#define DHT_PIN 16
-#define CLK_PIN 18
-#define DIO_PIN 19
-
+// Chân kết nối phần cứng
+#define BTN_PIN 23 // Nút nhấn
+#define LED_PIN 21 // LED xanh
+#define CLK 18     // TM1637 CLK
+#define DIO 19     // TM1637 DIO
+#define DHT_PIN 16 // Cảm biến DHT22
 #define DHT_TYPE DHT22
 
+// Biến toàn cục
+ulong currentMillis = 0;
+bool ledState = true;
+
+// Khởi tạo module
+TM1637Display display(CLK, DIO);
 DHT dht(DHT_PIN, DHT_TYPE);
-TM1637Display display(CLK_PIN, DIO_PIN);
 
-// Global Variables
-bool isDisplayOn = true;
-int lastButtonState = HIGH;
-unsigned long lastButtonPress = 0;
-const unsigned long debounceDelay = 50;
+bool isReady(ulong &lastTime, uint32_t interval);
+void handleButton();
+void updateUptime();
+void updateTemperatureHumidity();
 
-unsigned long lastSensorRead = 0;
-const unsigned long sensorInterval = 2000;
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BTN_PIN, INPUT_PULLUP);
 
-float temperature = 0.0;
-float humidity = 0.0;
+  display.setBrightness(0x0f);
+  dht.begin();
 
-unsigned long lastUptimeUpdate = 0;
-const unsigned long uptimeInterval = 1000;
+  Serial.print("Đang kết nối WiFi: ");
+  Serial.println(ssid);
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
-// Blynk Callback
-BLYNK_WRITE(V1) {
-    isDisplayOn = param.asInt();
-    digitalWrite(LED_PIN, isDisplayOn ? HIGH : LOW);
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.println("❌ Kết nối WiFi thất bại!");
+  }
+  else
+  {
+    Serial.println("✅ WiFi đã kết nối!");
+  }
+
+  digitalWrite(LED_PIN, ledState ? HIGH : LOW);
+  Blynk.virtualWrite(V2, ledState);
 }
 
-void setup() {
-    Serial.begin(115200);
-    pinMode(BUTTON_PIN, INPUT_PULLUP);
-    pinMode(LED_PIN, OUTPUT);
-    
-    display.setBrightness(7);
-    display.showNumberDec(0, true);
-    
-    dht.begin();
-    
-    Serial.print("Connecting to WiFi: ");
-    Serial.println(ssid);
-    Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
-    Serial.println("Connected to Blynk");
-    
-    Blynk.virtualWrite(V1, isDisplayOn);
+void loop()
+{
+  Blynk.run(); // Duy trì kết nối với Blynk
+
+  currentMillis = millis();
+  updateUptime();
+  handleButton();
+  updateTemperatureHumidity();
 }
 
-void updateDisplay(unsigned long seconds) {
-    int minutes = seconds / 60;
-    int secs = seconds % 60;
-    int timeDisplay = (minutes * 100) + secs;
-    display.showNumberDecEx(timeDisplay, 0x40, true);
+// Hạn chế spam tín hiệu
+bool isReady(ulong &lastTime, uint32_t interval)
+{
+  if (currentMillis - lastTime < interval)
+    return false;
+  lastTime = currentMillis;
+  return true;
 }
 
-void loop() {
-    Blynk.run();
-    unsigned long currentMillis = millis();
-    
-    int buttonState = digitalRead(BUTTON_PIN);
-    if (buttonState != lastButtonState) {
-        lastButtonPress = currentMillis;
-    }
+// Xử lý nút nhấn
+void handleButton()
+{
+  static ulong lastPress = 0;
+  static int lastState = HIGH;
+  if (!isReady(lastPress, 50))
+    return;
 
-    if ((currentMillis - lastButtonPress) > debounceDelay) {
-        if (buttonState == LOW && lastButtonState == HIGH) {
-            isDisplayOn = !isDisplayOn;
-            Blynk.virtualWrite(V1, isDisplayOn);
-            Serial.printf("Button Pressed, Display: %s\n", isDisplayOn ? "ON" : "OFF");
-        }
-    }
-    lastButtonState = buttonState;
-    
-    digitalWrite(LED_PIN, isDisplayOn ? HIGH : LOW);
-    
-    if (currentMillis - lastSensorRead >= sensorInterval) {
-        lastSensorRead = currentMillis;
-        temperature = dht.readTemperature();
-        humidity = dht.readHumidity();
-        
-        if (!isnan(temperature) && !isnan(humidity)) {
-            Serial.printf("Temp: %.2f°C, Humidity: %.2f%%\n", temperature, humidity);
-            Blynk.virtualWrite(V2, temperature);
-            Blynk.virtualWrite(V3, humidity);
-        } else {
-            Serial.println("Failed to read from DHT22!");
-        }
-    }
-    
-    if (currentMillis - lastUptimeUpdate >= uptimeInterval) {
-        lastUptimeUpdate = currentMillis;
-        unsigned long uptime = currentMillis / 1000;
-        Blynk.virtualWrite(V0, uptime);
-        
-        if (isDisplayOn) {
-            updateDisplay(uptime);
-        } else {
-            display.clear();
-        }
-    }
+  int buttonState = digitalRead(BTN_PIN);
+  if (buttonState == lastState)
+    return;
+  lastState = buttonState;
+  if (buttonState == LOW)
+    return;
+
+  ledState = !ledState;
+  digitalWrite(LED_PIN, ledState ? HIGH : LOW);
+  Blynk.virtualWrite(V2, ledState);
+
+  if (!ledState)
+  {
+    display.clear();
+  }
+}
+
+// Hiển thị thời gian chạy
+void updateUptime()
+{
+  static ulong lastUpdate = 0;
+  if (!isReady(lastUpdate, 1000))
+    return;
+
+  ulong seconds = currentMillis / 1000;
+  Blynk.virtualWrite(V1, seconds);
+
+  if (ledState)
+  {
+    display.showNumberDec(seconds);
+  }
+}
+
+void updateTemperatureHumidity()
+{
+  static ulong lastUpdate = 0;
+  if (!isReady(lastUpdate, 2000))
+    return;
+
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+
+  if (!isnan(temp) && !isnan(hum))
+  {
+    Blynk.virtualWrite(V3, temp); // Gửi nhiệt độ lên Blynk
+    Blynk.virtualWrite(V4, hum);  // Gửi độ ẩm lên Blynk
+
+    Serial.print("🌡 Nhiệt độ: ");
+    Serial.print(temp);
+    Serial.print(" °C | 💧 Độ ẩm: ");
+    Serial.print(hum);
+    Serial.println(" %");
+  }
+  else
+  {
+    Serial.println("⚠️ Lỗi đọc cảm biến DHT22! Thử lại...");
+  }
+}
+
+// Điều khiển LED từ Blynk
+BLYNK_WRITE(V2)
+{
+  ledState = param.asInt();
+  digitalWrite(LED_PIN, ledState ? HIGH : LOW);
+  if (!ledState)
+  {
+    display.clear();
+  }
 }
