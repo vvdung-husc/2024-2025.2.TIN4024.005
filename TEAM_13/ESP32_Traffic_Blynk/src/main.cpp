@@ -7,14 +7,14 @@
 //#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
 
 //Tôn Huyền Kim Khánh
-#define BLYNK_TEMPLATE_ID "TMPL6uQEQxtWU"
-#define BLYNK_TEMPLATE_NAME "ESP32 BLYNK"
-#define BLYNK_AUTH_TOKEN "qopeQMkYOtVPeV_K-5OgDAM3SelRdgO3"
+// #define BLYNK_TEMPLATE_ID "TMPL6uQEQxtWU"
+// #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK"
+// #define BLYNK_AUTH_TOKEN "qopeQMkYOtVPeV_K-5OgDAM3SelRdgO3"
 
 // Hoàng Thanh Nhã
-// #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
-// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
-// #define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
+#define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
+#define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+#define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
 
 // Nguyễn Khánh Linh
 // #define BLYNK_TEMPLATE_ID "TMPL6CbYUwJFN"
