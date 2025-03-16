@@ -1,0 +1,6 @@
+# Wokwi Configuration File
+# Reference: https://docs.wokwi.com/vscode/project-config
+[wokwi]
+version = 1
+firmware = ".pio/build/nodemcu-32s/firmware.bin"
+elf = ".pio/build/nodemcu-32s/firmware.elf"
