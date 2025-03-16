@@ -1,9 +1,16 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
+
 // Dương Duy Khanh
 //#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
 //#define BLYNK_TEMPLATE_NAME "khanh"
 //#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
+
+//Tôn Huyền Kim Khánh
+// #define BLYNK_TEMPLATE_ID "TMPL6Mtg-cw9S"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED"
+// #define BLYNK_AUTH_TOKEN "jNyrijhCFQGHv4WNa5VCQxQpFPxd_l8B"
+
 // Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
 #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
