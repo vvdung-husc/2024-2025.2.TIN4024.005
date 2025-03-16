@@ -10,6 +10,10 @@
 // #define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
 // #define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
 
+// Lê Minh Hiếu
+// #define BLYNK_TEMPLATE_ID "TMPL6rEGHy8tM"
+// #define BLYNK_TEMPLATE_NAME "trafficsensor"
+// #define BLYNK_AUTH_TOKEN "2bggqH1AsOhMGtavtJvwU66-Va8dxPGs"
 
 
 
