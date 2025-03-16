@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "author": "Nhã Hoàng Thanh",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []]
+  ],
+  "widgets": [
+    {
+      "type": "counter",
+      "title": "Thời gian hoạt động",
+      "value": 367,
+      "unit": "giây",
+      "color": "green"
+    },
+    {
+      "type": "text",
+      "title": "Địa chỉ IPv4",
+      "value": "123.25.115.141",
+      "color": "blue",
+      "link": "https://whatismyipaddress.com/"
+    },
+    {
+      "type": "link",
+      "title": "Google Maps",
+      "value": "https://www.google.com/maps/place/16.466669,107.590000",
+      "color": "blue"
+    },
+    {
+      "type": "gauge",
+      "title": "Nhiệt độ",
+      "value": 26.1,
+      "min": -40,
+      "max": 80,
+      "unit": "°C",
+      "color": "magenta"
+    }
+  ],
+  "dependencies": {}
+}
