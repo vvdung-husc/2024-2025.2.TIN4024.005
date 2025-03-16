@@ -7,9 +7,9 @@
 //#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
 
 //Tôn Huyền Kim Khánh
-// #define BLYNK_TEMPLATE_ID "TMPL6Mtg-cw9S"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED"
-// #define BLYNK_AUTH_TOKEN "jNyrijhCFQGHv4WNa5VCQxQpFPxd_l8B"
+// #define BLYNK_TEMPLATE_ID "TMPL6uQEQxtWU"
+// #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK"
+// #define BLYNK_AUTH_TOKEN "qopeQMkYOtVPeV_K-5OgDAM3SelRdgO3"
 
 // Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"

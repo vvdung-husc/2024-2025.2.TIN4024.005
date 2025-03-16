@@ -2,6 +2,7 @@
 #include <TM1637Display.h>
 
 // Huỳnh Quốc Khánh
+<<<<<<< HEAD
 #define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
 #define BLYNK_TEMPLATE_NAME "TRAFFIC"
 #define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
@@ -9,6 +10,11 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
 // #define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
 // #define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
+=======
+// #define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
+// #define BLYNK_TEMPLATE_NAME "TRAFFIC"
+// #define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
+>>>>>>> f5711d3538033a9ca7ac5219a972da0c743eb189
 
 
 #include <WiFi.h>
