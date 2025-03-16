@@ -4,10 +4,15 @@
 //#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
 //#define BLYNK_TEMPLATE_NAME "khanh"
 //#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
+
 // Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
 #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
 #define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
+//Tôn Huyền Kim Khánh
+// #define BLYNK_TEMPLATE_ID "TMPL6Mtg-cw9S"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED"
+// #define BLYNK_AUTH_TOKEN "jNyrijhCFQGHv4WNa5VCQxQpFPxd_l8B"
 // Nguyễn Khánh Linh
 // #define BLYNK_TEMPLATE_ID "TMPL6CbYUwJFN"
 // #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK LED"
