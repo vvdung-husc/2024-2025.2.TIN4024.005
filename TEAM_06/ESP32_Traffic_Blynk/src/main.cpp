@@ -2,14 +2,29 @@
 #include <TM1637Display.h>
 
 // Lại Văn Minh
-//#define BLYNK_TEMPLATE_ID "TMPL6zydB78I4"
-//#define BLYNK_TEMPLATE_NAME "TRAFFICBLYNK"
-//#define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
+// #define BLYNK_TEMPLATE_ID "TMPL6zydB78I4"
+// #define BLYNK_TEMPLATE_NAME "TRAFFICBLYNK"
+// #define BLYNK_AUTH_TOKEN "ddYhBGFVvAZVMMBgh73zS1nQx9TVrcl_"
 
-//Nguyễn Thị Diệu Anh
-#define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
+// Nguyễn Thị Diệu Anh
+//   #define BLYNK_TEMPLATE_ID "TMPL6yjnfI3kl"
+//   #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+//   #define BLYNK_AUTH_TOKEN "pti792X8DQI82xrWQebH3-hNlIEb24ny"
+
+// //Phạm Ngọc Cảm
+// #define BLYNK_TEMPLATE_ID "TMPL6l90z6d8N"
+// #define BLYNK_TEMPLATE_NAME "ESP32BlynkTrafficNhom"
+// #define BLYNK_AUTH_TOKEN "v2WiKiGIRkz2GMj1mqsF8ocsLFHcTq4x"
+
+// Phan Duy An
+// #define BLYNK_TEMPLATE_ID "TMPL6CLo5AjgL"
+// #define BLYNK_TEMPLATE_NAME "ESP32BlynkTraffic"
+// #define BLYNK_AUTH_TOKEN "ThmnzY_DHB6YJ8kzwvyUtp6Kd3iSd5r-"
+
+// Lê Thị Thanh Nhàn
+#define BLYNK_TEMPLATE_ID "TMPL6tk269ztx"
+#define BLYNK_TEMPLATE_NAME "Traffic"
+#define BLYNK_AUTH_TOKEN "oto_ciedagfkHnII3IXkMNpah9RgEgnn"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -49,13 +64,14 @@ enum TrafficLightState
 TrafficLightState lightState = GREEN;
 int countDown = GREEN_TIME / 1000;
 unsigned long currentMillis = 0;
-bool buttonState = false;
+bool buttonState = true;
 
 void BlinkingYellowLight();
 void NormalTrafficLight();
 void ClearTM();
 bool IsRead(unsigned long &previousMillis, unsigned long milliseconds);
 void updateTemperatureHumidity();
+void uptimeBlynk();
 
 void setup()
 
@@ -102,7 +118,7 @@ void loop()
     static unsigned long previousButtonMillis = 0;
 
     Serial.print("LDR Raw Value: ");
-    Serial.print(ldr);
+    Serial.println(ldr);
 
     // Check button state
     if (digitalRead(BUTTON_PIN) == LOW && IsRead(previousButtonMillis, 50))
@@ -120,20 +136,20 @@ void loop()
     {
         if (buttonState)
         {
-            digitalWrite(LED_PINK, HIGH);
-            ClearTM();
+            digitalWrite(LED_PINK, buttonState);
+            NormalTrafficLight();
             Blynk.virtualWrite(V1, buttonState);
         }
         else
         {
-            digitalWrite(LED_PINK, LOW);
-            NormalTrafficLight();
+            digitalWrite(LED_PINK, buttonState);
+            ClearTM();
             Blynk.virtualWrite(V1, buttonState);
         }
     }
 
     updateTemperatureHumidity();
-    Blynk.virtualWrite(V0, countDown);
+    uptimeBlynk();
     Blynk.virtualWrite(V4, darkThreshold);
 }
 
@@ -281,6 +297,15 @@ void updateTemperatureHumidity()
     {
         Serial.println("⚠️ Error reading DHT22 sensor!");
     }
+}
+
+void uptimeBlynk()
+{
+    static ulong lastTime = 0;
+    if (!IsRead(lastTime, 1000))
+        return; // Kiểm tra và cập nhật lastTime sau mỗi 1 giây
+    ulong value = lastTime / 1000;
+    Blynk.virtualWrite(V0, value);
 }
 
 BLYNK_WRITE(V1)
