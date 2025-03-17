@@ -135,8 +135,7 @@ void sendSensorData() {
   float hum = dht.readHumidity();
   if (!isnan(temp) && !isnan(hum)) {
     Blynk.virtualWrite(V5, temp); 
-    Blynk.virtualWrite(V6, hum);  
-  } else {
+    Blynk.virtualWrite(V6, hum);
     Serial.println("Failed to read from DHT sensor!");
     Blynk.virtualWrite(V5, 0);
     Blynk.virtualWrite(V6, 0);
