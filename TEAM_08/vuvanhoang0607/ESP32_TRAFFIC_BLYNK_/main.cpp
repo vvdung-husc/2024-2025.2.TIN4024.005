@@ -1,4 +1,4 @@
-// Vũ Văn HoàngHoàng
+// Vũ Văn Hoàng
 #define BLYNK_TEMPLATE_ID "TMPL6ELJxae3F"
 #define BLYNK_TEMPLATE_NAME "ESP32 TRAFFIC BLYNK"
 #define BLYNK_AUTH_TOKEN "50QqXnoc7wRD7xRySxgugt3HFRMeJRp0"
