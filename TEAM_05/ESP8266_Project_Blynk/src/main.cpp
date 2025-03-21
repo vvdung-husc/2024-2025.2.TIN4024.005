@@ -6,19 +6,19 @@
 
 #include <Wire.h>
 #include <U8g2lib.h>
-// //Lê Quang Khải
-// #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
-// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
-// #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
+//Lê Quang Khải
+#define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+#define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
 //Lê Phước Quang
 // #define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
 // #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
 
-//Lê Nguyễn Thiện Bình
-#define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
-#define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
+// //Lê Nguyễn Thiện Bình
+// #define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -136,4 +136,29 @@ void capNhatDHT() {
 
     Blynk.virtualWrite(V1, nhietDo);
     Blynk.virtualWrite(V2, doAm);
+}
+void hienThiBoDem() {
+    static uint boDem = 0;
+    static ulong thoiGianTruoc = 0;
+    if (!IsReady(thoiGianTruoc, 2000)) return;
+
+    oled.clearBuffer();
+    oled.setFont(u8g2_font_logisoso32_tf);
+    oled.setCursor(30, 40);
+    oled.print(boDem);
+    oled.sendBuffer();
+
+    boDem++;
+}
+
+void chopDenVang() {
+    static bool trangThaiDenVang = false;
+    static ulong thoiGianTruoc = 0;
+    if (IsReady(thoiGianTruoc, 500)) {
+        trangThaiDenVang = !trangThaiDenVang;
+        digitalWrite(LED_VANG, trangThaiDenVang);
+    }
+
+    digitalWrite(LED_XANH, LOW);
+    digitalWrite(LED_DO, LOW);
 }
