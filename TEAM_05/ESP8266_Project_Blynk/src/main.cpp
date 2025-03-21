@@ -1,18 +1,4 @@
-#include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
-
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+//Lê Nguyễn Thiện Bình
+#define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+#define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
