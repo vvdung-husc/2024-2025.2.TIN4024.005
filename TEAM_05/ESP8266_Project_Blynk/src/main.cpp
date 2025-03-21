@@ -6,10 +6,16 @@
 
 #include <Wire.h>
 #include <U8g2lib.h>
-//Lê Quang Khải
-#define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+
+//Ngô Văn Hiếu
+#define BLYNK_TEMPLATE_ID "TMPL6KLUX0g8k"
 #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
-#define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
+#define BLYNK_AUTH_TOKEN "OPO0M5x-ooILRht8BKrYJafoq6OTBJYY"
+
+// //Lê Quang Khải
+// #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
 //Lê Phước Quang
 // #define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
 // #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
