@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
 //Thay thông số BLYNK của bạn vào đây
-#define BLYNK_TEMPLATE_ID "TMPL64R6jtR0B"
-#define BLYNK_TEMPLATE_NAME "APIGET"
-#define BLYNK_AUTH_TOKEN "XPZwyun-MHhPq98PFV3R-Q-G-b-ce9X4"
+#define BLYNK_TEMPLATE_ID "TMPL6KMLmPgy1"
+#define BLYNK_TEMPLATE_NAME "api get"
+#define BLYNK_AUTH_TOKEN "pR89XFUt6lac3W2Jp_YwNcL_6ETNIzQz"
 
 #include <Arduino.h>
 #include <WiFi.h>
