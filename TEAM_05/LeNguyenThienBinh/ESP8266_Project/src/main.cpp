@@ -1,28 +1,18 @@
 #include <Arduino.h>
 #include "utils.h"
 
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
-
 #include <Wire.h>
 #include <U8g2lib.h>
-
 
 #define gPIN 15
 #define yPIN 2
 #define rPIN 5
-
-#define dhtPIN 16     // Digital pin connected to the DHT sensor
-#define dhtTYPE DHT11 // DHT 22 (AM2302)
 
 #define OLED_SDA 13
 #define OLED_SCL 12
 
 // Khởi tạo OLED SH1106
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
-
-DHT dht(D0, dhtTYPE);
-
 
 bool WelcomeDisplayTimeout(uint msSleep = 5000){
   static ulong lastTimer = 0;
@@ -32,7 +22,6 @@ bool WelcomeDisplayTimeout(uint msSleep = 5000){
   bDone = true;    
   return bDone;
 }
-
 
 void setup() {
   Serial.begin(115200);
@@ -44,8 +33,6 @@ void setup() {
   digitalWrite(yPIN, LOW);
   digitalWrite(rPIN, LOW);
 
-  dht.begin();
-
   Wire.begin(OLED_SDA, OLED_SCL);  // SDA, SCL
 
   oled.begin();
@@ -54,7 +41,7 @@ void setup() {
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
   oled.drawUTF8(0, 14, "Trường ĐHKH");  
   oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lập trình IoT TEAM_5");  
+  oled.drawUTF8(0, 42, "Lê Nguyễn Thiện Bình");  
 
   oled.sendBuffer();
 }
@@ -78,12 +65,9 @@ void updateDHT(){
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  float h = dht.readHumidity();
-  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
-  }
+  // Tạo số ngẫu nhiên trong phạm vi mong muốn
+  float h = random(0, 101) + random(0, 100) / 100.0; // Độ ẩm từ 0 đến 100
+  float t = random(-40, 101) + random(0, 100) / 100.0; // Nhiệt độ từ -40 đến 100
 
   bool bDraw = false;
 
@@ -101,8 +85,8 @@ void updateDHT(){
     Serial.print("Humidity: ");
     Serial.print(h);
     Serial.print(" %\t");  
-    
   }
+
   if (bDraw){
     oled.clearBuffer();
     oled.setFont(u8g2_font_unifont_t_vietnamese2);
@@ -114,8 +98,7 @@ void updateDHT(){
     oled.drawUTF8(0, 42, s.c_str());      
 
     oled.sendBuffer();
-  } 
-  
+  }   
 }
 
 void DrawCounter(){  
@@ -131,7 +114,6 @@ void DrawCounter(){
   oled.sendBuffer(); // Gửi dữ liệu lên màn hình
 
   counter++; // Tăng giá trị đếm
-
 }
 
 void loop() {
