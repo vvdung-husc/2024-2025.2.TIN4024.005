@@ -3,7 +3,7 @@
 #define LED1 15  // Chân LED 1
 #define LED2 16  // Chân LED 2
 #define LED3 17  // Chân LED 3
-#define TEMP_SENSOR_PIN 34  // Chân cảm biến nhiệt độ (ESP32 ADC)
+#define TEMP_SENSOR_PIN 34 
 
 // Thiết lập
 void setup() {
@@ -17,7 +17,7 @@ void setup() {
 void loop() {
     // Đọc nhiệt độ
     int rawValue = analogRead(TEMP_SENSOR_PIN);
-    float voltage = rawValue * (3.3 / 4095.0); // Chuyển đổi giá trị ADC (ESP32)
+    float voltage = rawValue * (3.3 / 4095.0); 
     float temperature = voltage * 100.0; // LM35: 10mV = 1°C
 
     // Hiển thị nhiệt độ lên Serial Monitor
