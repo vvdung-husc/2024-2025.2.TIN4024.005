@@ -1,93 +1,141 @@
 #include <Arduino.h>
+#include "utils.h"
 
-/*
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/telegram-esp32-motion-detection-arduino/
-  
-  Project created using Brian Lough's Universal Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
-*/
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
 
-#include <WiFi.h>
-#include <WiFiClientSecure.h>
-#include <UniversalTelegramBot.h>
-#include <ArduinoJson.h>
+#include <Wire.h>
+#include <U8g2lib.h>
 
-// Replace with your network credentials
-const char* ssid = "Wokwi-GUEST";
-const char* password = "";
 
-// Initialize Telegram BOT
-#define BOTtoken "7179261234:AAERMDKB_0mSa4SBp6tymQeOiYb6ebDHVJg"  // your Bot Token (Get from Botfather)
+#define gPIN 15
+#define yPIN 2
+#define rPIN 5
 
-// Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-#define GROUP_ID "-1002559266898" //thường là một số âm
+#define dhtPIN 16     // Digital pin connected to the DHT sensor
+#define dhtTYPE DHT11 // DHT 22 (AM2302)
 
-WiFiClientSecure client;
-UniversalTelegramBot bot(BOTtoken, client);
+#define OLED_SDA 13
+#define OLED_SCL 12
 
-const int motionSensor = 27; // PIR Motion Sensor
-bool motionDetected = false;
+// Khởi tạo OLED SH1106
+U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
-//Định dạng chuỗi %s,%d,...
-String StringFormat(const char* fmt, ...){
-  va_list vaArgs;
-  va_start(vaArgs, fmt);
-  va_list vaArgsCopy;
-  va_copy(vaArgsCopy, vaArgs);
-  const int iLen = vsnprintf(NULL, 0, fmt, vaArgsCopy);
-  va_end(vaArgsCopy);
-  int iSize = iLen + 1;
-  char* buff = (char*)malloc(iSize);
-  vsnprintf(buff, iSize, fmt, vaArgs);
-  va_end(vaArgs);
-  String s = buff;
-  free(buff);
-  return String(s);
+DHT dht(D0, dhtTYPE);
+
+
+bool WelcomeDisplayTimeout(uint msSleep = 5000){
+  static ulong lastTimer = 0;
+  static bool bDone = false;
+  if (bDone) return true;
+  if (!IsReady(lastTimer, msSleep)) return false;
+  bDone = true;    
+  return bDone;
 }
 
-// Indicates when motion is detected
-void IRAM_ATTR detectsMovement() {
-  //Serial.println("MOTION DETECTED!!!");
-  motionDetected = true;
-}
 
 void setup() {
   Serial.begin(115200);
-
-  // PIR Motion Sensor mode INPUT_PULLUP
-  pinMode(motionSensor, INPUT_PULLUP);
-  // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
-  attachInterrupt(digitalPinToInterrupt(motionSensor), detectsMovement, RISING);
-
-  // Attempt to connect to Wifi network:
-  Serial.print("Connecting Wifi: ");
-  Serial.println(ssid);
-
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  client.setCACert(TELEGRAM_CERTIFICATE_ROOT); // Add root certificate for api.telegram.org
+  pinMode(gPIN, OUTPUT);
+  pinMode(yPIN, OUTPUT);
+  pinMode(rPIN, OUTPUT);
   
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(100);
-  }
+  digitalWrite(gPIN, LOW);
+  digitalWrite(yPIN, LOW);
+  digitalWrite(rPIN, LOW);
 
-  Serial.println("");
-  Serial.println("WiFi connected");
+  dht.begin();
+
+  Wire.begin(OLED_SDA, OLED_SCL);  // SDA, SCL
+
+  oled.begin();
+  oled.clearBuffer();
   
-  bot.sendMessage(GROUP_ID, "IoT Developer started up");
+  oled.setFont(u8g2_font_unifont_t_vietnamese1);
+  oled.drawUTF8(0, 14, "Trường ĐHKH");  
+  oled.drawUTF8(0, 28, "Khoa CNTT");
+  oled.drawUTF8(0, 42, "Lập trình IoT");  
+
+  oled.sendBuffer();
 }
 
+void ThreeLedBlink(){
+  static ulong lastTimer = 0;
+  static int currentLed = 0;  
+  static const int ledPin[3] = {gPIN, yPIN, rPIN};
+
+  if (!IsReady(lastTimer, 1000)) return;
+  int prevLed = (currentLed + 2) % 3;
+  digitalWrite(ledPin[prevLed], LOW);  
+  digitalWrite(ledPin[currentLed], HIGH);  
+  currentLed = (currentLed + 1) % 3;
+}
+
+float fHumidity = 0.0;
+float fTemperature = 0.0;
+
+void updateDHT(){
+  static ulong lastTimer = 0;  
+  if (!IsReady(lastTimer, 2000)) return;
+
+  float h = dht.readHumidity();
+  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  bool bDraw = false;
+
+  if (fTemperature != t){
+    bDraw = true;
+    fTemperature = t;
+    Serial.print("Temperature: ");
+    Serial.print(t);
+    Serial.println(" *C");                    
+  }
+
+  if (fHumidity != h){
+    bDraw = true;
+    fHumidity = h;
+    Serial.print("Humidity: ");
+    Serial.print(h);
+    Serial.print(" %\t");  
+    
+  }
+  if (bDraw){
+    oled.clearBuffer();
+    oled.setFont(u8g2_font_unifont_t_vietnamese2);
+
+    String s = StringFormat("Nhiet do: %.2f °C", t);
+    oled.drawUTF8(0, 14, s.c_str());  
+    
+    s = StringFormat("Do am: %.2f %%", h);
+    oled.drawUTF8(0, 42, s.c_str());      
+
+    oled.sendBuffer();
+  } 
+  
+}
+
+void DrawCounter(){  
+  static uint counter = 0; // Biến đếm
+  static ulong lastTimer = 0;  
+  if (!IsReady(lastTimer, 2000)) return;
+
+  // Bắt đầu vẽ màn hình
+  oled.clearBuffer();  
+  oled.setFont(u8g2_font_logisoso32_tf); // Chọn font lớn để hiển thị số
+  oled.setCursor(30, 40); // Đặt vị trí chữ
+  oled.print(counter); // Hiển thị số đếm
+  oled.sendBuffer(); // Gửi dữ liệu lên màn hình
+
+  counter++; // Tăng giá trị đếm
+
+}
 
 void loop() {
-  static uint count_ = 0;
-
-  if(motionDetected){
-    ++count_;
-    Serial.print(count_);Serial.println(". MOTION DETECTED => Waiting to send to Telegram");    
-    String msg = StringFormat("%u => Motion detected!",count_);
-    bot.sendMessage(GROUP_ID, msg.c_str());
-    Serial.print(count_);Serial.println(". Sent successfully to Telegram: Motion Detected");
-    motionDetected = false;
-  }
+  if (!WelcomeDisplayTimeout()) return;
+  ThreeLedBlink();
+  updateDHT();
 }
