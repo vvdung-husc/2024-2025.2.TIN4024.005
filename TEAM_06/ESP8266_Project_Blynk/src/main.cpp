@@ -7,6 +7,14 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
+//Nguyễn Thị Diệu Anh
+#define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
+#define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
+
+#include <Esp8266WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp8266.h>
 
 #define gPIN 15
 #define yPIN 2
@@ -23,6 +31,11 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 DHT dht(D0, dhtTYPE);
 
+// WiFi credentials
+char ssid[] = "CNTT-MMT";
+char pass[] = "13572468";
+
+bool buttonState = false;
 
 bool WelcomeDisplayTimeout(uint msSleep = 5000){
   static ulong lastTimer = 0;
@@ -47,7 +60,17 @@ void setup() {
   dht.begin();
 
   Wire.begin(OLED_SDA, OLED_SCL);  // SDA, SCL
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
+  if (WiFi.status() != WL_CONNECTED)
+  {
+      Serial.println("❌ WiFi connection failed!");
+  }
+  else
+  {
+      Serial.println("✅ WiFi connected!");
+  }
+  Blynk.virtualWrite(V3, buttonState);
   oled.begin();
   oled.clearBuffer();
   
@@ -83,7 +106,7 @@ void updateDHT(){
   // float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
   float h = random(0, 10001) / 100.0;       // [0.00, 100.00]
   float t = random(-4000, 8001) / 100.0;   // [-40.00, 80.00]
-
+  
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
@@ -119,6 +142,8 @@ void updateDHT(){
 
     oled.sendBuffer();
   } 
+  Blynk.virtualWrite(V1, t);
+  Blynk.virtualWrite(V2, h);
   
 }
 
@@ -137,9 +162,37 @@ void DrawCounter(){
   counter++; // Tăng giá trị đếm
 
 }
+void BlinkingYellowLight()
+{
+    static bool yellowState = false;
+    static unsigned long previousBlinkMillis = 0;
+    if (IsReady(previousBlinkMillis, 500))
+    {
+        yellowState = !yellowState;
+        digitalWrite(yPIN, yellowState);
+    }
 
+    digitalWrite(gPIN, LOW);
+    digitalWrite(rPIN, LOW);
+}
+void uptimeBlynk()
+{
+    static ulong lastTime = 0;
+    if (!IsReady(lastTime, 1000))
+        return; // Kiểm tra và cập nhật lastTime sau mỗi 1 giây
+    ulong value = lastTime / 1000;
+    Blynk.virtualWrite(V0, value);
+}
+BLYNK_WRITE(V3)
+{
+    buttonState = param.asInt();
+}
 void loop() {
   if (!WelcomeDisplayTimeout()) return;
   ThreeLedBlink();
   updateDHT();
+  uptimeBlynk();
+  if(buttonState){
+    BlinkingYellowLight();
+  }
 }
