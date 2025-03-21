@@ -57,6 +57,7 @@ void setup() {
   oled.drawUTF8(0, 42, "Lập trình IoT");  
 
   oled.sendBuffer();
+  randomSeed(analogRead(0));
 }
 
 void ThreeLedBlink(){
@@ -78,8 +79,11 @@ void updateDHT(){
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  float h = dht.readHumidity();
-  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  // float h = dht.readHumidity();
+  // float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  float h = random(0, 10001) / 100.0;       // [0.00, 100.00]
+  float t = random(-4000, 8001) / 100.0;   // [-40.00, 80.00]
+
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
