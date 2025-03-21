@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
 int gPin = 15;
-int yPin = 4;
-int rPin = 2;
+int yPin = 2;
+int rPin = 5;
 
 int currenPin = 0;
 int listPIN[] = {gPin,yPin, rPin };
