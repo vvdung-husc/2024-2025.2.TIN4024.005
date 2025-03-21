@@ -20,6 +20,12 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
 
+// Mai Dưc Dat
+// #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
+// #define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
@@ -161,4 +167,26 @@ void chopDenVang() {
 
     digitalWrite(LED_XANH, LOW);
     digitalWrite(LED_DO, LOW);
+
+    void guiThoiGianLenBlynk() {
+        static ulong thoiGianTruoc = 0;
+        if (!IsReady(thoiGianTruoc, 1000)) return;
+    
+        ulong giaTri = thoiGianTruoc / 1000;
+        Blynk.virtualWrite(V0, giaTri);
+    }
+    
+    BLYNK_WRITE(V3) {
+        nutNhan = param.asInt();
+    }
+    
+    void loop() {
+        if (!KhoangThoiGianHienThi()) return;
+        chopTatCaDen();
+        capNhatDHT();
+        guiThoiGianLenBlynk();
+        if (nutNhan) {
+            chopDenVang();
+        }
+    }
 }
