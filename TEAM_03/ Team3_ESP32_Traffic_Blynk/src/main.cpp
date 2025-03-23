@@ -1,42 +1,44 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-// Nguyễn Hoàng Bảo Trung
-#define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
-#define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
-#define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
 // Huỳnh Quốc Khánh
-// #define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
-// #define BLYNK_TEMPLATE_NAME "TRAFFIC"
-// #define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
+#define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
+#define BLYNK_TEMPLATE_NAME "TRAFFIC"
+#define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
+ // Nguyễn Hoàng Bảo Trung
+// #define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
+// #define BLYNK_TEMPLATE_NAME "ESP32 Blynk Traffic DHT Sensor"
+// #define BLYNK_AUTH_TOKEN "TXqUgq7kTSIP9W667D72ycrzG47IMK_Z"
+
+// Lê Minh Hiếu
+// #define BLYNK_TEMPLATE_ID "TMPL6rEGHy8tM"
+// #define BLYNK_TEMPLATE_NAME "trafficsensor"
+// #define BLYNK_AUTH_TOKEN "2bggqH1AsOhMGtavtJvwU66-Va8dxPGs"
 
 
-//
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <DHT.h>
-// WiFi Credentials
+
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
 
-// GPIO Pin Definitions
 #define BUTTON_PIN 23
 #define LED_BLUE 21
 #define LED_GREEN 25
 #define LED_YELLOW 26
 #define LED_RED 27
-#define LDR_PIN 34 // Đổi từ 13 thành 34
+#define LDR_PIN 34
 #define CLK 18
 #define DIO 19
 #define DHT_PIN 16
 #define DHT_TYPE DHT22
 
-// Initialize Components
 TM1637Display display(CLK, DIO);
 DHT dht(DHT_PIN, DHT_TYPE);
 
-// Global Variables
 int buttonState = 0, lastButtonState = HIGH;
 bool displayOn = true;
 int ldrValue = 0, countdown = 10;
@@ -61,8 +63,6 @@ void setupPins() {
 
 void readLDR() {
     ldrValue = analogRead(LDR_PIN);
-    Serial.print("LUX Value: ");
-    Serial.println(ldrValue);
 }
 
 
@@ -71,19 +71,19 @@ bool IsReady(unsigned long &ulTimer, uint32_t millisecond) {
     ulTimer = millis();
     return true;
 }
+
 void handleButtonPress() {
     static unsigned long lastDebounceTime = 0;
     static int lastButtonState = HIGH;
     
-    if (!IsReady(lastDebounceTime, 50)) return;  // Chống dội phím (50ms)
+    if (!IsReady(lastDebounceTime, 50)) return;
 
     int buttonState = digitalRead(BUTTON_PIN);
-    if (buttonState == lastButtonState) return;  // Nếu không thay đổi thì thoát
+    if (buttonState == lastButtonState) return;
 
     lastButtonState = buttonState;
-    if (buttonState == LOW) return;  // Chỉ xử lý khi NHẢ NÚT (HIGH)
+    if (buttonState == LOW) return;
 
-    // Khi nút được NHẢ ra -> Đảo trạng thái cả màn hình và LED xanh
     blueButtonON = !blueButtonON;
     displayOn = !displayOn;
 
@@ -93,33 +93,48 @@ void handleButtonPress() {
     digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
     Blynk.virtualWrite(V1, blueButtonON);
 
-    if (!displayOn) display.clear();  // Tắt màn hình khi cần
+    if (!displayOn) display.clear();
 }
-
 
 void updateCountdown() {
     if (millis() - previousMillis >= interval) {
         previousMillis = millis();
         countdown--;
+
         if (countdown < 0) {
             switch (lightState) {
-                case GREEN: lightState = YELLOW; countdown = 3; break;
-                case YELLOW: lightState = RED; countdown = 10; break;
-                case RED: lightState = GREEN; countdown = 10; break;
+                case GREEN: 
+                    lightState = YELLOW; 
+                    countdown = 3; 
+                    break;
+                case YELLOW: 
+                    lightState = RED; 
+                    countdown = 10; 
+                    break;
+                case RED: 
+                    lightState = GREEN; 
+                    countdown = 10; 
+                    break;
             }
         }
-        if (displayOn) {  // Chỉ hiển thị khi displayOn == true
+
+        if (displayOn) {
             display.showNumberDec(countdown);
         } else {
             display.clear();
         }
+
+        // In thời gian đếm ngược ra Serial Monitor
+        Serial.print("⏳ Thời gian đếm ngược: "); 
+        Serial.print(countdown); 
+        Serial.println(" giây");
     }
 }
 
 
-int ldrThreshold = 1000;  // Giá trị mặc định, có thể thay đổi từ Blynk
+int ldrThreshold = 1000;
 void handleTrafficLights() {
-    if (ldrValue < ldrThreshold) {  // Thay số 1000 bằng biến ldrThreshold
+    if (ldrValue < ldrThreshold) {
         digitalWrite(LED_GREEN, LOW);
         digitalWrite(LED_RED, LOW);
         if (millis() - blinkMillis >= blinkInterval) {
@@ -128,31 +143,22 @@ void handleTrafficLights() {
             digitalWrite(LED_YELLOW, yellowBlinkState);
         }
         if (displayOn) display.clear();
+
+        Serial.println("⚠️ Đèn vàng nhấp nháy (chế độ ban đêm)");
     } else {
         digitalWrite(LED_GREEN, lightState == GREEN);
         digitalWrite(LED_YELLOW, lightState == YELLOW);
         digitalWrite(LED_RED, lightState == RED);
+
+        if (lightState == GREEN) {
+            Serial.println("🟢 Đèn xanh đang sáng");
+        } else if (lightState == YELLOW) {
+            Serial.println("🟡 Đèn vàng đang sáng");
+        } else if (lightState == RED) {
+            Serial.println("🔴 Đèn đỏ đang sáng");
+        }
     }
 }
-
-// void handleTrafficLights() {
-//     if (ldrValue < 1000) {
-//         digitalWrite(LED_GREEN, LOW);
-//         digitalWrite(LED_RED, LOW);
-//         if (millis() - blinkMillis >= blinkInterval) {
-//             blinkMillis = millis();
-//             yellowBlinkState = !yellowBlinkState;
-//             digitalWrite(LED_YELLOW, yellowBlinkState);
-//         }
-//         if (displayOn) display.clear();
-//     } else {
-//         digitalWrite(LED_GREEN, lightState == GREEN);
-//         digitalWrite(LED_YELLOW, lightState == YELLOW);
-//         digitalWrite(LED_RED, lightState == RED);
-//     }
-// }
-
-
 
 
 void uptimeBlynk() {
@@ -160,7 +166,6 @@ void uptimeBlynk() {
     if (!IsReady(lastTime, 1000)) return;
     unsigned long value = lastTime / 1000;
     Blynk.virtualWrite(V0, value);
-   
 }
 
 void readDHTSensor() {
@@ -180,30 +185,22 @@ void readDHTSensor() {
     
     Blynk.virtualWrite(V2, temp);
     Blynk.virtualWrite(V3, humidity);
-    
-    
 }
-
-
 
 BLYNK_WRITE(V1) {
     blueButtonON = param.asInt();
-    displayOn = blueButtonON;  // Đồng bộ trạng thái màn hình với LED
-
+    displayOn = blueButtonON;
     Serial.println(blueButtonON ? "Blynk -> Blue Light ON" : "Blynk -> Blue Light OFF");
     Serial.println(displayOn ? "Blynk -> Display ON" : "Blynk -> Display OFF");
-
     digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
-
-    if (!displayOn) display.clear();  // Nếu tắt LED xanh, tắt luôn màn hình
+    if (!displayOn) display.clear();
 }
 
 BLYNK_WRITE(V4) {
-    ldrThreshold = param.asInt();  // Cập nhật giá trị ngưỡng từ Blynk
+    ldrThreshold = param.asInt();
     Serial.print("Updated LDR Threshold: ");
     Serial.println(ldrThreshold);
 }
-
 
 void setup() {
     setupPins();
@@ -213,16 +210,17 @@ void setup() {
     Serial.println("WiFi connected");
     digitalWrite(LED_BLUE, blueButtonON ? HIGH : LOW);
     Blynk.virtualWrite(V1, blueButtonON);
-    Blynk.virtualWrite(V4, ldrThreshold);  // Đồng bộ giá trị mặc định
+    Blynk.virtualWrite(V4, ldrThreshold);
     Serial.println("== START ==>");
 }
 
 void loop() {
     Blynk.run();
     readLDR();
-    handleButtonPress();  // Gọi hàm gộp mới
+    handleButtonPress();
     updateCountdown();
     handleTrafficLights();
     uptimeBlynk();
     readDHTSensor();
+    delay(1000);  // Thêm độ trễ 1 giây để dễ đọc giá trị
 }

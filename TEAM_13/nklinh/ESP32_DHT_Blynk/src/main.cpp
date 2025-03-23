@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-#define BLYNK_TEMPLATE_ID "TMPL6_Q_9TLMv"
-#define BLYNK_TEMPLATE_NAME "Blynk"
-#define BLYNK_AUTH_TOKEN "PkKAXTTQbku8E_HPhHa_NmGFfdj_zCNL"
+#define BLYNK_TEMPLATE_ID "TMPL6CbYUwJFN"
+#define BLYNK_TEMPLATE_NAME "ESP32 BLYNK LED"
+#define BLYNK_AUTH_TOKEN "C6_0VoXx3puIy5vz3fCEsGo1dBWE7oXF"
 
 #include <WiFi.h>
 #include <WiFiClient.h>

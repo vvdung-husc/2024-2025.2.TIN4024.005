@@ -2,17 +2,22 @@
 #include <TM1637Display.h>
 #include <DHT.h>
 
-//PHAN THANH TOAN
-#define BLYNK_TEMPLATE_ID "TMPL6NL5ny714"
-#define BLYNK_TEMPLATE_NAME "TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "uENQDUAhyfsOW5K5pqkw1vxl2WiVek7R"
+// NGUYEN VAN HOANG NAM
+#define BLYNK_TEMPLATE_ID "TMPL6PR14jYu4"
+#define BLYNK_TEMPLATE_NAME "Blynk Traffic DHT Sensor"
+#define BLYNK_AUTH_TOKEN "HSryV8aWhysNSYDLOcUNrjPsUcTFXRvr"
+// PHAN THANH TOAN
+// #define BLYNK_TEMPLATE_ID "TMPL6NL5ny714"
+// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "uENQDUAhyfsOW5K5pqkw1vxl2WiVek7R"
 // LE VAN MINH TOAN
 // #define BLYNK_TEMPLATE_ID "TMPL6eDvyBqz2"
 // #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
 // #define BLYNK_AUTH_TOKEN "RP-9PNRNu-xTRTCNClk-LGQNvj6r77_a"
+
 #include <WiFi.h>
-#include <BlynkSimpleEsp32.h>
 #include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
@@ -133,14 +138,27 @@ void sendSensorData() {
 
   float temp = dht.readTemperature();
   float hum = dht.readHumidity();
-  if (!isnan(temp) && !isnan(hum)) {
-    Blynk.virtualWrite(V5, temp); 
-    Blynk.virtualWrite(V6, hum);  
-  } else {
-    Serial.println("Failed to read from DHT sensor!");
-    Blynk.virtualWrite(V5, 0);
-    Blynk.virtualWrite(V6, 0);
+  if (isnan(temp) || isnan(hum))
+  {
+    Serial.println("[ERROR] Failed to read DHT sensor");
+    return;
   }
+
+  Blynk.virtualWrite(V2, temp);
+  Blynk.virtualWrite(V3, hum);
+  Blynk.virtualWrite(V5, lightLevel);
+
+  Serial.print("[SENSOR] Temp: ");
+  Serial.print(temp, 1);
+  Serial.print("°C | Humidity: ");
+  Serial.print(hum, 1);
+  Serial.print("% | Light: ");
+  Serial.print(isDark ? "Dark" : "Light");
+  Serial.print(" (Level: ");
+  Serial.print(lightLevel);
+  Serial.print(" | Threshold: ");
+  Serial.print(lightThreshold);
+  Serial.println(")");
 }
 
 void monitorLightLevel() {
@@ -148,7 +166,12 @@ void monitorLightLevel() {
   if (!IsReady(lastTime, 500)) return;
 
   lightLevel = analogRead(LDR_PIN);
+  bool wasDark = isDark;
   isDark = lightLevel < lightThreshold;
+  if (wasDark != isDark)
+  {
+    Blynk.virtualWrite(V6, isDark ? "Dark" : "Light");
+  }
 }
 
 // Điều chỉnh ngưỡng ánh sáng
@@ -173,13 +196,22 @@ BLYNK_WRITE(V3) {
 void blinkYellowLED() {
   static unsigned long lastBlink = 0;
   static bool state = false;
+  static bool logged = false;
   if (currentMillis - lastBlink >= 500) {
     state = !state;
     digitalWrite(YELLOW_PIN, state);
     digitalWrite(RED_PIN, LOW);
     digitalWrite(GREEN_PIN, LOW);
     lastBlink = currentMillis;
+  
+    if (!logged)
+    {
+      Serial.println("[TRAFFIC] Yellow: Blinking");
+      logged = true;
+    }
   }
+  if (!isDark)
+    logged = false;
 }
 
 void runTrafficLights() {
@@ -197,6 +229,9 @@ void runTrafficLights() {
     digitalWrite(RED_PIN, currentState == 2);
     digitalWrite(YELLOW_PIN, currentState == 1);
     digitalWrite(GREEN_PIN, currentState == 0);
+    Serial.print("[TRAFFIC] ");
+    Serial.println(currentState == 0 ? "Green" : currentState == 1 ? "Yellow"
+                                                                  : "Red");
   }
 
   remainingTime = interval - (currentMillis - previousMillis);

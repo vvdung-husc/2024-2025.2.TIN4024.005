@@ -1,29 +1,30 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
-
 // Dương Duy Khanh
 //#define BLYNK_TEMPLATE_ID "TMPL6rW4m1S4J"
 //#define BLYNK_TEMPLATE_NAME "khanh"
 //#define BLYNK_AUTH_TOKEN "ejtyvb4NArA0Ek1L4KVNv5pZDDcf81PB"
 
-//Tôn Huyền Kim Khánh
-// #define BLYNK_TEMPLATE_ID "TMPL6uQEQxtWU"
-// #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK"
-// #define BLYNK_AUTH_TOKEN "qopeQMkYOtVPeV_K-5OgDAM3SelRdgO3"
-
 // Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6WdT9pprT"
 #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
 #define BLYNK_AUTH_TOKEN   "Eg73I3k1TN8KpG9DKqM8dqpWl1ShcgpB"
-
+//Tôn Huyền Kim Khánh
+// #define BLYNK_TEMPLATE_ID "TMPL6Mtg-cw9S"
+// #define BLYNK_TEMPLATE_NAME "ESP32 LED"
+// #define BLYNK_AUTH_TOKEN "jNyrijhCFQGHv4WNa5VCQxQpFPxd_l8B"
 // Nguyễn Khánh Linh
 // #define BLYNK_TEMPLATE_ID "TMPL6CbYUwJFN"
 // #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK LED"
 // #define BLYNK_AUTH_TOKEN "C6_0VoXx3puIy5vz3fCEsGo1dBWE7oXF"
+//Trần Thị Quỳnh Anh
+// #define BLYNK_TEMPLATE_ID "TMPL69Wf7a53k"
+// #define BLYNK_TEMPLATE_NAME "Traffic Bynk"
+// #define BLYNK_AUTH_TOKEN "Et6D7IURjemqWdyKJxYQmnZQU7Zoa4X5"
 #include <WiFi.h>
-#include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
-#include <DHT.h>
+ #include <WiFiClient.h>
+ #include <BlynkSimpleEsp32.h>
+ #include <DHT.h>
  
  // Thông tin WiFi
  char ssid[] = "Wokwi-GUEST";
