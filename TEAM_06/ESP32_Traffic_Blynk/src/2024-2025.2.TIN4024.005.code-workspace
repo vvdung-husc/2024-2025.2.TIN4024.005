@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "TEST",
+			"path": "../../TEST"
+		},
+		{
+			"name": "ESP32_API",
+			"path": "../../PhanDuyAn/ESP32_API"
+		},
+		{
+			"name": "ESP32_API_Weather_Blynk",
+			"path": "../../PhanDuyAn/ESP32_API_Weather_Blynk"
+		}
+	],
+	"settings": {}
+}
