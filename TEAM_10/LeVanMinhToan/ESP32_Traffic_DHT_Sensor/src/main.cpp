@@ -1,127 +1,72 @@
-
-
 #include <Arduino.h>
-#include <TM1637Display.h>
+
 #include <WiFi.h>
-#include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
-#include <DHT.h>
+#include <WiFiClientSecure.h>
+#include <UniversalTelegramBot.h>
+#include <ArduinoJson.h>
 
-// LE VAN MINH TOAN
-#define BLYNK_TEMPLATE_ID "TMPL6eDvyBqz2"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "RP-9PNRNu-xTRTCNClk-LGQNvj6r77_a"
+const char* wifiNetwork = "Wokwi-GUEST";
+const char* wifiPass = "";
 
-char ssid[] = "Wokwi-GUEST";
-char pass[] = "";
+#define TELEGRAM_BOT_KEY "7441033779:AAEOc1s6Gc_TVWQDAtlih7Zdoei2oiXSCD8"
+#define TELEGRAM_CHAT_ID "-4621614489"
+WiFiClientSecure secureWifiClient;
+UniversalTelegramBot telegramNotifier(TELEGRAM_BOT_KEY, secureWifiClient);
 
-// Định nghĩa chân kết nối
-#define BUTTON_PIN 23
-#define LED_PIN 21
-#define DHT_PIN 16
-#define CLK_PIN 18
-#define DIO_PIN 19
+const int motionSensorPin = 27;
+bool motionDetected = false;
 
-#define DHT_TYPE DHT22
+String createFormattedMessage(const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    va_list argsCopy;
+    va_copy(argsCopy, args);
+    int messageLength = vsnprintf(NULL, 0, format, argsCopy);
+    va_end(argsCopy);
+    int bufferSize = messageLength + 1;
+    char* buffer = (char*)malloc(bufferSize);
+    vsnprintf(buffer, bufferSize, format, args);
+    va_end(args);
+    String formattedMessage = buffer;
+    free(buffer);
+    return formattedMessage;
+}
 
-DHT dht(DHT_PIN, DHT_TYPE);
-TM1637Display display(CLK_PIN, DIO_PIN);
-
-// Biến toàn cục
-bool displayOn = true;
-int lastButtonState = HIGH;
-unsigned long lastDebounceTime = 0;
-const unsigned long debounceDelay = 50;
-
-unsigned long sensorLastReadTime = 0;
-const unsigned long sensorInterval = 2000;
-
-float temperature = 0.0;
-float humidity = 0.0;
-
-unsigned long lastUptimeSendTime = 0;
-const unsigned long uptimeInterval = 1000;
-
-// Callback Blynk
-BLYNK_WRITE(V1) {
-  displayOn = param.asInt();
+void IRAM_ATTR handleMotionInterrupt() {
+    motionDetected = true;
 }
 
 void setup() {
-  Serial.begin(115200);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  pinMode(LED_PIN, OUTPUT);
-  
-  display.setBrightness(7);
-  display.showNumberDec(0, true);
-  
-  dht.begin();
-  
-  Serial.print("Connecting to WiFi: ");
-  Serial.println(ssid);
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
-  Serial.println("Connected to Blynk");
-  
-  digitalWrite(LED_PIN, displayOn ? HIGH : LOW);
-  Blynk.virtualWrite(V1, displayOn);
-}
+    Serial.begin(115200);
 
-void displayTime(unsigned long seconds) {
-  int minutes = seconds / 60;
-  int secs = seconds % 60;
-  int timeToShow = (minutes * 100) + secs; // Hiển thị MM:SS
-  display.showNumberDecEx(timeToShow, 0x40, true);
+    pinMode(motionSensorPin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(motionSensorPin), handleMotionInterrupt, RISING);
+
+    Serial.print("Connecting to WiFi: ");
+    Serial.println(wifiNetwork);
+
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(wifiNetwork, wifiPass);
+    secureWifiClient.setCACert(TELEGRAM_CERTIFICATE_ROOT);
+    
+    while (WiFi.status() != WL_CONNECTED) {
+        Serial.print(".");
+        delay(100);
+    }
+
+    Serial.println("\nWiFi connected");
+    telegramNotifier.sendMessage(TELEGRAM_CHAT_ID, "IoT Motion Detection System Started");
 }
 
 void loop() {
-  Blynk.run();
-  unsigned long currentMillis = millis();
-  
-  int reading = digitalRead(BUTTON_PIN);
-  if (reading != lastButtonState) {
-    lastDebounceTime = currentMillis;
-  }
+    static uint motionEventCounter = 0;
 
-  if ((currentMillis - lastDebounceTime) > debounceDelay) {
-    if (reading == LOW && lastButtonState == HIGH) {
-      displayOn = !displayOn;
-      Blynk.virtualWrite(V1, displayOn);
-      Serial.print("Nút nhấn, displayOn: ");
-      Serial.println(displayOn);
+    if (motionDetected) {
+        ++motionEventCounter;
+        Serial.printf("%u. Motion detected! Sending alert...\n", motionEventCounter);
+        String alertMessage = createFormattedMessage("%u => Motion detected!", motionEventCounter);
+        telegramNotifier.sendMessage(TELEGRAM_CHAT_ID, alertMessage.c_str());
+        Serial.printf("%u. Alert sent successfully!\n", motionEventCounter);
+        motionDetected = false;
     }
-  }
-  lastButtonState = reading;
-  
-  digitalWrite(LED_PIN, displayOn ? HIGH : LOW);
-  
-  if (currentMillis - sensorLastReadTime >= sensorInterval) {
-    sensorLastReadTime = currentMillis;
-    temperature = dht.readTemperature();
-    humidity = dht.readHumidity();
-    
-    if (isnan(temperature) || isnan(humidity)) {
-      Serial.println("Lỗi đọc dữ liệu từ DHT22!");
-    } else {
-      Serial.print("Nhiệt độ: ");
-      Serial.print(temperature);
-      Serial.print(" °C, Độ ẩm: ");
-      Serial.print(humidity);
-      Serial.println(" %");
-      
-      Blynk.virtualWrite(V2, temperature);
-      Blynk.virtualWrite(V3, humidity);
-    }
-  }
-  
-  if (currentMillis - lastUptimeSendTime >= uptimeInterval) {
-    lastUptimeSendTime = currentMillis;
-    unsigned long uptimeSeconds = currentMillis / 1000;
-    Blynk.virtualWrite(V0, uptimeSeconds);
-    
-    if (displayOn) {
-      displayTime(uptimeSeconds);
-    } else {
-      display.clear();
-    }
-  }
 }
