@@ -17,9 +17,9 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
 //Lê Phước Quang
-#define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
-#define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
-#define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
+// #define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
+// #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
 
 // //Lê Nguyễn Thiện Bình
 // #define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
@@ -27,9 +27,9 @@
 // #define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
 
 // Mai Dưc Dat
-// #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
-// #define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
-// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+#define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
+#define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 
 
 #include <ESP8266WiFi.h>
