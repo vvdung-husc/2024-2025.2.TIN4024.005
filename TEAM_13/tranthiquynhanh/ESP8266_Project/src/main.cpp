@@ -1,45 +1,20 @@
 #include <Arduino.h>
 #include "utils.h"
-
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
-
+#define BLYNK_TEMPLATE_ID "TMPL6sOnUdID_"
+#define BLYNK_TEMPLATE_NAME "Project"
+#define BLYNK_AUTH_TOKEN "Q_RlGKvJPuwEdJ-5g71BVwoy3EwQQDs-"
 #include <Wire.h>
 #include <U8g2lib.h>
-
-//Nguyễn Thị Diệu Anh
-// #define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
-// #define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
-// #define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
-// Lê Thị Thanh Nhàn
-#define BLYNK_TEMPLATE_ID "TMPL62XUJKqGx"
-#define BLYNK_TEMPLATE_NAME "ESP8266"
-#define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
-
-#include <Esp8266WiFi.h>
-#include <WiFiClient.h>
-#include <BlynkSimpleEsp8266.h>
 
 #define gPIN 15
 #define yPIN 2
 #define rPIN 5
-
-#define dhtPIN 16     // Digital pin connected to the DHT sensor
-#define dhtTYPE DHT11 // DHT 22 (AM2302)
 
 #define OLED_SDA 13
 #define OLED_SCL 12
 
 // Khởi tạo OLED SH1106
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
-
-DHT dht(D0, dhtTYPE);
-
-// WiFi credentials
-char ssid[] = "CNTT-MMT";
-char pass[] = "13572468";
-
-bool buttonState = false;
 
 bool WelcomeDisplayTimeout(uint msSleep = 5000){
   static ulong lastTimer = 0;
@@ -49,7 +24,6 @@ bool WelcomeDisplayTimeout(uint msSleep = 5000){
   bDone = true;    
   return bDone;
 }
-
 
 void setup() {
   Serial.begin(115200);
@@ -61,30 +35,17 @@ void setup() {
   digitalWrite(yPIN, LOW);
   digitalWrite(rPIN, LOW);
 
-  dht.begin();
-
   Wire.begin(OLED_SDA, OLED_SCL);  // SDA, SCL
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
-  if (WiFi.status() != WL_CONNECTED)
-  {
-      Serial.println("❌ WiFi connection failed!");
-  }
-  else
-  {
-      Serial.println("✅ WiFi connected!");
-  }
-  Blynk.virtualWrite(V3, buttonState);
   oled.begin();
   oled.clearBuffer();
   
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
   oled.drawUTF8(0, 14, "Trường ĐHKH");  
   oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lập trình IoT");  
+  oled.drawUTF8(0, 42, "Quỳnh Anh");  
 
   oled.sendBuffer();
-  randomSeed(analogRead(0));
 }
 
 void ThreeLedBlink(){
@@ -106,15 +67,9 @@ void updateDHT(){
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  // float h = dht.readHumidity();
-  // float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
-  float h = random(0, 10001) / 100.0;       // [0.00, 100.00]
-  float t = random(-4000, 8001) / 100.0;   // [-40.00, 80.00]
-  
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
-  }
+  // Tạo số ngẫu nhiên trong phạm vi mong muốn
+  float h = random(0, 101) + random(0, 100) / 100.0; // Độ ẩm từ 0 đến 100
+  float t = random(-40, 101) + random(0, 100) / 100.0; // Nhiệt độ từ -40 đến 100
 
   bool bDraw = false;
 
@@ -132,8 +87,8 @@ void updateDHT(){
     Serial.print("Humidity: ");
     Serial.print(h);
     Serial.print(" %\t");  
-    
   }
+
   if (bDraw){
     oled.clearBuffer();
     oled.setFont(u8g2_font_unifont_t_vietnamese2);
@@ -145,10 +100,7 @@ void updateDHT(){
     oled.drawUTF8(0, 42, s.c_str());      
 
     oled.sendBuffer();
-  } 
-  Blynk.virtualWrite(V1, t);
-  Blynk.virtualWrite(V2, h);
-  
+  }   
 }
 
 void DrawCounter(){  
@@ -164,39 +116,10 @@ void DrawCounter(){
   oled.sendBuffer(); // Gửi dữ liệu lên màn hình
 
   counter++; // Tăng giá trị đếm
+}
 
-}
-void BlinkingYellowLight()
-{
-    static bool yellowState = false;
-    static unsigned long previousBlinkMillis = 0;
-    if (IsReady(previousBlinkMillis, 500))
-    {
-        yellowState = !yellowState;
-        digitalWrite(yPIN, yellowState);
-    }
-
-    digitalWrite(gPIN, LOW);
-    digitalWrite(rPIN, LOW);
-}
-void uptimeBlynk()
-{
-    static ulong lastTime = 0;
-    if (!IsReady(lastTime, 1000))
-        return; // Kiểm tra và cập nhật lastTime sau mỗi 1 giây
-    ulong value = lastTime / 1000;
-    Blynk.virtualWrite(V0, value);
-}
-BLYNK_WRITE(V3)
-{
-    buttonState = param.asInt();
-}
 void loop() {
   if (!WelcomeDisplayTimeout()) return;
   ThreeLedBlink();
   updateDHT();
-  uptimeBlynk();
-  if(buttonState){
-    BlinkingYellowLight();
-  }
 }
