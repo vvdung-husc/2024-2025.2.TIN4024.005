@@ -14,6 +14,12 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
 // #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
+
+// Thông tin Blynk (Lê Quang Khải)
+// #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
+
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <BlynkSimpleEsp8266.h>
@@ -26,9 +32,13 @@ char pass[] = "13572468";
 // Thông tin Telegram (Ngô Văn Hiếu)
 #define BOT_TOKEN "8184771014:AAEoqRHKjOhevsrds3CD-F54lkpoY3IoW24"
 #define GROUP_ID "-1002655884696" // Nhóm "ESP32-Iot"
+
 // Thông tin Telegram (Lê Phước Quang)
 // #define BOTtoken "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
 // #define GROUP_ID "-1002356539994" //là một số âm
+// // Thông tin Telegram (Lê Quang Khải)
+// #define BOTtoken "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
+// #define GROUP_ID "-1002687928117" 
 // Định nghĩa chân
 #define LED_XANH 15 // D8
 #define LED_VANG 2  // D4
@@ -114,4 +124,54 @@ void chopTatCaDen() {
         digitalWrite(LED_VANG, HIGH);
         digitalWrite(LED_XANH, LOW);
     }
+}
+
+void capNhatDHT() {
+    static unsigned long thoiGianTruoc = 0;
+    if (!IsReady(thoiGianTruoc, 2000)) return;
+
+    float doAmMoi = random(0, 10001) / 100.0;     // 0.0 đến 100.0
+    float nhietDoMoi = random(-4000, 8001) / 100.0; // -40.0 đến 80.0
+
+    if (isnan(doAmMoi) || isnan(nhietDoMoi)) {
+        Serial.println("Lỗi sinh số ngẫu nhiên!");
+        return;
+    }
+
+    bool canVe = false;
+    if (nhietDo != nhietDoMoi) {
+        canVe = true;
+        nhietDo = nhietDoMoi;
+        Serial.printf("Nhiệt độ: %.2f °C\n", nhietDo);
+    }
+
+    if (doAm != doAmMoi) {
+        canVe = true;
+        doAm = doAmMoi;
+        Serial.printf("Độ ẩm: %.2f%%\n", doAm);
+    }
+
+    if (canVe) {
+        oled.clearBuffer();
+        oled.setFont(u8g2_font_unifont_t_vietnamese2);
+        String chuoiNhietDo = StringFormat("Nhiệt độ: %.2f °C", nhietDo);
+        oled.drawUTF8(0, 14, chuoiNhietDo.c_str());
+        String chuoiDoAm = StringFormat("Độ ẩm: %.2f%%", doAm);
+        oled.drawUTF8(0, 42, chuoiDoAm.c_str());
+        oled.sendBuffer();
+    }
+
+    Blynk.virtualWrite(V1, nhietDo);
+    Blynk.virtualWrite(V2, doAm);
+}
+
+void chopDenVang() {
+    static bool trangThaiDenVang = false;
+    static unsigned long thoiGianTruoc = 0;
+    if (IsReady(thoiGianTruoc, 500)) {
+        trangThaiDenVang = !trangThaiDenVang;
+        digitalWrite(LED_VANG, trangThaiDenVang);
+    }
+    digitalWrite(LED_XANH, LOW);
+    digitalWrite(LED_DO, LOW);
 }
