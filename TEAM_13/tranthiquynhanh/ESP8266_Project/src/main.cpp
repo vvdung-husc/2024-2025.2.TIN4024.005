@@ -1,8 +1,7 @@
 #include <Arduino.h>
-// Hoàng Thanh Nhã
-#define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
+#define BLYNK_TEMPLATE_ID "TMPL6sOnUdID_"
 #define BLYNK_TEMPLATE_NAME "Project"
-#define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
+#define BLYNK_AUTH_TOKEN "Q_RlGKvJPuwEdJ-5g71BVwoy3EwQQDs-"
 #include "utils.h"
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -50,7 +49,7 @@ void setup() {
     oled.setFont(u8g2_font_unifont_t_vietnamese1);
     oled.drawUTF8(0, 14, "Trường ĐHKH");
     oled.drawUTF8(0, 28, "Khoa CNTT");
-    oled.drawUTF8(0, 42, "Hoàng Thanh Nhã");
+    oled.drawUTF8(0, 42, "Quỳnh Anh");
     oled.sendBuffer();
 }
 
