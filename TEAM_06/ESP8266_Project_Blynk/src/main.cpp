@@ -8,9 +8,13 @@
 #include <U8g2lib.h>
 
 //Nguyễn Thị Diệu Anh
-#define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
-#define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
+// #define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
+// #define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
+// Lê Thị Thanh Nhàn
+#define BLYNK_TEMPLATE_ID "TMPL62XUJKqGx"
+#define BLYNK_TEMPLATE_NAME "ESP8266"
+#define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
 
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
