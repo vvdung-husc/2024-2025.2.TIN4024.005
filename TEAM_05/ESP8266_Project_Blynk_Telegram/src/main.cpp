@@ -15,6 +15,11 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
 
+// Thông tin Blynk (Mai Đức Đạt)
+// #define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
+
 // Thông tin Blynk (Lê Quang Khải)
 // #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
@@ -37,6 +42,11 @@ char pass[] = "13572468";
 // Thông tin Telegram (Ngô Văn Hiếu)
 #define BOT_TOKEN "8184771014:AAEoqRHKjOhevsrds3CD-F54lkpoY3IoW24"
 #define GROUP_ID "-1002655884696" // Nhóm "ESP32-Iot"
+
+// Thông tin Telegram (Mai Đức Đạt)
+// #define BOT_TOKEN "7922349592:AAExgMOGey7DGIdIpkgPn2_75GFPXmy3F_c"
+// #define GROUP_ID "-4603689867" 
+
 
 // Thông tin Telegram (Lê Phước Quang)
 // #define BOTtoken "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
@@ -213,5 +223,39 @@ void sendTelegramAlert() {
                  "Nhiệt độ: " + String(nhietDo) + "°C\n" +
                  "Độ ẩm: " + String(doAm) + "%";
         bot.sendMessage(GROUP_ID, message, "");
+    }
+}
+void handleTelegram() {
+    int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+    for (int i = 0; i < numNewMessages; i++) {
+        String chat_id = String(bot.messages[i].chat_id);
+        String text = bot.messages[i].text;
+
+        if (text == "/traffic_off") {
+            trafficOn = false;
+            nutNhan = false;
+            bot.sendMessage(chat_id, "Đèn giao thông đã tắt", "");
+        }
+        else if (text == "/traffic_on") {
+            trafficOn = true;
+            bot.sendMessage(chat_id, "Đèn giao thông đã bật", "");
+        }
+    }
+}
+
+BLYNK_WRITE(V3) {
+    nutNhan = param.asInt();
+}
+
+void loop() {
+    Blynk.run();
+    if (!KhoangThoiGianHienThi()) return;
+    chopTatCaDen();
+    capNhatDHT();
+    guiThoiGianLenBlynk();
+    sendTelegramAlert();
+    handleTelegram();
+    if (nutNhan) {
+        chopDenVang();
     }
 }
