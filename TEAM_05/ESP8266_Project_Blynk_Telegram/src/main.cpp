@@ -20,6 +20,11 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
 
+// //Lê Nguyễn Thiện Bình
+// #define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
+
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <BlynkSimpleEsp8266.h>
@@ -39,6 +44,14 @@ char pass[] = "13572468";
 // // Thông tin Telegram (Lê Quang Khải)
 // #define BOTtoken "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
 // #define GROUP_ID "-1002687928117" 
+
+
+// // Initialize Telegram BOT
+// #define BOTtoken "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
+
+// // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
+// #define GROUP_ID "-1002525074425" //là một số âm
+
 // Định nghĩa chân
 #define LED_XANH 15 // D8
 #define LED_VANG 2  // D4
@@ -174,4 +187,31 @@ void chopDenVang() {
     }
     digitalWrite(LED_XANH, LOW);
     digitalWrite(LED_DO, LOW);
+}
+void guiThoiGianLenBlynk() {
+    static unsigned long thoiGianTruoc = 0;
+    if (!IsReady(thoiGianTruoc, 1000)) return;
+    unsigned long giaTri = (millis() - startTime) / 1000;
+    Blynk.virtualWrite(V0, giaTri);
+}
+
+void sendTelegramAlert() {
+    static unsigned long thoiGianTruoc = 0;
+    if (!IsReady(thoiGianTruoc, 60000)) return; 
+
+    String message = "";
+    if (nhietDo < 10) message += "⚠️ Nguy cơ hạ thân nhiệt!\n";
+    else if (nhietDo > 35) message += "⚠️ Nguy cơ sốc nhiệt!\n";
+    else if (nhietDo > 40) message += "⚠️ Cực kỳ nguy hiểm!\n";
+
+    if (doAm < 30) message += "⚠️ Độ ẩm thấp, nguy cơ bệnh hô hấp!\n";
+    else if (doAm > 70) message += "⚠️ Độ ẩm cao, nguy cơ nấm mốc!\n";
+    else if (doAm > 80) message += "⚠️ Nguy cơ sốc nhiệt do độ ẩm!\n";
+
+    if (message != "") {
+        message = "Cảnh báo:\n" + message + 
+                 "Nhiệt độ: " + String(nhietDo) + "°C\n" +
+                 "Độ ẩm: " + String(doAm) + "%";
+        bot.sendMessage(GROUP_ID, message, "");
+    }
 }
