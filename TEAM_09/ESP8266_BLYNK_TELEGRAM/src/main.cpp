@@ -1,3 +1,4 @@
+//Hoàng Văn Long
 #define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
 #define BLYNK_TEMPLATE_NAME "ESP8266"
 #define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
@@ -24,7 +25,7 @@ bool trafficEnabled = true;
 char auth[] = BLYNK_AUTH_TOKEN;
 char ssid[] = "CNTT-MMT";
 char pass[] = "13572468";
-
+//Hoàng Văn Long
 const char* botToken ="7179261234:AAERMDKB_0mSa4SBp6tymQeOiYb6ebDHVJg";
 const char* chatID = "-1002559266898";
 WiFiClientSecure client;
