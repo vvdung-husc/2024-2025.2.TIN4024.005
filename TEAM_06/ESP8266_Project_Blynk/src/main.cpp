@@ -22,9 +22,13 @@
 // #define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
 
 // Lại Văn Minh
-#define BLYNK_TEMPLATE_ID "TMPL6i2MGfRU1"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
-#define BLYNK_AUTH_TOKEN "BLFlZ2Sxwakztxri0uOfXWB_-vxHxGm5"
+// #define BLYNK_TEMPLATE_ID "TMPL6i2MGfRU1"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
+// #define BLYNK_AUTH_TOKEN "BLFlZ2Sxwakztxri0uOfXWB_-vxHxGm5"
+//Phạm Ngọc Cảm
+#define BLYNK_TEMPLATE_ID "TMPL6sN3PjWNN"
+#define BLYNK_TEMPLATE_NAME "ESP8266"
+#define BLYNK_AUTH_TOKEN "i3mR0CEiA6tRyQiIZ83H8Na5uGpQbqkT"
 
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
