@@ -7,10 +7,10 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-//Ngô Văn Hiếu
-#define BLYNK_TEMPLATE_ID "TMPL6KLUX0g8k"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
-#define BLYNK_AUTH_TOKEN "OPO0M5x-ooILRht8BKrYJafoq6OTBJYY"
+// //Ngô Văn Hiếu
+// #define BLYNK_TEMPLATE_ID "TMPL6KLUX0g8k"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "OPO0M5x-ooILRht8BKrYJafoq6OTBJYY"
 
 // //Lê Quang Khải
 // #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
@@ -27,9 +27,9 @@
 // #define BLYNK_AUTH_TOKEN "kgdfoQHneDMkL5gIAHWlL33IkVKT7pT3"
 
 // Mai Dưc Dat
-// #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
-// #define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
-// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+#define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
+#define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 
 
 #include <ESP8266WiFi.h>
@@ -173,7 +173,7 @@ void chopDenVang() {
 
     digitalWrite(LED_XANH, LOW);
     digitalWrite(LED_DO, LOW);
-
+}
     void guiThoiGianLenBlynk() {
         static ulong thoiGianTruoc = 0;
         if (!IsReady(thoiGianTruoc, 1000)) return;
@@ -195,4 +195,3 @@ void chopDenVang() {
             chopDenVang();
         }
     }
-}

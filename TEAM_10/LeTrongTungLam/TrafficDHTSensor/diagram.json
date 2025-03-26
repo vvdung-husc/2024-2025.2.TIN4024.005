@@ -25,7 +25,10 @@
         "left": -101.4,
         "attrs": { "color": "blue", "flip": "1" }
       },
+      { "type": "esp32", "id": "esp32" },
+      { "type": "wifi", "id": "wifi1" },
       { "type": "wokwi-dht22", "id": "dht1", "top": 105.9, "left": -24.6, "attrs": {} }
+      
     ],
     "connections": [
       [ "esp:TX", "$serialMonitor:RX", "", [] ],
