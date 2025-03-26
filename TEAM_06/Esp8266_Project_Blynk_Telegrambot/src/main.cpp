@@ -11,9 +11,14 @@
 #include <U8g2lib.h>
 
 // Lại Văn Minh
-#define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
-#define BLYNK_TEMPLATE_NAME "Telegram Blynk"
-#define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+//#define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
+//#define BLYNK_TEMPLATE_NAME "Telegram Blynk"
+//#define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+
+//Nguyễn Thị Diệu Anh
+#define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
+#define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
 
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
@@ -39,10 +44,19 @@ char ssid[] = "Zone Six";
 char pass[] = "105phamvandong";
 
 // Initialize Telegram BOT
-#define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
+//Lại Văn Minh
+//#define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
+
+//Nguyễn Thị Diệu Anh
+#define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
 
 // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-#define GROUP_ID "-4743348114" // thường là một số âm
+//Lại Văn Minh
+//#define GROUP_ID "-4743348114" // thường là một số âm
+
+//Nguyễn Thị Diệu Anh
+#define GROUP_ID "-4610946941" // thường là một số âm
+
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
