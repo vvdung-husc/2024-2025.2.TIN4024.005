@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
-#define BLYNK_TEMPLATE_ID "TMPL6ouiNidYY"
-#define BLYNK_TEMPLATE_NAME "ESP32 API"
-#define BLYNK_AUTH_TOKEN "VyRw5Mn8oG7VOjeGLwJFoKD9BeqxSm_7"
+#define BLYNK_TEMPLATE_ID "TMPL6b6gkzOyp"
+#define BLYNK_TEMPLATE_NAME "ESP32API"
+#define BLYNK_AUTH_TOKEN "okUGUl5d3DoH4zUMs8KSyb2ayOEbFBSh"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
