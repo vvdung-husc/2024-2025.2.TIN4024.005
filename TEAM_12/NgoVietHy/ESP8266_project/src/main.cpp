@@ -3,15 +3,15 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-//Trần Kiêm Hiếu
-#define BLYNK_TEMPLATE_ID "TMPL6X5vRad-t"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
-#define BLYNK_AUTH_TOKEN "hLyv3208-9U8Sq_m42iamNNKL_pDC0ts"
+//Tran Kiem Hieu
+// #define BLYNK_TEMPLATE_ID "TMPL6X5vRad-t"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+// #define BLYNK_AUTH_TOKEN "hLyv3208-9U8Sq_m42iamNNKL_pDC0ts"
 
-//Ngô Viết Hy
-// #define BLYNK_TEMPLATE_ID "TMPL6rhy9n8gy"
-// #define BLYNK_TEMPLATE_NAME "ESP8266"
-// #define BLYNK_AUTH_TOKEN "mY1ni5meCeTHo09MyZJ_RhE94iXt_qV6"
+//Ngo Viet Hy
+#define BLYNK_TEMPLATE_ID "TMPL6rhy9n8gy"
+#define BLYNK_TEMPLATE_NAME "ESP8266"
+#define BLYNK_AUTH_TOKEN "mY1ni5meCeTHo09MyZJ_RhE94iXt_qV6"
 
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
@@ -27,12 +27,12 @@ char pass[] = "13572468";
 #define OLED_SDA 13
 #define OLED_SCL 12
 
-// Trần Kiêm Hiếu Telegram
-#define BOT_TOKEN "7377317535:AAGSbtdkcMVeQ_VANB43-kj4CCetAzvZoKw"
-#define CHAT_ID "-4727293043"
-//Ngô Viết Hy Telegram
-// #define BOT_TOKEN "8161479640:AAEQVhwsQoX7-MCXVUltBzF9QjjXdayJs_c"
-// #define CHAT_ID "-1002656365325"
+// Telegram Bot Setup
+// #define BOT_TOKEN "7377317535:AAGSbtdkcMVeQ_VANB43-kj4CCetAzvZoKw"
+// #define CHAT_ID "-4727293043"
+//
+#define BOT_TOKEN "8161479640:AAEQVhwsQoX7-MCXVUltBzF9QjjXdayJs_c"
+#define CHAT_ID "-1002656365325"
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOT_TOKEN, client);
 
