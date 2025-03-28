@@ -58,11 +58,9 @@ char pass[] = "13572468";
 // #define GROUP_ID "-1002687928117" 
 
 //Lê Nguyễn Thiện Bình
-// // Initialize Telegram BOT
 // #define BOT_TOKEN "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
-
-// // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
 // #define GROUP_ID "-1002525074425" //là một số âm
+// #define USER_ID "7933255616"
 
 // Định nghĩa chân
 #define LED_XANH 15 // D8
