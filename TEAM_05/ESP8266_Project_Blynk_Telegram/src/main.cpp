@@ -46,7 +46,7 @@ char pass[] = "13572468";
 // Thông tin Telegram (Mai Đức Đạt)
 // #define BOT_TOKEN "7922349592:AAExgMOGey7DGIdIpkgPn2_75GFPXmy3F_c"
 // #define GROUP_ID "-4603689867" 
-
+// #define USER_ID "6492234599"
 
 //Thông tin Telegram (Lê Phước Quang)
 // #define BOT_TOKEN "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
