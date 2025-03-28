@@ -11,9 +11,9 @@
 #include <U8g2lib.h>
 
 // Lại Văn Minh
-// #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
-// #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
-// #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+#define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
+#define BLYNK_TEMPLATE_NAME "Telegram Blynk"
+#define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
 
 // Nguyễn Thị Diệu Anh
 //  #define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
@@ -21,10 +21,14 @@
 //  #define BLYNK_AUTH_TOKEN "gng5vfv6VX3INESnXUG2NR--HZGJoFzF"
 
 //  Lê Thị Thanh Nhàn
-#define BLYNK_TEMPLATE_ID "TMPL62XUJKqGx"
-#define BLYNK_TEMPLATE_NAME "ESP8266"
-#define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
+// #define BLYNK_TEMPLATE_ID "TMPL62XUJKqGx"
+// #define BLYNK_TEMPLATE_NAME "ESP8266"
+// #define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
 
+// Phan Duy An
+// #define BLYNK_TEMPLATE_ID "TMPL6N0zfQq82"
+// #define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
+// #define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
@@ -45,8 +49,8 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 DHT dht(D0, dhtTYPE);
 
 // WiFi credentials
-char ssid[] = "Zone Six";
-char pass[] = "105phamvandong";
+char ssid[] = "CNTT-MMT";
+char pass[] = "13572468";
 
 // Initialize Telegram BOT
 // Lại Văn Minh
@@ -56,17 +60,23 @@ char pass[] = "105phamvandong";
 // #define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
 
 // Lê Thị Thanh Nhàn
-#define BOTtoken "7785297652:AAGTOZ-QgfHNYX4Q2y-kxBAcstG37iY90P8"
+// #define BOTtoken "7785297652:AAGTOZ-QgfHNYX4Q2y-kxBAcstG37iY90P8"
 
-// Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-// Lại Văn Minh
-// #define GROUP_ID "-4743348114" // thường là một số âm
+//Phan Duy An
+#define BOTtoken "8022560842:AAF1O4ssUD03hsQQ0zstLKCVs5Nfo8CKjho" // your Bot Token (Get from Botfather)
+
+//  Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
+//  Lại Văn Minh
+#define GROUP_ID "-4743348114" // thường là một số âm
 
 // Nguyễn Thị Diệu Anh
 // #define GROUP_ID "-4610946941" // thường là một số âm
 
 // Le Thi Thanh NhanNhan
-#define GROUP_ID "-4731532209"
+// #define GROUP_ID "-4731532209"
+
+// Phan Duy An
+#define GROUP_ID "-4618565475" // thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
@@ -206,7 +216,7 @@ float fTemperature = 0.0;
 void updateDHT()
 {
   static ulong lastTimer = 0;
-  if (!IsReady(lastTimer, 2000))
+  if (!IsReady(lastTimer, 10000))
     return;
 
   // float h = dht.readHumidity();
@@ -254,27 +264,13 @@ void updateDHT()
   }
   Blynk.virtualWrite(V1, t);
   Blynk.virtualWrite(V2, h);
-
+  static ulong lastTimeTele = 0;
+  if (!IsReady(lastTimeTele, 300000))
+    return;
   bot.sendMessage(GROUP_ID, getTemperatureEffect(t));
   bot.sendMessage(GROUP_ID, getHumidityEffect(h));
 }
 
-void DrawCounter()
-{
-  static uint counter = 0; // Biến đếm
-  static ulong lastTimer = 0;
-  if (!IsReady(lastTimer, 2000))
-    return;
-
-  // Bắt đầu vẽ màn hình
-  oled.clearBuffer();
-  oled.setFont(u8g2_font_logisoso32_tf); // Chọn font lớn để hiển thị số
-  oled.setCursor(30, 40);                // Đặt vị trí chữ
-  oled.print(counter);                   // Hiển thị số đếm
-  oled.sendBuffer();                     // Gửi dữ liệu lên màn hình
-
-  counter++; // Tăng giá trị đếm
-}
 void BlinkingYellowLight()
 {
   static bool yellowState = false;
