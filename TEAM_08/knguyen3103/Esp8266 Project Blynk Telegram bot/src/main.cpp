@@ -1,6 +1,6 @@
 #define BLYNK_TEMPLATE_ID "TMPL61Qq4UXhq"
 #define BLYNK_TEMPLATE_NAME "Esp8266 Project Blynk Telegram bot"
-#define BLYNK_AUTH_TOKEN "4tTFW7no513DapYvCQglOpqwIH3vyrE8"
+#define BLYNK_AUTH_TOKEN "YhmHYSiC3dN4WPiUz5FRc9Yq4aBm_c7j"
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
@@ -72,7 +72,7 @@ void TrafficLightControl() {
 
   static unsigned long lastTimer = 0;
   static int state = 0;
-  static const unsigned long durations[] = {10000, 8000, 3000}; // Đỏ 10s, Xanh 8s, Vàng 3s
+  static const unsigned long durations[] = {5000, 4000, 2000}; // Đỏ 10s, Xanh 8s, Vàng 3s
   static const int ledPins[] = {rPIN, gPIN, yPIN};
 
   if (yellowBlinkMode) {
@@ -117,10 +117,10 @@ void updateSensorData() {
   fHumidity = randomHumidity();
 }
 
-// 🔔 Gửi cảnh báo Telegram mỗi 10s nếu vượt ngưỡng sức khỏe
+// 🔔 Gửi cảnh báo Telegram mỗi 5 phút nếu vượt ngưỡng sức khỏe
 void sendAlertTelegram() {
   static unsigned long lastAlert = 0;
-  if (millis() - lastAlert < 10000) return; // 10 giây gửi 1 lần
+  if (millis() - lastAlert < 300000) return; // 5 phút gửi 1 lần
   lastAlert = millis();
 
   String message = "";
@@ -186,11 +186,13 @@ void setup() {
   Blynk.config(BLYNK_AUTH_TOKEN);
   Blynk.connect();
   client.setInsecure();
+
+  timer.setInterval(1000L, sendToBlynk); // Cập nhật dữ liệu mỗi giây
 }
 
-// 🔁 LOOP
 void loop() {
   Blynk.run();
+  timer.run();
   handleNewMessages();
   TrafficLightControl();
   updateSensorData();

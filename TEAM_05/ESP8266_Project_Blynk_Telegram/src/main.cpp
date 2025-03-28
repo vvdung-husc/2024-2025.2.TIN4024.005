@@ -55,7 +55,7 @@ char pass[] = "13572468";
 // #define BOTtoken "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
 // #define GROUP_ID "-1002687928117" 
 
-
+//Lê Nguyễn Thiện Bình
 // // Initialize Telegram BOT
 // #define BOTtoken "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
 
