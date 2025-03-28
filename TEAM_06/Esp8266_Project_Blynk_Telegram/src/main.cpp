@@ -25,6 +25,10 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266"
 // #define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
 
+// Phan Duy An
+// #define BLYNK_TEMPLATE_ID "TMPL6N0zfQq82"
+// #define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
+// #define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
@@ -50,23 +54,29 @@ char pass[] = "13572468";
 
 // Initialize Telegram BOT
 // Lại Văn Minh
-#define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
+// #define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
 
 // Nguyễn Thị Diệu Anh
-// #define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
+#define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
 
 // Lê Thị Thanh Nhàn
 // #define BOTtoken "7785297652:AAGTOZ-QgfHNYX4Q2y-kxBAcstG37iY90P8"
 
-// Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-// Lại Văn Minh
-#define GROUP_ID "-4743348114" // thường là một số âm
+// Phan Duy An
+// #define BOTtoken "8022560842:AAF1O4ssUD03hsQQ0zstLKCVs5Nfo8CKjho" // your Bot Token (Get from Botfather)
+
+//  Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
+//  Lại Văn Minh
+// #define GROUP_ID "-4743348114" // thường là một số âm
 
 // Nguyễn Thị Diệu Anh
-// #define GROUP_ID "-4610946941" // thường là một số âm
+#define GROUP_ID "-4610946941" // thường là một số âm
 
 // Le Thi Thanh NhanNhan
 // #define GROUP_ID "-4731532209"
+
+// Phan Duy An
+// #define GROUP_ID "-4618565475" // thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
@@ -286,15 +296,54 @@ BLYNK_WRITE(V3)
 {
   buttonState = param.asInt();
 }
+
+bool isTrafficOn = true;
+void checkTelegramMessages()
+{
+  int messageCount = bot.getUpdates(bot.last_message_received + 1);
+  if (messageCount == 0)
+    return;
+  while (messageCount)
+  {
+    for (int i = 0; i < messageCount; i++)
+    {
+      String text = bot.messages[i].text;
+
+      Serial.println("Tin nhắn từ Telegram: " + text);
+
+      if (text == "/traffic_off")
+      {
+        digitalWrite(gPIN, LOW);
+        digitalWrite(yPIN, LOW);
+        digitalWrite(rPIN, LOW);
+        bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đã TẮT!");
+        isTrafficOn = false;
+      }
+      else if (text == "/traffic_on")
+      {
+        bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đang BẬT!");
+        isTrafficOn = true;
+      }
+      else
+      {
+        bot.sendMessage(GROUP_ID, "⚠️ Lệnh không hợp lệ! Hãy gửi /traffic_on hoặc /traffic_off.");
+      }
+    }
+    messageCount = bot.getUpdates(bot.last_message_received + 1);
+  }
+}
+
 void loop()
 {
   if (!WelcomeDisplayTimeout())
     return;
-  ThreeLedBlink();
+  if (isTrafficOn)
+    ThreeLedBlink();
   updateDHT();
   uptimeBlynk();
   if (buttonState)
   {
     BlinkingYellowLight();
   }
+  checkTelegramMessages();
 }

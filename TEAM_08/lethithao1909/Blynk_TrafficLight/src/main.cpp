@@ -1,6 +1,6 @@
-#define BLYNK_TEMPLATE_ID "TMPL61VXc9DGC"
-#define BLYNK_TEMPLATE_NAME "BlynkTrafficlight"
-#define BLYNK_AUTH_TOKEN "i845OAgLeArS5ApvWnWY36sm7tgFDkCi"
+#define BLYNK_TEMPLATE_ID "TMPL601ZejpGt"
+#define BLYNK_TEMPLATE_NAME "Blynktrafficlight"
+#define BLYNK_AUTH_TOKEN "CCr3Wp5wM2h7Vdnuj-W89Q9dGIEgeULb"
 
 #include <WiFi.h>
 #include <BlynkSimpleEsp32.h>
