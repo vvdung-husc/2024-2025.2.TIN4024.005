@@ -43,6 +43,10 @@ const char* chatID = "-1002559266898";
 //Nguyễn Nhật Thi
 //const char* botToken "7141650163:AAHVzmOzZk_oaqqfMp1e2o3QE1nm9ZdC7tA" ;
 //const char* chatID "-4656911197";
+//trần hiếu tài
+const char* botToken "7624382673:AAEKAlhOHFPL9GxEIX6fIzOXlgATmHGVG9s" ;
+const char* chatID "-1002691191366";
+
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
