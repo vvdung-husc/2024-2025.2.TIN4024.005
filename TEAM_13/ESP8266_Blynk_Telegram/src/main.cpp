@@ -1,13 +1,20 @@
 #include <Arduino.h>
 // Hoàng Thanh Nhã
-#define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
-#define BLYNK_TEMPLATE_NAME "Project"
-#define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
+// #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
+// #define BLYNK_TEMPLATE_NAME "Project"
+// #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
+//Ton Huyen Kim Khanh
+#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
+
 #include "utils.h"
 #include <Wire.h>
 #include <U8g2lib.h>
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
 
 #define gPIN 15
 #define yPIN 2
@@ -19,17 +26,36 @@
 char ssid[] = "CNTT-MMT";
 char pass[] = "13572468";
 
+// Telegram
+const char* telegramBotToken = "7975958050:AAH9EdnSBVFB6R_9Qs8bTtwbISixWwHSot0";
+const char* chatID = "-4720454162";
+
+// Ngưỡng nhiệt độ & độ ẩm nguy hiểm
+#define TEMP_MIN 10
+#define TEMP_MAX 35
+#define HUM_MIN 30
+#define HUM_MAX 80
+
+unsigned long lastAlertTime = 0; // Lưu thời gian lần gửi cảnh báo gần nhất
+const unsigned long alertInterval = 5 * 60 * 1000; // 5 phút (ms)
+
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+bool yellowMode = false;
 
-bool yellowMode = false; // Biến kiểm tra chế độ đèn vàng
+void sendTelegramMessage(String message) {
+    WiFiClientSecure client;
+    client.setInsecure(); 
+    HTTPClient https;
+    String url = "https://api.telegram.org/bot" + String(telegramBotToken) + "/sendMessage?chat_id=" + String(chatID) + "&text=" + message;
+    https.begin(client, url);
+    int httpCode = https.GET();
+    https.end();
 
-bool WelcomeDisplayTimeout(uint msSleep = 5000) {
-    static ulong lastTimer = 0;
-    static bool bDone = false;
-    if (bDone) return true;
-    if (!IsReady(lastTimer, msSleep)) return false;
-    bDone = true;
-    return bDone;
+    if (httpCode > 0) {
+        Serial.println("✅ Cảnh báo đã gửi đến Telegram!");
+    } else {
+        Serial.println("❌ Gửi cảnh báo thất bại!");
+    }
 }
 
 void setup() {
@@ -55,7 +81,7 @@ void setup() {
 }
 
 void ThreeLedBlink() {
-    if (yellowMode) return; // Nếu đang bật chế độ đèn vàng thì không chạy
+    if (yellowMode) return;
 
     static ulong lastTimer = 0;
     static int currentLed = 0;
@@ -73,9 +99,12 @@ float fTemperature = 0.0;
 void updateDHT() {
     static ulong lastTimer = 0;
     if (!IsReady(lastTimer, 2000)) return;
+    
     float h = random(0, 101) + random(0, 100) / 100.0;
     float t = random(-40, 101) + random(0, 100) / 100.0;
     bool bDraw = false;
+    bool alertRequired = false; 
+
     if (fTemperature != t) {
         bDraw = true;
         fTemperature = t;
@@ -92,6 +121,21 @@ void updateDHT() {
         Serial.println(" %");
         Blynk.virtualWrite(V2, h);
     }
+
+    // Kiểm tra nếu giá trị vượt ngưỡng nguy hiểm
+    if (t < TEMP_MIN || t > TEMP_MAX || h < HUM_MIN || h > HUM_MAX) {
+        alertRequired = true;
+    }
+
+    // Chỉ gửi cảnh báo mỗi 5 phút
+    if (alertRequired && (millis() - lastAlertTime >= alertInterval)) {
+        String message = "⚠️ CẢNH BÁO! Điều kiện môi trường không an toàn:\n";
+        message += "🌡️ Nhiệt độ: " + String(t) + "°C\n";
+        message += "💧 Độ ẩm: " + String(h) + "%";
+        sendTelegramMessage(message);
+        lastAlertTime = millis();
+    }
+
     if (bDraw) {
         oled.clearBuffer();
         oled.setFont(u8g2_font_unifont_t_vietnamese2);
@@ -113,14 +157,12 @@ void DrawCounter() {
 
 BLYNK_WRITE(V3) {
     int value = param.asInt();
-    yellowMode = (value == 1); // Nếu nhận giá trị 1 từ Blynk, bật chế độ đèn vàng
+    yellowMode = (value == 1); 
     if (yellowMode) {
-        // Bật chỉ đèn vàng
         digitalWrite(gPIN, LOW);
         digitalWrite(yPIN, HIGH);
         digitalWrite(rPIN, LOW);
     } else {
-        // Quay lại chế độ đèn giao thông bình thường
         digitalWrite(yPIN, LOW);
     }
     Serial.print("Yellow Mode: ");
@@ -129,7 +171,6 @@ BLYNK_WRITE(V3) {
 
 void loop() {
     Blynk.run();
-    if (!WelcomeDisplayTimeout()) return;
     if (!yellowMode) {
         ThreeLedBlink();
     }
