@@ -1,7 +1,3 @@
-#include <Arduino.h>
-#include <TM1637Display.h>
-#include <DHT.h>
-
 // NGUYEN VAN HOANG NAM
 #define BLYNK_TEMPLATE_ID "TMPL6PR14jYu4"
 #define BLYNK_TEMPLATE_NAME "Blynk Traffic DHT Sensor"
@@ -14,7 +10,13 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6eDvyBqz2"
 // #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
 // #define BLYNK_AUTH_TOKEN "RP-9PNRNu-xTRTCNClk-LGQNvj6r77_a"
-
+// LE TRONG TUNG LAM
+// #define BLYNK_TEMPLATE_ID "TMPL6QbA18q0b"
+// #define BLYNK_TEMPLATE_NAME "ESP32trafficBlynk"
+// #define BLYNK_AUTH_TOKEN "1cD7lZoj2GEvbVJizPJxEa04uVMtTRfY"
+#include <Arduino.h>
+#include <TM1637Display.h>
+#include <DHT.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>

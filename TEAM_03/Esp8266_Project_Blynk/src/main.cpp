@@ -1,6 +1,6 @@
 #define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
 #define BLYNK_TEMPLATE_NAME "TRAFFIC"
-#define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
+#define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"   
 
 #include <Arduino.h>
 #include <Wire.h>
