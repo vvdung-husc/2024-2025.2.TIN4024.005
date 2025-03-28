@@ -1,6 +1,6 @@
-#define BLYNK_TEMPLATE_ID "TMPL6lnJuhhnf"
+#define BLYNK_TEMPLATE_ID "TMPL65O6sDW_i"
 #define BLYNK_TEMPLATE_NAME "ESP8266"
-#define BLYNK_AUTH_TOKEN "kP2tbphYsFPG_14H7FCDuSdJ6juTUnXY"
+#define BLYNK_AUTH_TOKEN "LFlWmSFmwNYBB0y5H6WYq5lf7EMZtGxl"
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
