@@ -49,15 +49,15 @@ char pass[] = "13572468";
 
 
 // Thông tin Telegram (Lê Phước Quang)
-// #define BOTtoken "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
+// #define BOT_TOKEN "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
 // #define GROUP_ID "-1002356539994" //là một số âm
 // // Thông tin Telegram (Lê Quang Khải)
-// #define BOTtoken "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
+// #define BOT_TOKEN "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
 // #define GROUP_ID "-1002687928117" 
 
 //Lê Nguyễn Thiện Bình
 // // Initialize Telegram BOT
-// #define BOTtoken "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
+// #define BOT_TOKEN "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
 
 // // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
 // #define GROUP_ID "-1002525074425" //là một số âm
