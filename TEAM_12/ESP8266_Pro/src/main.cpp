@@ -133,10 +133,38 @@ void updateTemperature(){
   }
 }
 
-/////////////////////////
+void updateTrafficLights(){
+  static ulong lastTimer = 0;
+  static int state = 0;
+  if (!IsReady(lastTimer, 1000)) return;
 
+  if (!trafficEnabled) {
+    digitalWrite(gPIN, LOW);
+    digitalWrite(yPIN, LOW);
+    digitalWrite(rPIN, LOW);
+    return;
+  }
 
+  if (blinkMode) {
+    digitalWrite(gPIN, LOW);
+    digitalWrite(rPIN, LOW);
+    digitalWrite(yPIN, !digitalRead(yPIN));
+  } else {
+    digitalWrite(yPIN, LOW);
+    digitalWrite(gPIN, state == 0);
+    digitalWrite(rPIN, state == 1);
+    digitalWrite(yPIN, state == 2);
+    state = (state + 1) % 3;
+  }
+}
 
+void updateRuntime(){
+  static ulong lastTimer = 0;
+  if (!IsReady(lastTimer, 1000)) return;
+  
+  ulong elapsedTime = (millis() - startTime) / 1024;
+  Blynk.virtualWrite(V1, elapsedTime);
+}
 
 void handleTelegram(){
   int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
@@ -150,6 +178,15 @@ void handleTelegram(){
       bot.sendMessage(CHAT_ID, "🚦 Đèn giao thông hoạt động trở lại", "Markdown");
     }
   }
+}
+
+void loop() {
+  Blynk.run();
+  if (!WelcomeDisplayTimeout()) return;
+  updateTemperature();
+  updateTrafficLights();
+  updateRuntime();
+  handleTelegram();
 }
 
 
