@@ -1,7 +1,12 @@
 //Hoàng Văn Long
-#define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
+//#define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
+//#define BLYNK_TEMPLATE_NAME "ESP8266"
+//#define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
+//Phan Văn Nhật Duy
+#define BLYNK_TEMPLATE_ID "TMPL6xbr4RanW"
 #define BLYNK_TEMPLATE_NAME "ESP8266"
-#define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
+#define BLYNK_AUTH_TOKEN "vT1mc0MfWPD5B4w4qADVg7o8IXLde32d"
+
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -25,9 +30,12 @@ bool trafficEnabled = true;
 char auth[] = BLYNK_AUTH_TOKEN;
 char ssid[] = "CNTT-MMT";
 char pass[] = "13572468";
+//Phan Văn Nhật Duy
+const char* botToken ="8044446031:AAGghQhARa6eiLzS9WLTyvBXoxVFlcY5oEc";
+const char* chatID = "-1002619419433";
 //Hoàng Văn Long
-const char* botToken ="7179261234:AAERMDKB_0mSa4SBp6tymQeOiYb6ebDHVJg";
-const char* chatID = "-1002559266898";
+//const char* botToken ="7179261234:AAERMDKB_0mSa4SBp6tymQeOiYb6ebDHVJg";
+//const char* chatID = "-1002559266898";
 //Nguyễn Nhật Thi
 //const char* botToken "7141650163:AAHVzmOzZk_oaqqfMp1e2o3QE1nm9ZdC7tA" ;
 //const char* chatID "-4656911197";
