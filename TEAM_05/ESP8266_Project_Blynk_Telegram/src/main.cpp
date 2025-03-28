@@ -11,9 +11,9 @@
 // #define BLYNK_AUTH_TOKEN "OPO0M5x-ooILRht8BKrYJafoq6OTBJYY"
 
 // Thông tin Blynk (Lê Phước Quang)
-#define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
-#define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
-#define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
+// #define BLYNK_TEMPLATE_ID "TMPL6wQKPQ6OH"
+// #define BLYNK_TEMPLATE_NAME "ESP8286 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "AyPfhrFYJN8w_ECXOODxvJpFVSDu5dEe"
 
 // Thông tin Blynk (Mai Đức Đạt)
 // #define BLYNK_TEMPLATE_ID "TMPL6MmuiU_Zh"
@@ -21,9 +21,9 @@
 // #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
 
 // Thông tin Blynk (Lê Quang Khải)
-// #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
-// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
-// #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
+#define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+#define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
 
 // //Lê Nguyễn Thiện Bình
 // #define BLYNK_TEMPLATE_ID "TMPL6BB21OMBX"
@@ -49,13 +49,14 @@ char pass[] = "13572468";
 
 
 //Thông tin Telegram (Lê Phước Quang)
-#define BOT_TOKEN "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
-#define GROUP_ID "-1002356539994" //là một số âm
-#define USER_ID "7306324819"
+// #define BOT_TOKEN "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"  // your Bot Token (Get from Botfather)
+// #define GROUP_ID "-1002356539994" //là một số âm
+// #define USER_ID "7306324819"
 
-// // Thông tin Telegram (Lê Quang Khải)
-// #define BOT_TOKEN "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
-// #define GROUP_ID "-1002687928117" 
+// Thông tin Telegram (Lê Quang Khải)
+#define BOT_TOKEN "7468891601:AAHmaAiU7-zshtrQL7DJuR71iKBtQ7-6FEE"  
+#define GROUP_ID "-1002687928117" 
+#define USER_ID "1815580240"
 
 //Lê Nguyễn Thiện Bình
 // #define BOT_TOKEN "7889894611:AAEd-D67_v_MZ6uTQLoVSpcFq2doQDkTPro"  // your Bot Token (Get from Botfather)
