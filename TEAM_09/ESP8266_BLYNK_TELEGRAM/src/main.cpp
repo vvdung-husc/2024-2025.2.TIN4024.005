@@ -2,6 +2,10 @@
 #define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
 #define BLYNK_TEMPLATE_NAME "ESP8266"
 #define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
+//Trần Hiếu Tài
+#define BLYNK_TEMPLATE_ID "TMPL6fXCZEdgm"
+#define BLYNK_TEMPLATE_NAME "ESP8266"
+#define BLYNK_AUTH_TOKEN "KIEz-zESDTQeCzUlhWDSwZnGLyO8f9lM"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -14,7 +18,6 @@
 #define gPIN 15
 #define yPIN 2
 #define rPIN 5
-
 #define OLED_SDA 13
 #define OLED_SCL 12
 
@@ -25,14 +28,18 @@ bool trafficEnabled = true;
 char auth[] = BLYNK_AUTH_TOKEN;
 char ssid[] = "CNTT-MMT";
 char pass[] = "13572468";
+
 //Hoàng Văn Long
 const char* botToken ="7179261234:AAERMDKB_0mSa4SBp6tymQeOiYb6ebDHVJg";
 const char* chatID = "-1002559266898";
 //Nguyễn Nhật Thi
 //const char* botToken "7141650163:AAHVzmOzZk_oaqqfMp1e2o3QE1nm9ZdC7tA" ;
 //const char* chatID "-4656911197";
+
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
+
+ulong uptimeSeconds = 0; // Biến lưu thời gian hoạt động
 
 void sendTelegramAlert(String message) {
   bot.sendMessage(chatID, message, "Markdown");
@@ -126,9 +133,39 @@ void checkTelegram() {
   }
 }
 
+void updateUptime() {
+  static ulong lastUpdate = 0;
+  if (millis() - lastUpdate >= 1000) { // Cập nhật mỗi giây
+    lastUpdate = millis();
+    uptimeSeconds++;
+
+    int hours = uptimeSeconds / 3600;
+    int minutes = (uptimeSeconds % 3600) / 60;
+    int seconds = uptimeSeconds % 60;
+
+    char uptimeStr[20];
+    sprintf(uptimeStr, "%02d:%02d:%02d", hours, minutes, seconds);
+    
+    Serial.printf("Thời gian hoạt động: %s\n", uptimeStr);
+    
+    oled.clearBuffer();
+    oled.setFont(u8g2_font_unifont_t_vietnamese2);
+    oled.setCursor(0, 10);
+    oled.printf("Thoi gian: %s", uptimeStr);
+    oled.setCursor(0, 30);
+    oled.printf("Nhiet do: --.-- °C");
+    oled.setCursor(0, 50);
+    oled.printf("Do am: --.-- %%");
+    oled.sendBuffer();
+
+    Blynk.virtualWrite(V0, uptimeSeconds);
+  }
+}
+
 void loop() {
   Blynk.run();
   ThreeLedBlink();
   updateDHT();
   checkTelegram();
+  updateUptime();
 }
