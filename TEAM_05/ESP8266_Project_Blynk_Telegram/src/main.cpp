@@ -42,6 +42,7 @@ char pass[] = "13572468";
 // Thông tin Telegram (Ngô Văn Hiếu)
 // #define BOT_TOKEN "8184771014:AAEoqRHKjOhevsrds3CD-F54lkpoY3IoW24"
 // #define GROUP_ID "-1002655884696" // Nhóm "ESP32-Iot"
+// #define USER_ID "8158778584"
 
 // Thông tin Telegram (Mai Đức Đạt)
 // #define BOT_TOKEN "7922349592:AAExgMOGey7DGIdIpkgPn2_75GFPXmy3F_c"
