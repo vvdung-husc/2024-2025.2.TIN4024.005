@@ -2,6 +2,10 @@
 #define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
 #define BLYNK_TEMPLATE_NAME "ESP8266"
 #define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
+//Trần Hiếu Tài
+#define BLYNK_TEMPLATE_ID "TMPL6fXCZEdgm"
+#define BLYNK_TEMPLATE_NAME "ESP8266"
+#define BLYNK_AUTH_TOKEN "KIEz-zESDTQeCzUlhWDSwZnGLyO8f9lM"
 
 #include <Arduino.h>
 #include <Wire.h>
