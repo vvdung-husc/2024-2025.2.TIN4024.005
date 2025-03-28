@@ -7,7 +7,7 @@
   Project created using Brian Lough's Universal Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
 */
 
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>
@@ -65,7 +65,7 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  client.setCACert(TELEGRAM_CERTIFICATE_ROOT); // Add root certificate for api.telegram.org
+  client.setInsecure();// Add root certificate for api.telegram.org
   
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
