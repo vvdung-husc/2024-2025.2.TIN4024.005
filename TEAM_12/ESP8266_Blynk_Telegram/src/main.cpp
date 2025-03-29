@@ -30,9 +30,11 @@ char pass[] = "13572468";
 // Trần Kiêm Hiếu Telegram
 #define BOT_TOKEN "7377317535:AAGSbtdkcMVeQ_VANB43-kj4CCetAzvZoKw"
 #define CHAT_ID "-4727293043"
+#define USER_ID "7562783056"
 //Ngô Viết Hy Telegram
 // #define BOT_TOKEN "8161479640:AAEQVhwsQoX7-MCXVUltBzF9QjjXdayJs_c"
 // #define CHAT_ID "-1002656365325"
+// #define USER_ID "5973132309"
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOT_TOKEN, client);
 
@@ -179,6 +181,13 @@ void handleTelegram(){
   int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
   for (int i = 0; i < numNewMessages; i++) {
     String text = bot.messages[i].text;
+    String chat_id = String(bot.messages[i].chat_id);
+    String from_id = String(bot.messages[i].from_id);
+    String user_id = String(USER_ID);
+    if (from_id != user_id) {
+      bot.sendMessage(chat_id, "❌ Bạn không có quyền điều khiển bot!", "");
+      continue;
+    }
     if (text == "/traffic_off") {
       trafficEnabled = false;
       bot.sendMessage(CHAT_ID, "🚦 Đèn giao thông đã tắt", "Markdown");
