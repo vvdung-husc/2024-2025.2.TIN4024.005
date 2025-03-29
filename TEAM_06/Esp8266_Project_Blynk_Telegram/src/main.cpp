@@ -11,9 +11,9 @@
 #include <U8g2lib.h>
 
 // Lại Văn Minh
-#define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
-#define BLYNK_TEMPLATE_NAME "Telegram Blynk"
-#define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+// #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
+// #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
+// #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
 
 // Nguyễn Thị Diệu Anh
 //  #define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
@@ -29,6 +29,12 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6N0zfQq82"
 // #define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
 // #define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
+
+//Phạm Ngọc Cảm
+#define BLYNK_TEMPLATE_ID "TMPL6BQqQhyDm"
+#define BLYNK_TEMPLATE_NAME "ESP8266Telegram"
+#define BLYNK_AUTH_TOKEN "viVuCaIO95KWECQm1hFMdPYWGvSxCQl8"
+
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
