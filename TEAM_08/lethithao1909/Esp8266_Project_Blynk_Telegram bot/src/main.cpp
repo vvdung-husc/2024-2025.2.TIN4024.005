@@ -11,9 +11,9 @@
 #include <UniversalTelegramBot.h>
 
 // 🔹 Cấu hình Telegram 
-#define BOT_TOKEN "8052849841:AAH736dza0CdpWsMipOP-TWlwkA4qSWFJuo"
-#define GROUP_ID "-4615063743"
-#define ADMIN_ID "5551063619"
+#define BOT_TOKEN "7885026566:AAGa0Tjz0dJ4C6CSyo1_iMC8KleoFYlUczI"
+#define GROUP_ID "-4684647200"
+#define ADMIN_ID "5358198549"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOT_TOKEN, client);
