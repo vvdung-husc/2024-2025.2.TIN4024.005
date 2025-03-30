@@ -8,6 +8,11 @@
 // #define BLYNK_TEMPLATE_NAME "IOT"
 // #define BLYNK_AUTH_TOKEN "Q1P__3piELCWKs22dLh589vQktApTTKJ"
 
+// Nguyễn Viết Hùng
+// #define BLYNK_TEMPLATE_ID "TMPL6J1Jal72W"
+// #define BLYNK_TEMPLATE_NAME "esp8266"
+// #define BLYNK_AUTH_TOKEN "u1cKK2vyD5FCTZ76up_wKqrc3n5LPGg9"
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -22,6 +27,9 @@
 // #define BOTtoken "7984313333:AAEfM0Yox23-5fuM31lZmYBHe7NY2HsjXxA" // Bot Token từ BotFather
 // #define GROUP_ID "-4692915290"                                    // Group ID của bạn
 
+// Nguyễn Viết Hùng
+// #define BOTtoken "7520744232:AAHTX360kc_5wuJZuZUmTc2Zs9FqD_Zvg44"
+// #define GROUP_ID "-4554634970"
 
 #define gPIN 15 // Đèn xanh
 #define yPIN 2  // Đèn vàng
