@@ -10,10 +10,10 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-// Lại Văn Minh
-#define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
-#define BLYNK_TEMPLATE_NAME "Telegram Blynk"
-#define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+// // Lại Văn Minh
+// #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
+// #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
+// #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
 
 // Nguyễn Thị Diệu Anh
 //  #define BLYNK_TEMPLATE_ID "TMPL65KeiW37P"
@@ -26,9 +26,9 @@
 // #define BLYNK_AUTH_TOKEN "gPBpuIA0Xv0Xvcboh5ScnjV4-I0qXuNp"
 
 // Phan Duy An
-// #define BLYNK_TEMPLATE_ID "TMPL6N0zfQq82"
-// #define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
-// #define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
+#define BLYNK_TEMPLATE_ID "TMPL6N0zfQq82"
+#define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
+#define BLYNK_AUTH_TOKEN "yQZI9rRQXSkvvlHXDl2Q3mYfliVw7DEz"
 #include <Esp8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
@@ -54,7 +54,7 @@ char pass[] = "13572468";
 
 // Initialize Telegram BOT
 // Lại Văn Minh
-#define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
+// #define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
 
 // Nguyễn Thị Diệu Anh
 // #define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
@@ -63,11 +63,11 @@ char pass[] = "13572468";
 // #define BOTtoken "7785297652:AAGTOZ-QgfHNYX4Q2y-kxBAcstG37iY90P8"
 
 // Phan Duy An
-// #define BOTtoken "8022560842:AAF1O4ssUD03hsQQ0zstLKCVs5Nfo8CKjho" // your Bot Token (Get from Botfather)
+#define BOTtoken "8022560842:AAF1O4ssUD03hsQQ0zstLKCVs5Nfo8CKjho" // your Bot Token (Get from Botfather)
 
 //  Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
 //  Lại Văn Minh
-#define GROUP_ID "-4743348114" // thường là một số âm
+// #define GROUP_ID "-4743348114" // thường là một số âm
 
 // Nguyễn Thị Diệu Anh
 // #define GROUP_ID "-4610946941" // thường là một số âm
@@ -76,7 +76,7 @@ char pass[] = "13572468";
 // #define GROUP_ID "-4731532209"
 
 // Phan Duy An
-// #define GROUP_ID "-4618565475" // thường là một số âm
+#define GROUP_ID "-4618565475" // thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
