@@ -1,9 +1,10 @@
 #include <Arduino.h>
-// Blynk Hoàng Thanh Nhã
+// Blynk 
+//Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
 #define BLYNK_TEMPLATE_NAME "Project"
 #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
-//Ton Huyen Kim Khanh
+//Ton Huyen Kim Khánh
 //#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
 //#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 //#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
@@ -22,9 +23,16 @@
 char ssid[] = "CNTT-MMT";
 char pass[] = "13572468";
 
-// Telegram Bot Hoàng Thanh Nhã 
+// Telegram Bot
+// Hoàng Thanh Nhã 
 #define BOT_TOKEN "7975958050:AAH9EdnSBVFB6R_9Qs8bTtwbISixWwHSot0" 
 #define CHAT_ID "-4720454162" 
+
+// Tôn Huyền Kim Khánh
+//#define BOT_TOKEN "7405557746:AAGGWwmLWX3N5yjaeSVTItw3YNFs67hpox4"
+//#define CHAT_ID "-4691157407"
+
+
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOT_TOKEN, client);
