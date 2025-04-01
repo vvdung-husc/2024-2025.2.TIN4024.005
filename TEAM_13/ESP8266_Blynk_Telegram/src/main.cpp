@@ -1,20 +1,13 @@
 #include <Arduino.h>
-<<<<<<< HEAD
 // Blynk Hoàng Thanh Nhã
 #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
 #define BLYNK_TEMPLATE_NAME "Project"
 #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
-=======
-// Hoàng Thanh Nhã
-// #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
-// #define BLYNK_TEMPLATE_NAME "Project"
-// #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
 //Ton Huyen Kim Khanh
-#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
-#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
+//#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
+//#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+//#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
 
->>>>>>> cedbace0ac580cb4341336925f5bfc88d2e00bf3
 #include "utils.h"
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -302,9 +295,15 @@ void updateUptime()
 BLYNK_WRITE(V3)
 {
   yellowBlinkMode = param.asInt();
-  if (!yellowBlinkMode)
+  if (yellowBlinkMode) {
+    // Bật đèn vàng
+    digitalWrite(yPIN, HIGH);
+  } else {
+    // Tắt đèn vàng
     digitalWrite(yPIN, LOW);
+  }
 }
+
 
 void loop()
 {
