@@ -11,68 +11,67 @@
 #include <UniversalTelegramBot.h>
 
 // 🔹 Cấu hình Telegram 
-#define BOT_TOKEN "7885026566:AAGa0Tjz0dJ4C6CSyo1_iMC8KleoFYlUczI"
+#define BOTtoken "7885026566:AAGa0Tjz0dJ4C6CSyo1_iMC8KleoFYlUczI"
 #define GROUP_ID "-4684647200"
 #define ADMIN_ID "5358198549"
 
 WiFiClientSecure client;
-UniversalTelegramBot bot(BOT_TOKEN, client);
+UniversalTelegramBot bot(BOTtoken, client);
 
-// 🔹 Chân LED giao thông
+// 🟢 Chân LED (đỏ, vàng, xanh)
 #define gPIN 15
 #define yPIN 2
 #define rPIN 5
 
-// 🔹 Chân I2C OLED
+// 📟 Chân I2C OLED
 #define OLED_SDA 13
 #define OLED_SCL 12
 
-// 📟 Khởi tạo OLED SH1106
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
-// ⏳ Biến thời gian hoạt động
 unsigned long runTime = 0;
-
-// 🌡 Biến nhiệt độ & độ ẩm
 float fTemperature = 0.0;
 float fHumidity = 0.0;
-
-// 🔁 Trạng thái đèn vàng nhấp nháy & đèn giao thông
 bool yellowBlinkMode = false;
-bool trafficLightOn = true;
+bool yellowOnlyMode = false; // 🔥 Chế độ chỉ bật đèn vàng
+bool trafficLightEnabled = true;
 
-// 🔌 Kết nối Blynk
 BlynkTimer timer;
 
-// 📶 Bắt sự kiện Switch từ Blynk (V3)
-BLYNK_WRITE(V3) {
-  yellowBlinkMode = param.asInt();
+// 📶 Nhận lệnh bật/tắt chế độ đèn vàng từ Blynk (V4)
+BLYNK_WRITE(V1) {
+  yellowOnlyMode = param.asInt(); // 1 = bật, 0 = tắt
 }
 
-// 📟 Hiển thị trên OLED
+// 📟 Cập nhật dữ liệu trên OLED
 void updateOLED() {
   oled.clearBuffer();
   oled.setFont(u8g2_font_unifont_t_vietnamese2);
-
   oled.drawUTF8(0, 14, ("Nhiet do: " + String(fTemperature, 1) + "°C").c_str());
   oled.drawUTF8(0, 28, ("Do am: " + String(fHumidity, 1) + "%").c_str());
   oled.drawUTF8(0, 42, ("Thoi gian: " + String(runTime) + "s").c_str());
-
   oled.sendBuffer();
 }
 
-// 🚥 Điều khiển đèn giao thông
+// 🚦 Điều khiển đèn giao thông
 void TrafficLightControl() {
-  if (!trafficLightOn) {
+  if (!trafficLightEnabled) {
     digitalWrite(rPIN, LOW);
-    digitalWrite(yPIN, LOW);
     digitalWrite(gPIN, LOW);
+    digitalWrite(yPIN, LOW);
+    return;
+  }
+
+  if (yellowOnlyMode) {
+    digitalWrite(rPIN, LOW);
+    digitalWrite(gPIN, LOW);
+    digitalWrite(yPIN, HIGH); // Bật đèn vàng cố định
     return;
   }
 
   static unsigned long lastTimer = 0;
   static int state = 0;
-  static const unsigned long durations[] = {10000, 8000, 3000}; // Đỏ 10s, Xanh 8s, Vàng 3s
+  static const unsigned long durations[] = {2000, 3000, 1000}; // Đỏ 2s, Xanh 3s, Vàng 1s
   static const int ledPins[] = {rPIN, gPIN, yPIN};
 
   if (yellowBlinkMode) {
@@ -93,34 +92,43 @@ void TrafficLightControl() {
   }
 }
 
-// 📟 Gửi dữ liệu lên Blynk
-void sendToBlynk() {
-  if (WiFi.status() == WL_CONNECTED) {
-    Blynk.virtualWrite(V0, runTime);
-    Blynk.virtualWrite(V1, fTemperature);
-    Blynk.virtualWrite(V2, fHumidity);
-  }
-}
-
 // 🔢 Sinh dữ liệu nhiệt độ & độ ẩm ngẫu nhiên
 float randomTemperature() {
-  return random(-400, 800) / 10.0;
+  return random(200, 350) / 10.0;
 }
 
 float randomHumidity() {
-  return random(0, 1000) / 10.0;
+  return random(300, 800) / 10.0;
 }
 
 // 🌡 Cập nhật nhiệt độ & độ ẩm
 void updateSensorData() {
-fTemperature = randomTemperature();
+  static unsigned long lastTimer = 0;
+  if (millis() - lastTimer < 2000) return;
+  lastTimer = millis();
+
+  fTemperature = randomTemperature();
   fHumidity = randomHumidity();
+
+  Serial.print("Nhiet do: ");
+  Serial.print(fTemperature);
+  Serial.println("°C");
+  Serial.print("Do am: ");
+  Serial.print(fHumidity);
+  Serial.println("%");
 }
 
-// 🔔 Gửi cảnh báo Telegram mỗi 10s nếu vượt ngưỡng sức khỏe
+// 📟 Gửi dữ liệu lên Blynk
+void sendToBlynk() {
+  Blynk.virtualWrite(V0, runTime);
+  Blynk.virtualWrite(V2, fTemperature); // 🌡 Gửi nhiệt độ lên Blynk
+  Blynk.virtualWrite(V3, fHumidity);    // 💧 Gửi độ ẩm lên Blynk
+}
+// 📟 Gửi cảnh báo đến Telegram nếu nhiệt độ hoặc độ ẩm vượt ngưỡng
+// 📟 Gửi cảnh báo đến Telegram
 void sendAlertTelegram() {
   static unsigned long lastAlert = 0;
-  if (millis() - lastAlert < 10000) return;
+  if (millis() - lastAlert < 300000) return;
   lastAlert = millis();
 
   String message = "📡 Cập nhật thông tin:\n";
@@ -154,12 +162,7 @@ void sendAlertTelegram() {
   }
 }
 
-// 🔢 Hiển thị thời gian chạy
-void updateRunTime() {
-  runTime++;
-}
-
-// 📩 Xử lý tin nhắn Telegram
+// 📨 Xử lý lệnh từ Telegram
 void handleNewMessages() {
   int messageCount = bot.getUpdates(bot.last_message_received + 1);
   for (int i = 0; i < messageCount; i++) {
@@ -172,41 +175,58 @@ void handleNewMessages() {
     }
 
     if (text == "/traffic_off") {
-      trafficLightOn = false;
+      trafficLightEnabled = false;
       bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đã tắt.", "");
     } else if (text == "/traffic_on") {
-      trafficLightOn = true;
+      trafficLightEnabled = true;
       bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông hoạt động bình thường.", "");
     }
   }
 }
 
+// 🔢 Hiển thị thời gian chạy
+void updateRunTime() {
+  static unsigned long lastTimer = 0;
+  if (millis() - lastTimer < 1000) return;
+  lastTimer = millis();
+  runTime++;
+}
+
 // 🏁 SETUP
 void setup() {
   Serial.begin(115200);
+
   pinMode(gPIN, OUTPUT);
   pinMode(yPIN, OUTPUT);
   pinMode(rPIN, OUTPUT);
+  digitalWrite(gPIN, LOW);
+  digitalWrite(yPIN, LOW);
   digitalWrite(rPIN, HIGH);
 
   Wire.begin(OLED_SDA, OLED_SCL);
   oled.begin();
-
+  
   WiFi.begin("CNTT-MMT", "13572468");
-  while (WiFi.status() != WL_CONNECTED) delay(500);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected!");
 
-  Blynk.config(BLYNK_AUTH_TOKEN);
-  Blynk.connect();
   client.setInsecure();
+  Blynk.begin(BLYNK_AUTH_TOKEN, "CNTT-MMT", "13572468");
+
+  timer.setInterval(2000L, updateSensorData);
+  timer.setInterval(300000L, sendAlertTelegram);
+  timer.setInterval(5000L, handleNewMessages);
+  timer.setInterval(2000L, sendToBlynk);
 }
 
 // 🔁 LOOP
 void loop() {
   Blynk.run();
-  handleNewMessages();
+  timer.run();
   TrafficLightControl();
-  updateSensorData();
-  sendAlertTelegram();
   updateRunTime();
   updateOLED();
 }

@@ -13,7 +13,7 @@
 // 🔌 Thông tin Telegram Bot
 #define BOTtoken "7552149595:AAG_nU1B5MBSMpj8_fk-yUi_bXF-RCY9TIg"
 #define GROUP_ID "-4770066788"
-#define id_admin "5755242161" // ID Telegram của bạn
+#define ADMIN_ID "5755242161" // ID Telegram của bạn
 
 
 
@@ -131,27 +131,31 @@ void sendToBlynk() {
 // 📟 Gửi cảnh báo đến Telegram nếu nhiệt độ hoặc độ ẩm vượt ngưỡng
 // 📟 Gửi cảnh báo đến Telegram
 void sendTelegramAlert() {
-  String message = "";
+  String message = "📡 Cập nhật thông tin:\n";
+  message += "🌡 Nhiệt độ: " + String(fTemperature, 1) + "°C\n";
+  message += "💧 Độ ẩm: " + String(fHumidity, 1) + "%\n\n";
 
-  if (fTemperature < 10) {
-    message += "🔥 Cảnh báo: Nhiệt độ quá thấp! Nguy cơ hạ thân nhiệt, tê cóng.\n";
-  } else if (fTemperature >= 10 && fTemperature < 15) {
-    message += "⚠️ Cảnh báo: Trời lạnh, tăng nguy cơ mắc bệnh đường hô hấp.\n";
-  } else if (fTemperature >= 30 && fTemperature < 35) {
-    message += "🥵 Cảnh báo: Cơ thể có dấu hiệu mất nước, mệt mỏi.\n";
-  } else if (fTemperature >= 35 && fTemperature < 40) {
-    message += "🚨 Cảnh báo: Nguy cơ sốc nhiệt, chuột rút, say nắng!\n";
-  } else if (fTemperature >= 40) {
-    message += "🛑 Cảnh báo: Nhiệt độ cực kỳ nguy hiểm! Nguy cơ suy nội tạng, đột quỵ!\n";
-  }
+  if (fTemperature < 10)
+    message += "⚠️ Nguy cơ hạ thân nhiệt, tê cóng, giảm miễn dịch.\n";
+  else if (fTemperature >= 10 && fTemperature < 15)
+    message += "⚠️ Cảm giác lạnh, tăng nguy cơ mắc bệnh đường hô hấp.\n";
+  else if (fTemperature >= 25 && fTemperature < 30)
+    message += "✅ Nhiệt độ lý tưởng, ít ảnh hưởng đến sức khỏe.\n";
+  else if (fTemperature >= 30 && fTemperature < 35)
+    message += "⚠️ Cơ thể bắt đầu có dấu hiệu mất nước, mệt mỏi.\n";
+  else if (fTemperature > 35 && fTemperature <= 40)
+    message += "🚨 Nguy cơ sốc nhiệt, chuột rút, say nắng.\n";
+  else if (fTemperature > 40)
+    message += "🚨 Cực kỳ nguy hiểm! Có thể gây suy nội tạng, đột quỵ.\n";
 
-  if (fHumidity < 30) {
-    message += "💨 Độ ẩm thấp! Da khô, kích ứng mắt, tăng nguy cơ bệnh hô hấp.\n";
-  } else if (fHumidity > 70 && fHumidity <= 80) {
-    message += "☁️ Độ ẩm cao! Tăng nguy cơ nấm mốc, vi khuẩn phát triển.\n";
-  } else if (fHumidity > 80) {
-    message += "💦 Độ ẩm quá cao! Oi bức, khó thở, tăng nguy cơ sốc nhiệt.\n";
-  }
+  if (fHumidity < 30)
+    message += "⚠️ Da khô, kích ứng mắt, tăng nguy cơ mắc bệnh về hô hấp.\n";
+  else if (fHumidity >= 40 && fHumidity <= 60)
+    message += "✅ Mức lý tưởng, ít ảnh hưởng đến sức khỏe.\n";
+  else if (fHumidity > 70 && fHumidity <= 80)
+    message += "⚠️ Tăng nguy cơ nấm mốc, vi khuẩn phát triển, bệnh đường hô hấp.\n";
+  else if (fHumidity > 80)
+    message += "🚨 Cảm giác oi bức, khó thở, cơ thể khó thoát mồ hôi, tăng nguy cơ sốc nhiệt.\n";
 
   if (message.length() > 0) {
     message = "⚠️ CẢNH BÁO MÔI TRƯỜNG ⚠️\n" + message;
@@ -160,33 +164,26 @@ void sendTelegramAlert() {
 }
 
 // 📨 Xử lý lệnh từ Telegram
-void handleTelegramCommands() {
-  int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
-  
-  for (int i = 0; i < numNewMessages; i++) {
+void handleNewMessages() {
+  int messageCount = bot.getUpdates(bot.last_message_received + 1);
+  for (int i = 0; i < messageCount; i++) {
     String text = bot.messages[i].text;
-    String sender_id = bot.messages[i].chat_id; // ID của người gửi
+    String sender_id = String(bot.messages[i].from_id);
 
-    Serial.println("Tin nhan nhan duoc: " + text);
-    Serial.println("ID nguoi gui: [" + sender_id + "]"); // In ra để kiểm tra
-
-    String admin_id = "5755242161"; // Đặt đúng ID của bạn (loại bỏ số dư)
-    sender_id.trim();  // Xóa khoảng trắng thừa
-    if (sender_id != admin_id) {
-      bot.sendMessage(sender_id, "⛔ Bạn không có quyền điều khiển hệ thống!", "");
-      continue;
+    if (sender_id != ADMIN_ID) {
+      bot.sendMessage(GROUP_ID, "⛔ Bạn không có quyền điều khiển bot!", "");
+      return;
     }
 
     if (text == "/traffic_off") {
       trafficLightEnabled = false;
-      bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đã tắt!", "");
+      bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đã tắt.", "");
     } else if (text == "/traffic_on") {
       trafficLightEnabled = true;
-      bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông đã bật!", "");
+      bot.sendMessage(GROUP_ID, "🚦 Đèn giao thông hoạt động bình thường.", "");
     }
   }
 }
-
 
 // 🔢 Hiển thị thời gian chạy
 void updateRunTime() {
@@ -222,7 +219,7 @@ void setup() {
 
   timer.setInterval(2000L, updateSensorData);
   timer.setInterval(300000L, sendTelegramAlert);
-  timer.setInterval(5000L, handleTelegramCommands);
+  timer.setInterval(5000L, handleNewMessages);
   timer.setInterval(2000L, sendToBlynk);
 }
 
