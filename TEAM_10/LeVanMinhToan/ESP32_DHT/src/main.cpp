@@ -25,9 +25,9 @@ Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 DHT dht(DHTPIN, DHTTYPE);
 
-String strTemp;
+String tempMessage;
 bool ledState = false;
-int8_t ledNumber = LED_BLUE;
+int8_t currentLED = LED_BLUE;
 
 void setup() {
   // put your setup code here, to run once:
@@ -72,24 +72,24 @@ void loop() {
   }
   oled.clearDisplay();
   
-  strTemp = String("Temperature: ");
+  tempMessage = String("Temperature: ");
 
   if (t < 0.0){    
-    strTemp += "Too COOL";
-    ledNumber = LED_YELLOW;
+    tempMessage += "Too COOL";
+    currentLED = LED_YELLOW;
   }
   else if (t < 40.0){
-    strTemp += "Normal";
-    ledNumber = LED_BLUE;
+    tempMessage += "Normal";
+    currentLED = LED_BLUE;
   }
   else {    
-    strTemp += "Too HOT";
-    ledNumber = LED_RED;
+    tempMessage += "Too HOT";
+    currentLED = LED_RED;
   }      
 
   oled.setTextSize(1);
   oled.setCursor(0,0);
-  oled.print(strTemp.c_str());
+  oled.print(tempMessage.c_str());
   oled.setTextSize(2);
   oled.setCursor(0,10);
   oled.print(t);
@@ -110,8 +110,7 @@ void loop() {
   
   oled.display();   
   
-  digitalWrite(ledNumber, HIGH);
+  digitalWrite(currentLED, HIGH);
   delay(500);
-  digitalWrite(ledNumber, LOW);  
+  digitalWrite(currentLED, LOW);  
 }
-
