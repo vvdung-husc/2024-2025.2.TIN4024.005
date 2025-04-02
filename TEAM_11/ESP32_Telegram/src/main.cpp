@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-//Thay thông số BLYNK của bạn vào đây
+//Le Si Thuan
 #define BLYNK_TEMPLATE_ID "TMPL6I0eznO8w"
 #define BLYNK_TEMPLATE_NAME "ESP32API"
 #define BLYNK_AUTH_TOKEN "DRNapQhnpPZtjATzTwPtvZymnDYUnfgp"
