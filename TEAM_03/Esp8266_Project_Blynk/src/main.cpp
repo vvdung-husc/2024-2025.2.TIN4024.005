@@ -1,6 +1,6 @@
 #define BLYNK_TEMPLATE_ID "TMPL6tnCsAOvV"
 #define BLYNK_TEMPLATE_NAME "TRAFFIC"
-#define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"
+#define BLYNK_AUTH_TOKEN "yWPVpH6smR6fdbGtXuVFAQbFCSXLcCtK"   
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -42,7 +42,7 @@ void setup() {
   oled.sendBuffer();
 }
 
-// Blynk switch để bật chế độ đèn vàng nhấp nháy
+// Blynk switch để bật chế độ đèn vàng nhấp nháy, 
 BLYNK_WRITE(V1) {
   yellowBlinkMode = param.asInt();
 }

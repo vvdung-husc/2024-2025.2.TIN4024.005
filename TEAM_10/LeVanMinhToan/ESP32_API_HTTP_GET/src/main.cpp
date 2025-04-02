@@ -1,53 +1,52 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-char ssid[] = "Wokwi-GUEST";  
-char pass[] = "";  
+char wifiSSID[] = "Wokwi-GUEST";
+char wifiPassword[] = "";
 
-String latitude = "";
-String longitude = "";
+String gpsLatitude = "";
+String gpsLongitude = "";
 
-void PrasData(String data) {
-    String parts[7];  
-    int index = 0, start = 0, end = 0;
+void parseLocationData(String rawData) {
+    String locationParts[7];  
+    int partIndex = 0, startIndex = 0, endIndex = 0;
 
-    while ((end = data.indexOf('|', start)) != -1 && index < 6) {
-        parts[index++] = data.substring(start, end);
-        start = end + 1;
+    while ((endIndex = rawData.indexOf('|', startIndex)) != -1 && partIndex < 6) {
+        locationParts[partIndex++] = rawData.substring(startIndex, endIndex);
+        startIndex = endIndex + 1;
     }
-    parts[index] = data.substring(start);
+    locationParts[partIndex] = rawData.substring(startIndex);
 
-    Serial.println("\n=== Thông tin từ API ===");
-    Serial.println("IP: " + parts[0]);
-    Serial.println("Mã quốc gia: " + parts[1]);
-    Serial.println("Tên quốc gia: " + parts[2]);
-    Serial.println("Tỉnh/Thành phố: " + parts[3]);
-    Serial.println("Quận/Huyện: " + parts[4]);
-    Serial.println("Kinh độ: " + parts[5]);
-    Serial.println("Vĩ độ: " + parts[6]);
+    Serial.println("\n=== Location Data from API ===");
+    Serial.println("IP Address: " + locationParts[0]);
+    Serial.println("Country Code: " + locationParts[1]);
+    Serial.println("Country Name: " + locationParts[2]);
+    Serial.println("Province/City: " + locationParts[3]);
+    Serial.println("District: " + locationParts[4]);
+    Serial.println("Longitude: " + locationParts[5]);
+    Serial.println("Latitude: " + locationParts[6]);
 
-    // Lưu kinh độ và vĩ độ
-    longitude = parts[5];
-    latitude = parts[6];
+    gpsLongitude = locationParts[5];
+    gpsLatitude = locationParts[6];
 }
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("🔄 Đang kết nối WiFi...");
+    Serial.println("🔄 Connecting to WiFi...");
 
     WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, IPAddress(8, 8, 8, 8)); // Google DNS
-    WiFi.begin(ssid, pass);
+    WiFi.begin(wifiSSID, wifiPassword);
 
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
     }
-    Serial.println("\n✅ WiFi đã kết nối!");
+    Serial.println("\n✅ WiFi Connected!");
 }
 
 void loop() {
     if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("⚠️ Không có kết nối WiFi. Đang thử lại...");
+        Serial.println("⚠️ No WiFi connection. Retrying...");
         WiFi.disconnect();
         WiFi.reconnect();
         delay(5000);
@@ -55,26 +54,25 @@ void loop() {
     }
 
     HTTPClient http;
-    String url = "http://ip4.iothings.vn/?geo=1";
+    String apiURL = "http://ip4.iothings.vn/?geo=1";
 
-    Serial.println("\n🌍 Đang gửi yêu cầu HTTP...");
-    http.begin(url);
-    int httpCode = http.GET();
+    Serial.println("\n🌍 Sending HTTP request...");
+    http.begin(apiURL);
+    int httpResponseCode = http.GET();
 
-    if (httpCode > 0) {
-        String payload = http.getString();  
-        Serial.println("✅ Dữ liệu nhận được:");
-        Serial.println(payload);
-        PrasData(payload);  
+    if (httpResponseCode > 0) {
+        String responsePayload = http.getString();  
+        Serial.println("✅ Received Data:");
+        Serial.println(responsePayload);
+        parseLocationData(responsePayload);
 
-        // Tạo link Google Maps
-        if (latitude != "" && longitude != "") {
-            String mapsUrl = "http://www.google.com/maps/place/" + latitude + "," + longitude;
-            Serial.println("\n📍 Link Google Maps:");
-            Serial.println(mapsUrl);
+        if (gpsLatitude != "" && gpsLongitude != "") {
+            String googleMapsURL = "http://www.google.com/maps/place/" + gpsLatitude + "," + gpsLongitude;
+            Serial.println("\n📍 Google Maps Link:");
+            Serial.println(googleMapsURL);
         }
     } else {
-        Serial.println("❌ Lỗi HTTP, mã lỗi: " + String(httpCode));
+        Serial.println("❌ HTTP Error, Code: " + String(httpResponseCode));
     }
 
     http.end();  
