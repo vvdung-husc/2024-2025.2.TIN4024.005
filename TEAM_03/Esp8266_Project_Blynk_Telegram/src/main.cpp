@@ -51,6 +51,13 @@ char pass[] = "13572468";
 
 #define GROUP_ID "-1002549939953" // thường là một số âm
 
+// Huỳnh Quốc Khánh
+// #define BOTtoken "7344244327:AAFVUIe-F0wKX9GrKY6zm8QNChoB514L0bs"
+// #define GROUP_ID "-1002539091533"
+
+// Lê Minh Hiếu
+// #define BOTtoken "8005981675:AAFZY_Q8KbWsh6ntTarmjcjZZ7EfiLqR9N0"
+// #define GROUP_ID "-1002537868720"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
