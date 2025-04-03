@@ -39,11 +39,11 @@
       {
         "type": "gauge",
         "title": "Nhiệt độ",
-        "value": 26.1,
+        "value": 21.06,
         "min": -40,
         "max": 80,
         "unit": "°C",
-        "color": "magenta"
+        "color": "blue"
       }
     ],
     "dependencies": {}
