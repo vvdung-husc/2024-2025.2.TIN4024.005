@@ -9,6 +9,10 @@
 //#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 //#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
 
+//Dương Duy Khanh
+//#define BLYNK_TEMPLATE_ID "TMPL6M7rOjSH1"
+//#define BLYNK_TEMPLATE_NAME "Telegram"
+//#define BLYNK_AUTH_TOKEN "afs2DqGURHCGMrDwEBwheVSTrPBTUbPS"
 #include "utils.h"
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -32,6 +36,9 @@ char pass[] = "13572468";
 //#define BOT_TOKEN "7405557746:AAGGWwmLWX3N5yjaeSVTItw3YNFs67hpox4"
 //#define CHAT_ID "-4691157407"
 
+//Dương Duy Khanh
+//#define BOTtoken "7953116116:AAHD0oG34KQMV7SvzHaQa_KI27qcm83-B8U" 
+//#define GROUP_ID "-4751134824" 
 
 
 WiFiClientSecure client;
