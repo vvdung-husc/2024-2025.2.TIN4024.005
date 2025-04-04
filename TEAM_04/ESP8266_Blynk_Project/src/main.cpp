@@ -20,7 +20,7 @@
 #include <BlynkSimpleEsp8266.h>
 #include <UniversalTelegramBot.h> // Thêm thư viện Telegram
 
-// Initialize Telegram BOT
+// LÊ BÁ NHẬT MINH
 #define BOTtoken "7965370700:AAGHB_XS6lNgahXM6ZDbEJj-tV4chtwuiBo" // Bot Token từ BotFather
 #define GROUP_ID "-4692915290"                                    // Group ID của bạn
 // HỒ XUÂN LÃM
