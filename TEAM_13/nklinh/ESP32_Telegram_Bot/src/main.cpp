@@ -14,7 +14,7 @@ const char* password = "";
 #define BOTtoken "7566364423:AAEdj6Us9k1aXl-thFjqfdLHtk7bcFcpfHU"  // your Bot Token (Get from Botfather)
 
 // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-#define GROUP_ID " -4658124909" //thường là một số âm
+#define GROUP_ID "-4663865281" //thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
