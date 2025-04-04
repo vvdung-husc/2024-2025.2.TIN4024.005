@@ -1,13 +1,19 @@
 #include <Arduino.h>
 // Blynk 
 //Hoàng Thanh Nhã
-#define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
-#define BLYNK_TEMPLATE_NAME "Project"
-#define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
+// #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
+// #define BLYNK_TEMPLATE_NAME "Project"
+// #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
 //Ton Huyen Kim Khánh
 //#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
 //#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 //#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
+
+//Nguyễn Khánh Linh
+#define BLYNK_TEMPLATE_ID "TMPL69kKlGRk4"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+#define BLYNK_AUTH_TOKEN "e48658AtfppPhVuaCVu9H2adOQoW_0nK"
+
 
 //Dương Duy Khanh
 //#define BLYNK_TEMPLATE_ID "TMPL6M7rOjSH1"
@@ -29,18 +35,37 @@ char pass[] = "13572468";
 
 // Telegram Bot
 // Hoàng Thanh Nhã 
-#define BOT_TOKEN "7975958050:AAH9EdnSBVFB6R_9Qs8bTtwbISixWwHSot0" 
-#define CHAT_ID "-4720454162" 
+// #define BOT_TOKEN "7975958050:AAH9EdnSBVFB6R_9Qs8bTtwbISixWwHSot0" 
+// #define CHAT_ID "-4720454162" 
 
 // Tôn Huyền Kim Khánh
 //#define BOT_TOKEN "7405557746:AAGGWwmLWX3N5yjaeSVTItw3YNFs67hpox4"
 //#define CHAT_ID "-4691157407"
 
+//Nguyễn Khánh Linh
+#define BOT_TOKEN "7566364423:AAEdj6Us9k1aXl-thFjqfdLHtk7bcFcpfHU"
+#define CHAT_ID "-4663865281"
+
 //Dương Duy Khanh
 //#define BOTtoken "7953116116:AAHD0oG34KQMV7SvzHaQa_KI27qcm83-B8U" 
 //#define GROUP_ID "-4751134824" 
 
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include <UniversalTelegramBot.h>
+#include <BlynkSimpleEsp32.h>
+#include <Wire.h>
+#include <U8g2lib.h>
+#include <stdarg.h>
 
+// ======= THÔNG TIN CẦN THIẾT =========
+char ssid[] = "YOUR_WIFI_SSID";
+char pass[] = "YOUR_WIFI_PASSWORD";
+char BLYNK_AUTH_TOKEN[] = "YOUR_BLYNK_TOKEN";
+#define BOT_TOKEN "YOUR_TELEGRAM_BOT_TOKEN"
+#define CHAT_ID "YOUR_CHAT_ID"
+
+// ======= KHAI BÁO CHÂN VÀ BIẾN =========
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOT_TOKEN, client);
 
@@ -60,9 +85,28 @@ unsigned long lastLedSwitchTime = 0;
 const int ledPin[3] = {gPIN, yPIN, rPIN};
 const int durations[3] = {5000, 7000, 2000}; // Xanh 5s, Vàng 7s, Đỏ 2s
 
-// Biến toàn cục để lưu nhiệt độ và độ ẩm
 float temperature = 0.0;
 float humidity = 0.0;
+
+// ======= HÀM TIỆN ÍCH =========
+bool IsReady(unsigned long &lastTime, unsigned long interval)
+{
+  unsigned long now = millis();
+  if (now - lastTime < interval)
+    return false;
+  lastTime = now;
+  return true;
+}
+
+String StringFormat(const char *fmt, ...)
+{
+  char buf[128];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  va_end(args);
+  return String(buf);
+}
 
 bool WelcomeDisplayTimeout(uint msSleep = 5000)
 {
@@ -76,6 +120,7 @@ bool WelcomeDisplayTimeout(uint msSleep = 5000)
   return bDone;
 }
 
+// ======= SETUP =========
 void setup()
 {
   Serial.begin(115200);
@@ -119,6 +164,7 @@ void setup()
   }
 }
 
+// ======= CÁC HÀM CHÍNH =========
 void ThreeLedBlink()
 {
   static unsigned long lastTimer = 0;
@@ -163,7 +209,7 @@ void updateRandomDHT()
 {
   static unsigned long lastTimer = 0;
   if (!IsReady(lastTimer, 5000))
-    return; // 5 giây = 5,000 ms
+    return;
 
   temperature = generateRandomTemperature();
   humidity = generateRandomHumidity();
@@ -183,38 +229,40 @@ void checkHealthConditions()
 {
   static unsigned long lastAlertTime = 0;
   if (!IsReady(lastAlertTime, 300000))
-    return; // 5 phút = 300,000 ms
+    return;
 
   String NT = "";
   String DA = "";
+
   // Nhiệt độ
   if (temperature < 10)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Nguy cơ hạ thân nhiệt, tê cóng, giảm miễn dịch.";
-  else if (10 <= temperature && temperature <= 15)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Cảm giác lạnh, tăng nguy cơ mắc bệnh đường hô hấp.";
-  else if (20 <= temperature && temperature <= 30)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Nhiệt độ lý tưởng, ít ảnh hưởng đến sức khỏe.";
-  else if (30 < temperature && temperature <= 35)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Cơ thể bắt đầu có dấu hiệu mất nước, mệt mỏi.";
-  else if (temperature > 35)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Nguy cơ sốc nhiệt, chuột rút, say nắng.";
-  else if (temperature > 40)
-    NT = "- Nhiệt độ " + (String)temperature + "°C - Cực kỳ nguy hiểm, có thể gây suy nội tạng, đột quỵ nhiệt.";
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Nguy cơ hạ thân nhiệt, tê cóng, giảm miễn dịch.";
+  else if (temperature <= 15)
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Cảm giác lạnh, tăng nguy cơ mắc bệnh đường hô hấp.";
+  else if (temperature <= 30)
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Nhiệt độ lý tưởng, ít ảnh hưởng đến sức khỏe.";
+  else if (temperature <= 35)
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Cơ thể bắt đầu có dấu hiệu mất nước, mệt mỏi.";
+  else if (temperature <= 40)
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Nguy cơ sốc nhiệt, chuột rút, say nắng.";
+  else
+    NT = "- Nhiệt độ " + String(temperature) + "°C - Cực kỳ nguy hiểm, có thể gây suy nội tạng, đột quỵ nhiệt.";
+
   // Độ ẩm
   if (humidity < 30)
-    DA = "- Độ ẩm " + (String)humidity + "% - Da khô, kích ứng mắt, tăng nguy cơ mắc bệnh về hô hấp (viêm họng, khô mũi).";
-  else if (40 <= humidity && temperature <= 60)
-    DA = "- Độ ẩm " + (String)humidity + "% - Mức lý tưởng, ít ảnh hưởng đến sức khỏe.";
-  else if (humidity > 70)
-    DA = "- Độ ẩm " + (String)humidity + "% - Tăng nguy cơ nấm mốc, vi khuẩn phát triển, gây bệnh về đường hô hấp.";
-  else if (humidity > 80)
-    DA = "- Độ ẩm " + (String)humidity + "% - Cảm giác oi bức, khó thở, cơ thể khó thoát mồ hôi, tăng nguy cơ sốc nhiệt.";
+    DA = "- Độ ẩm " + String(humidity) + "% - Da khô, kích ứng mắt, tăng nguy cơ bệnh hô hấp.";
+  else if (humidity <= 60)
+    DA = "- Độ ẩm " + String(humidity) + "% - Mức lý tưởng, ít ảnh hưởng đến sức khỏe.";
+  else if (humidity <= 80)
+    DA = "- Độ ẩm " + String(humidity) + "% - Nguy cơ nấm mốc, vi khuẩn phát triển.";
+  else
+    DA = "- Độ ẩm " + String(humidity) + "% - Cảm giác oi bức, khó thở, tăng nguy cơ sốc nhiệt.";
 
   if (NT != "" && DA != "")
   {
     String canhBao = "Cảnh báo:\n" + NT + "\n" + DA;
     bot.sendMessage(CHAT_ID, canhBao);
-    Serial.println(canhBao); // hiển thị ra telegram
+    Serial.println(canhBao);
   }
 }
 
@@ -257,7 +305,7 @@ void updateOLED()
 {
   static unsigned long lastTimer = 0;
   if (!IsReady(lastTimer, 1000))
-    return; // Cập nhật OLED mỗi giây
+    return;
 
   oled.clearBuffer();
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
@@ -307,19 +355,17 @@ void updateUptime()
   Serial.println(uptime);
 }
 
+// Bật/tắt chế độ chớp vàng qua Blynk
 BLYNK_WRITE(V3)
 {
   yellowBlinkMode = param.asInt();
-  if (yellowBlinkMode) {
-    // Bật đèn vàng
+  if (yellowBlinkMode)
     digitalWrite(yPIN, HIGH);
-  } else {
-    // Tắt đèn vàng
+  else
     digitalWrite(yPIN, LOW);
-  }
 }
 
-
+// ======= LOOP =========
 void loop()
 {
   Blynk.run();
@@ -328,7 +374,7 @@ void loop()
   ThreeLedBlink();
   yellowBlink();
   updateRandomDHT();
-  updateOLED(); // Cập nhật OLED mỗi giây
+  updateOLED();
   updateUptime();
   checkHealthConditions();
   handleTelegramMessages();
