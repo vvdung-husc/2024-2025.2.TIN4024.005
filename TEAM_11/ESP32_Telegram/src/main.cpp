@@ -5,6 +5,10 @@
 #define BLYNK_TEMPLATE_NAME "ESP32API"
 #define BLYNK_AUTH_TOKEN "DRNapQhnpPZtjATzTwPtvZymnDYUnfgp"
 
+// Thông tin Blynk (Lê Tấn Dũng)
+// #define BLYNK_TEMPLATE_ID "TMPL6MRH-pylm"
+// #define BLYNK_TEMPLATE_NAME "dung11"
+// #define BLYNK_AUTH_TOKEN "YPfsgOf_oz-1FHAfzvpxikg2tGTNFHuC"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
