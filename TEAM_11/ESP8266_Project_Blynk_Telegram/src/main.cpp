@@ -16,14 +16,13 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
 
-// Đoàn đại khoa
-// Blynk:
-// #define BLYNK_TEMPLATE_ID "TMPL6S1iOilG4"
-// #define BLYNK_TEMPLATE_NAME "Esp8266projectCopy"
-// #define BLYNK_AUTH_TOKEN "iGHcgZK6ut0zChJDNocq3LblK8xnPF-D"
-// Telegram
-// #define BOTtoken "7769919692:AAEuOqM4ZHWCmcvYACm9-96mIpaPawaooAg"
-// #define GROUP_ID "-4758176317"
+// Thông tin Blynk (Đoàn Đại Khoa)
+#define BLYNK_TEMPLATE_ID "TMPL6xOraUZuS"
+#define BLYNK_TEMPLATE_NAME "Khoa2"
+#define BLYNK_AUTH_TOKEN "nrSZJ542ByE5uGFqfWpms_Al7y_es4Sb"
+//Thông tin  Telegram(Đoàn Đại Khoa)
+#define BOTtoken "7618949122:AAG6pvUqxc1EJzHmL35zpgkYyFWjsMRHWhA"  
+#define GROUP_ID "-1002647072446" //thường là một số âm
 
 //Hoàng lê bảo trí Blynk
 // #define BLYNK_TEMPLATE_ID "TMPL6su-DCfEu"
