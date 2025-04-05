@@ -16,7 +16,30 @@
 // #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 // #define BLYNK_AUTH_TOKEN "9rsoZ9K9ybKhcSz3_bFesZD7c7MQMDJ8"
 
+// Đoàn đại khoa
+// Blynk:
+// #define BLYNK_TEMPLATE_ID "TMPL6S1iOilG4"
+// #define BLYNK_TEMPLATE_NAME "Esp8266projectCopy"
+// #define BLYNK_AUTH_TOKEN "iGHcgZK6ut0zChJDNocq3LblK8xnPF-D"
+// Telegram
+// #define BOTtoken "7769919692:AAEuOqM4ZHWCmcvYACm9-96mIpaPawaooAg"
+// #define GROUP_ID "-4758176317"
 
+//Hoàng lê bảo trí Blynk
+// #define BLYNK_TEMPLATE_ID "TMPL6su-DCfEu"
+// #define BLYNK_TEMPLATE_NAME "Esp8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "dK1cq5F0IVitvydtWatYA1TJfSMsdO8u"
+// Telegram
+// #define BOTtoken "7421024840:AAGmJHnWlfaxAJmIz_C6DUfrMTHbcAOnVIs"
+// #define GROUP_ID "-4708600410"
+
+//Nguyễn quang hoà
+//#define BLYNK_TEMPLATE_ID "TMPL6fXCZEdgm"
+//#define BLYNK_TEMPLATE_NAME "ESP8266"
+//#define BLYNK_AUTH_TOKEN "KIEz-zESDTQeCzUlhWDSwZnGLyO8f9lM"
+//Nguyễn quang hoà
+//const char* botToken "7624382673:AAEKAlhOHFPL9GxEIX6fIzOXlgATmHGVG9s" ;
+//const char* chatID "-1002691191366";
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <BlynkSimpleEsp8266.h>
