@@ -4,11 +4,22 @@
 #define BLYNK_TEMPLATE_ID "TMPL6uXaA1tg0"
 #define BLYNK_TEMPLATE_NAME "Project"
 #define BLYNK_AUTH_TOKEN "RuMutY_A_wRiTDm7BTcRJcWIpY89zDba"
+
 //Ton Huyen Kim Khánh
 //#define BLYNK_TEMPLATE_ID "TMPL6jaTBmBM0"
 //#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 //#define BLYNK_AUTH_TOKEN "FqNdtB2y7zmDDZLgTP0NQ4ypw_1QY34f"
 
+//Nguyễn Khánh Linh
+//#define BLYNK_TEMPLATE_ID "TMPL69kKlGRk4"
+//#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+//#define BLYNK_AUTH_TOKEN "e48658AtfppPhVuaCVu9H2adOQoW_0nK"
+
+
+//Dương Duy Khanh
+//#define BLYNK_TEMPLATE_ID "TMPL6M7rOjSH1"
+//#define BLYNK_TEMPLATE_NAME "Telegram"
+//#define BLYNK_AUTH_TOKEN "afs2DqGURHCGMrDwEBwheVSTrPBTUbPS"
 #include "utils.h"
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -32,6 +43,13 @@ char pass[] = "13572468";
 //#define BOT_TOKEN "7405557746:AAGGWwmLWX3N5yjaeSVTItw3YNFs67hpox4"
 //#define CHAT_ID "-4691157407"
 
+//Nguyễn Khánh Linh
+//#define BOT_TOKEN "7566364423:AAEdj6Us9k1aXl-thFjqfdLHtk7bcFcpfHU"
+//#define CHAT_ID "-4663865281"
+
+//Dương Duy Khanh
+//#define BOTtoken "7953116116:AAHD0oG34KQMV7SvzHaQa_KI27qcm83-B8U" 
+//#define GROUP_ID "-4751134824" 
 
 
 WiFiClientSecure client;
