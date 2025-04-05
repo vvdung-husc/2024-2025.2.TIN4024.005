@@ -18,7 +18,7 @@
 
 // Thông tin Blynk (Đoàn Đại Khoa)
 #define BLYNK_TEMPLATE_ID "TMPL6xOraUZuS"
-#define BLYNK_TEMPLATE_NAME "Khoa2"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
 #define BLYNK_AUTH_TOKEN "nrSZJ542ByE5uGFqfWpms_Al7y_es4Sb"
 //Thông tin  Telegram(Đoàn Đại Khoa)
 #define BOTtoken "7618949122:AAG6pvUqxc1EJzHmL35zpgkYyFWjsMRHWhA"  
