@@ -13,6 +13,11 @@
 // #define BLYNK_TEMPLATE_NAME "esp8266"
 // #define BLYNK_AUTH_TOKEN "u1cKK2vyD5FCTZ76up_wKqrc3n5LPGg9"
 
+// Nguyễn Việt Nam
+// #define BLYNK_TEMPLATE_ID "TMPL6tZ3iJjA_"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Blynk"
+// #define BLYNK_AUTH_TOKEN "Y1-1AjTPfS1xKT89rOHxa4YciPp2OwLt"
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -20,7 +25,7 @@
 #include <BlynkSimpleEsp8266.h>
 #include <UniversalTelegramBot.h> // Thêm thư viện Telegram
 
-// Initialize Telegram BOT
+// LÊ BÁ NHẬT MINH
 #define BOTtoken "7965370700:AAGHB_XS6lNgahXM6ZDbEJj-tV4chtwuiBo" // Bot Token từ BotFather
 #define GROUP_ID "-4692915290"                                    // Group ID của bạn
 // HỒ XUÂN LÃM
@@ -31,6 +36,9 @@
 // #define BOTtoken "7520744232:AAHTX360kc_5wuJZuZUmTc2Zs9FqD_Zvg44"
 // #define GROUP_ID "-4554634970"
 
+// Nguyễn Việt Nam
+// #define BOTtoken "7910425245:AAH6VK-nNDuPFpCEL9Eal6FVZ3cBogb8iiA" // Bot Token từ BotFather
+// #define GROUP_ID "-4692915290" // Group ID của bạn
 #define gPIN 15 // Đèn xanh
 #define yPIN 2  // Đèn vàng
 #define rPIN 5  // Đèn đỏ
