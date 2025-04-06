@@ -14,6 +14,10 @@
 #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
 #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
 #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
+//Ngô Thanh Quang
+//#define BLYNK_TEMPLATE_ID "TMPL63ig_DM91"
+//#define BLYNK_TEMPLATE_NAME "Telegram"
+//#define BLYNK_AUTH_TOKEN "7Ppu4CBtPMIrgCe_xRiNPOaWpwueiC5B"
 // Trần Văn Thành
 //#define BLYNK_TEMPLATE_ID "TMPL637e6EKYa"
 //#define BLYNK_TEMPLATE_NAME "TrafficLight ESP8266"
@@ -53,6 +57,9 @@ char pass[] = "13572468";
 #define BOTtoken "7931012286:AAFAuno3JkX6m1ciX7YloV4l6KJEDgmMrHg" // your Bot Token (Get from Botfather)
 
 #define GROUP_ID "-1002549939953" // thường là một số âm
+//Ngô Thanh Quang
+//#define BOTtoken "7598798046:AAHDaFiD8pRWUuUax6Y8Ge_wtF0_aCBWpYo"
+//#define GROUP_ID "6309510189"
 // Trần Văn Thành
 //#define BOTtoken "7587672400:AAHOcS9UTZrhiwQfjwAYNtfSi9axJ8ikwBI"
 //#define GROUP_ID "1692643326"
