@@ -16,9 +16,16 @@
 // #define TELEGRAM_GROUP_ID "-4603839699" 
 
 // Phan Thanh Toàn
-#define BLYNK_TEMPLATE_ID "TMPL6UtUU_5WZ"
-#define BLYNK_TEMPLATE_NAME "ESP8266Project"
-#define BLYNK_AUTH_TOKEN "p_B7I5wU_xTCi3owpkhbeklgLbr7r-8R"
+// #define BLYNK_TEMPLATE_ID "TMPL6UtUU_5WZ"
+// #define BLYNK_TEMPLATE_NAME "ESP8266Project"
+// #define BLYNK_AUTH_TOKEN "p_B7I5wU_xTCi3owpkhbeklgLbr7r-8R"
+// #define BOT_TOKEN "7499637616:AAGVz985ubbTrkQlWYRrJMTNC70be_QVP7k"
+// #define TELEGRAM_GROUP_ID "-4698442702"
+
+// Nguyễn Văn Hoàng Nam
+#define BLYNK_TEMPLATE_ID "TMPL6aruMTIqM"
+#define BLYNK_TEMPLATE_NAME "Esp8266 Project Blynk Telegram bot"
+#define BLYNK_AUTH_TOKEN "aJmjzlwxzsxlSF6AIEl-9So-gM1H6rw_"
 #define BOT_TOKEN "7499637616:AAGVz985ubbTrkQlWYRrJMTNC70be_QVP7k"
 #define TELEGRAM_GROUP_ID "-4698442702"
 
