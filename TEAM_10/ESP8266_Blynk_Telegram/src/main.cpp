@@ -22,6 +22,13 @@
 // #define BOT_TOKEN "7499637616:AAGVz985ubbTrkQlWYRrJMTNC70be_QVP7k"
 // #define TELEGRAM_GROUP_ID "-4698442702"
 
+// Lê Trọng Tùng Lâm
+// #define BLYNK_TEMPLATE_ID "TMPL61OYx_d4N"
+// #define BLYNK_TEMPLATE_NAME "ESP8266blynkbottelegram"
+// #define BLYNK_AUTH_TOKEN "6nbBw_6ai4_UZ60oPZYrB5NBoSzTOqvn"
+// #define BOT_TOKEN "7813666133:AAGlXB9w4ZkrJ6jP5h7VYiQgzcX36xf4bBM"
+// #define TELEGRAM_GROUP_ID "-4698442702"
+
 // Nguyễn Văn Hoàng Nam
 #define BLYNK_TEMPLATE_ID "TMPL6aruMTIqM"
 #define BLYNK_TEMPLATE_NAME "Esp8266 Project Blynk Telegram bot"
