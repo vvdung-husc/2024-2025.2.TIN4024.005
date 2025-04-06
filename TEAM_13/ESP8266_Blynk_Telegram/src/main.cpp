@@ -15,6 +15,10 @@
 //#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 //#define BLYNK_AUTH_TOKEN "e48658AtfppPhVuaCVu9H2adOQoW_0nK"
 
+//Trần Thị Quỳnh Anh
+// #define BLYNK_TEMPLATE_ID "TMPL6Dv45TqHG"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+// #define BLYNK_AUTH_TOKEN "OR08w_6norrqxfMLUuqTDAVLENvTthiV"
 
 //Dương Duy Khanh
 //#define BLYNK_TEMPLATE_ID "TMPL6M7rOjSH1"
@@ -46,6 +50,10 @@ char pass[] = "13572468";
 //Nguyễn Khánh Linh
 //#define BOT_TOKEN "7566364423:AAEdj6Us9k1aXl-thFjqfdLHtk7bcFcpfHU"
 //#define CHAT_ID "-4663865281"
+
+//Trần Thị Quỳnh Anh
+// #define BOT_TOKEN "7539468611:AAGMrLwzF8XlwOdEvahtpFmvs6fkHJ3S1BU"
+// #define CHAT_ID "-4726839172"
 
 //Dương Duy Khanh
 //#define BOTtoken "7953116116:AAHD0oG34KQMV7SvzHaQa_KI27qcm83-B8U" 
