@@ -14,7 +14,10 @@
 #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
 #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
 #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
-
+// Trần Văn Thành
+//#define BLYNK_TEMPLATE_ID "TMPL637e6EKYa"
+//#define BLYNK_TEMPLATE_NAME "TrafficLight ESP8266"
+//#define BLYNK_AUTH_TOKEN "M2npY_dHHaOnxktvF0S3v1mAGXEQD_cF"
 // Nguyễn Hoàng Bảo Trung
 // #define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
 // #define BLYNK_TEMPLATE_NAME "Telegram Blynk Botr"
@@ -50,7 +53,9 @@ char pass[] = "13572468";
 #define BOTtoken "7931012286:AAFAuno3JkX6m1ciX7YloV4l6KJEDgmMrHg" // your Bot Token (Get from Botfather)
 
 #define GROUP_ID "-1002549939953" // thường là một số âm
-
+// Trần Văn Thành
+//#define BOTtoken "7587672400:AAHOcS9UTZrhiwQfjwAYNtfSi9axJ8ikwBI"
+//#define GROUP_ID "1692643326"
 // Huỳnh Quốc Khánh
 // #define BOTtoken "7344244327:AAFVUIe-F0wKX9GrKY6zm8QNChoB514L0bs"
 // #define GROUP_ID "-1002539091533"
