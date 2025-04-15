@@ -57,7 +57,7 @@ char pass[] = "13572468";
 // #define BOTtoken "8153413174:AAHcyO00UmL3_83UYGZjdrWQD9p3xwJEmpM" // your Bot Token (Get from Botfather)
 
 // Nguyễn Thị Diệu Anh
-#define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
+//#define BOTtoken "7771155932:AAFzACNOUX8m3OXf5FnVuEC2HSwDdzlfiBY"
 
 // Lê Thị Thanh Nhàn
 // #define BOTtoken "7785297652:AAGTOZ-QgfHNYX4Q2y-kxBAcstG37iY90P8"
@@ -70,7 +70,7 @@ char pass[] = "13572468";
 // #define GROUP_ID "-4743348114" // thường là một số âm
 
 // Nguyễn Thị Diệu Anh
-#define GROUP_ID "-4610946941" // thường là một số âm
+//#define GROUP_ID "-4610946941" // thường là một số âm
 
 // Le Thi Thanh NhanNhan
 // #define GROUP_ID "-4731532209"

@@ -2,7 +2,10 @@
   #define BLYNK_TEMPLATE_ID "TMPL6G-_1Se-p"
   #define BLYNK_TEMPLATE_NAME "ESP8266"
   #define BLYNK_AUTH_TOKEN "J1RzJuboKtIHo0ZCcegBupFpHC00XLDC"
-
+//Nguyễn Nhật Thi
+// #define BLYNK_TEMPLATE_ID "TMPL6D3FsW9-s"
+// #define BLYNK_TEMPLATE_NAME "ESP8266"
+// #define BLYNK_AUTH_TOKEN "0qSOXTIdb_nutGQkScWX0mOSEqwyauHZ"
 //Phan Văn Nhật Duy
 //#define BLYNK_TEMPLATE_ID "TMPL6xbr4RanW"
 //#define BLYNK_TEMPLATE_NAME "ESP8266"

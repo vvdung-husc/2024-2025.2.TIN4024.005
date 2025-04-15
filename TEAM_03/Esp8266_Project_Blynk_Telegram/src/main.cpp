@@ -14,7 +14,14 @@
 #define BLYNK_TEMPLATE_ID "TMPL6DVW-4-Hx"
 #define BLYNK_TEMPLATE_NAME "Telegram Blynk"
 #define BLYNK_AUTH_TOKEN "KvjwSKBaTdKY_5HIcugiNpTHfJ8cU86X"
-
+//Ngô Thanh Quang
+//#define BLYNK_TEMPLATE_ID "TMPL63ig_DM91"
+//#define BLYNK_TEMPLATE_NAME "Telegram"
+//#define BLYNK_AUTH_TOKEN "7Ppu4CBtPMIrgCe_xRiNPOaWpwueiC5B"
+// Trần Văn Thành
+//#define BLYNK_TEMPLATE_ID "TMPL637e6EKYa"
+//#define BLYNK_TEMPLATE_NAME "TrafficLight ESP8266"
+//#define BLYNK_AUTH_TOKEN "M2npY_dHHaOnxktvF0S3v1mAGXEQD_cF"
 // Nguyễn Hoàng Bảo Trung
 // #define BLYNK_TEMPLATE_ID "TMPL6dXvmkr1O"
 // #define BLYNK_TEMPLATE_NAME "Telegram Blynk Botr"
@@ -50,7 +57,19 @@ char pass[] = "13572468";
 #define BOTtoken "7931012286:AAFAuno3JkX6m1ciX7YloV4l6KJEDgmMrHg" // your Bot Token (Get from Botfather)
 
 #define GROUP_ID "-1002549939953" // thường là một số âm
+//Ngô Thanh Quang
+//#define BOTtoken "7598798046:AAHDaFiD8pRWUuUax6Y8Ge_wtF0_aCBWpYo"
+//#define GROUP_ID "6309510189"
+// Trần Văn Thành
+//#define BOTtoken "7587672400:AAHOcS9UTZrhiwQfjwAYNtfSi9axJ8ikwBI"
+//#define GROUP_ID "1692643326"
+// Huỳnh Quốc Khánh
+// #define BOTtoken "7344244327:AAFVUIe-F0wKX9GrKY6zm8QNChoB514L0bs"
+// #define GROUP_ID "-1002539091533"
 
+// Lê Minh Hiếu
+// #define BOTtoken "8005981675:AAFZY_Q8KbWsh6ntTarmjcjZZ7EfiLqR9N0"
+// #define GROUP_ID "-1002537868720"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);

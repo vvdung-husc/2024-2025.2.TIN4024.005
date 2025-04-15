@@ -1,0 +1,44 @@
+{
+	"folders": [
+		{
+			"path": "../../ESP32_DHT"
+		},
+		{
+			"name": "ESP32_LED_Blink",
+			"path": "../../ESP32_LED_Blink"
+		},
+		{
+			"name": "UdtTrafficLight",
+			"path": "../../UdtTrafficLight"
+		},
+		{
+			"name": "Traffic DHT Sensor",
+			"path": "C:/Users/21t10/OneDrive/Documents/PlatformIO/Projects/Traffic DHT Sensor"
+		},
+		{
+			"name": "ESP32_Project",
+			"path": "../../ESP32_Project"
+		},
+		{
+			"name": " ESP8266",
+			"path": "../../ ESP8266"
+		},
+		{
+			"name": "ESP32_Telegram_Bot",
+			"path": ".."
+		},
+		{
+			"name": "ESP32_API_Weather",
+			"path": "../../ESP32_API_Weather"
+		},
+		{
+			"name": "Esp32_API_HTTP_GET",
+			"path": "../../Esp32_API_HTTP_GET"
+		},
+		{
+			"name": "Esp8266_Project_Blynk_Telegram",
+			"path": "../../Esp8266_Project_Blynk_Telegram"
+		}
+	],
+	"settings": {}
+}
