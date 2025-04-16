@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Tôn Huyền Kim Khánh",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": 80.62, "left": -122.48, "attrs": {} },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": 236.8,
+      "left": -128.8,
+      "attrs": { "pins": "i2c" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "imu1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "imu1:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "imu1:SDA", "esp:21", "green", [ "v0" ] ],
+    [ "imu1:SCL", "esp:22", "green", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.1", "black", [ "h-48", "v-105.6" ] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "h-28.8", "v-249.5" ] ],
+    [ "lcd1:SDA", "esp:21", "green", [ "h249.6", "v-211" ] ],
+    [ "lcd1:SCL", "esp:22", "green", [ "h268.8", "v-239.7" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 IoT Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .device {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+        .device h3 {
+            margin: 0 0 10px;
+            color: #555;
+        }
+        .status {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .on {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .on:hover {
+            background-color: #45a049;
+        }
+        .off {
+            background-color: #f44336;
+            color: white;
+        }
+        .off:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <h1>ESP32 WebServer</h1>
+    <div class="container" id="devices"></div>
+    <script>
+        function loadDevices() {
+            fetch('/devices')
+                .then(response => response.json())
+                .then(data => {
+                    let devicesDiv = document.getElementById('devices');
+                    devicesDiv.innerHTML = '';
+                    data.forEach(device => {
+                        devicesDiv.innerHTML += `
+                            <div class="device">
+                                <h3>${device.name}</h3>
+                                <p class="status">Status: <span id="status-${device.id}">${device.state}</span></p>
+                                <button class="button on" onclick="setDevice('${device.id}', 'ON')">Turn ON</button>
+                                <button class="button off" onclick="setDevice('${device.id}', 'OFF')">Turn OFF</button>
+                            </div>`;
+                    });
+                });
+        }
+        function setDevice(id, state) {
+            fetch(`/control?id=${id}&state=${state}`)
+                .then(response => response.text())
+                .then(data => document.getElementById(`status-${id}`).innerText = data);
+        }
+
+        // Tải thiết bị khi trang mở
+        window.onload = loadDevices;
+    </script>
+</body>
+</html>
