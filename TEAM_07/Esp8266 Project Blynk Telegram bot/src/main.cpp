@@ -16,6 +16,15 @@
 // #define BOTtoken "7769919692:AAEuOqM4ZHWCmcvYACm9-96mIpaPawaooAg"
 // #define GROUP_ID "-4758176317"
 
+// Hồ Hữu Khải
+// Blynk:
+// #define BLYNK_TEMPLATE_ID "TMPL6JA7z9_KD"
+// #define BLYNK_TEMPLATE_NAME "ESP8266 Project Blynk"
+// #define BLYNK_AUTH_TOKEN "XeOcIK_VvI8815fDjcW4iTYbsysNE30z"
+// Telegram
+// #define BOT_TOKEN "7575921200:AAGyLJE132J4mUuTmqhb1P5budnX_11SPpQ"
+// #define GROUP_ID "-1003857395710" //là một số âm
+
 //Lê Hữu Minh Duệ Blynk
 #define BLYNK_TEMPLATE_ID "TMPL6su-DCfEu"
 #define BLYNK_TEMPLATE_NAME "Esp8266 Project Blynk"
