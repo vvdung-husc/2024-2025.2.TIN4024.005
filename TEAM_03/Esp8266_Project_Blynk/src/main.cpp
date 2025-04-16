@@ -42,7 +42,7 @@ void setup() {
   oled.sendBuffer();
 }
 
-// Blynk switch để bật chế độ đèn vàng nhấp nháy
+// Blynk switch để bật chế độ đèn vàng nhấp nháy, 
 BLYNK_WRITE(V1) {
   yellowBlinkMode = param.asInt();
 }
