@@ -73,7 +73,7 @@ void parseGeoInfo(String payload, IP4_Info& ipInfo) {
 }
 
 // Key API OpenWeatherMap (thay key của bạn vào đây)
-#define OPENWEATHERMAP_KEY "0cf4b1dd8e16fff0f3b7517d332b7525"
+#define OPENWEATHERMAP_KEY "97dc88c373af11901e8a2d81be80a37f"
 String urlWeather;
 
 // Gọi API lấy thông tin vị trí
