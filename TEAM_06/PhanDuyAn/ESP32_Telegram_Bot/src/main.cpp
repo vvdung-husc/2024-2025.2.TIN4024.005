@@ -24,6 +24,9 @@ const char* password = "";
 // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
 #define GROUP_ID "-4618565475" // thường là một số âm
 
+#define PIR_PIN 5  // Chân tín hiệu của cảm biến PIR
+#define LED_PIN 22 // Đèn LED cảnh báo
+#define BUZZER_PIN 18
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
 
@@ -54,6 +57,9 @@ void IRAM_ATTR detectsMovement() {
 }
 
 void setup() {
+  pinMode(PIR_PIN, INPUT);     // Cảm biến PIR ở chế độ đầu vào
+  pinMode(LED_PIN, OUTPUT);    // LED là đầu ra
+  pinMode(BUZZER_PIN, OUTPUT); // Buzzer là đầu ra
   Serial.begin(115200);
 
   // PIR Motion Sensor mode INPUT_PULLUP
@@ -83,13 +89,22 @@ void setup() {
 
 void loop() {
   static uint count_ = 0;
-
-  if(motionDetected){
+  int pirState = digitalRead(PIR_PIN);
+  if (pirState == HIGH)
+  {
+    Serial.println("Phát hiện chuyển động!");
+    digitalWrite(LED_PIN, HIGH); // Bật đèn
+    digitalWrite(BUZZER_PIN, HIGH);
     ++count_;
     Serial.print(count_);Serial.println(". MOTION DETECTED => Waiting to send to Telegram");    
     String msg = StringFormat("%u => Motion detected!",count_);
-    bot.sendMessage(GROUP_ID, msg.c_str());
+    bot.sendMessage(GROUP_ID, "CẢNH BÁO TRỘM!!! Phát hiện chuyển động bất thường");
     Serial.print(count_);Serial.println(". Sent successfully to Telegram: Motion Detected");
-    motionDetected = false;
   }
+  else
+  {
+    digitalWrite(LED_PIN, LOW); // Tắt đèn
+    digitalWrite(BUZZER_PIN, LOW);
+  }
+  delay(200);
 }
